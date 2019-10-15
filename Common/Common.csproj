@@ -91,6 +91,12 @@
       <DependentUpon>UnitEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Effect.cs" />
+    <Compile Include="PropEditorsForms\EffectMultiPropertyEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropEditorsForms\EffectMultiPropertyEditorForm.Designer.cs">
+      <DependentUpon>EffectMultiPropertyEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PropEditorsForms\EffectPropertyEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UnitEditor.resx">
       <DependentUpon>UnitEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropEditorsForms\EffectMultiPropertyEditorForm.resx">
+      <DependentUpon>EffectMultiPropertyEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PropEditorsForms\EffectPropertyEditorForm.resx">
       <DependentUpon>EffectPropertyEditorForm.cs</DependentUpon>
