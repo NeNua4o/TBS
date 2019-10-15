@@ -72,6 +72,18 @@
     <Compile Include="Controls\EffectEditor.Designer.cs">
       <DependentUpon>EffectEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ItemMultiSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ItemMultiSelector.Designer.cs">
+      <DependentUpon>ItemMultiSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ItemSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ItemSelector.Designer.cs">
+      <DependentUpon>ItemSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UnitEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -79,6 +91,13 @@
       <DependentUpon>UnitEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Effect.cs" />
+    <Compile Include="PropEditorsForms\EffectPropertyEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropEditorsForms\EffectPropertyEditorForm.Designer.cs">
+      <DependentUpon>EffectPropertyEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropEditors\EffectPropertyEditor.cs" />
     <Compile Include="PropEditors\ImagePropertyEditor.cs" />
     <Compile Include="StringUtils.cs" />
     <Compile Include="TBSEventArgs\SelectedActionChangedEventArgs.cs" />
@@ -94,8 +113,17 @@
     <EmbeddedResource Include="Controls\EffectEditor.resx">
       <DependentUpon>EffectEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ItemMultiSelector.resx">
+      <DependentUpon>ItemMultiSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ItemSelector.resx">
+      <DependentUpon>ItemSelector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\UnitEditor.resx">
       <DependentUpon>UnitEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropEditorsForms\EffectPropertyEditorForm.resx">
+      <DependentUpon>EffectPropertyEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

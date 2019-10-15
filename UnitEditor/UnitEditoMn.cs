@@ -7,10 +7,11 @@ namespace UnitEditor
 {
     public partial class UnitEditoMn : Form
     {
-        RepositoryWorker _repWkr = new RepositoryWorker();
+        RepositoryWorker _repWkr;
         public UnitEditoMn()
         {
             InitializeComponent();
+            _repWkr = RepositoryWorker.GetInstance();
             _repWkr.LoadAll();
             propertyGrid.PropertyValueChanged += PropertyGrid_PropertyValueChanged;
             unitEditor.SelectedUnitChanged += UnitEditor_SelectedUnitChanged;

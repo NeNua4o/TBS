@@ -85,6 +85,7 @@ namespace Common
         [DisplayName("Id эффекта на пути")]
         [Description("Эффект который применится на линии атаки с учётом обозначенных целей наложения эффекта")]
         [DefaultValue(-1)]
+        [Editor(typeof(EffectPropertyEditor), typeof(UITypeEditor))]
         [XmlAttribute]
         public int PathEffect { get; set; }
 

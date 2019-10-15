@@ -21,6 +21,17 @@ namespace Common
 
         Logger _logger = LogManager.GetCurrentClassLogger();
 
+        private static RepositoryWorker _instance;
+
+        private RepositoryWorker() { }
+
+        public static RepositoryWorker GetInstance()
+        {
+            if (_instance == null)
+                _instance = new RepositoryWorker();
+            return _instance;
+        }
+
         public void LoadAll()
         {
             LoadEffects();
@@ -320,5 +331,23 @@ namespace Common
             existedIds = null;
             return id;
         }
+
+
+
+
+
+
+
+        public Effect GetEffectById(int id)
+        {
+            for (int i = 0; i < Effects.Count; i++)
+                if (Effects[i].Id == id)
+                    return Effects[i];
+            return null;
+        }
+
+
+
+
     }
 }
