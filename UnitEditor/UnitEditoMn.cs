@@ -17,6 +17,8 @@ namespace UnitEditor
             unitEditor.SetRepWorker(_repWkr);
             actionEditor.SelectedActionChanged += ActionEditor_SelectedActionChanged;
             actionEditor.SetRepWorker(_repWkr);
+            effectEditor.SelectedEffectChanged += EffectEditor_SelectedEffectChanged;
+            effectEditor.SetRepWorker(_repWkr);
         }
 
         private void PropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
@@ -25,9 +27,8 @@ namespace UnitEditor
             snd.Refresh();
             unitEditor.UpdateUnitList();
             actionEditor.UpdateActionList();
+            effectEditor.UpdateEffectList();
         }
-
-        private int selectedIndex;
 
         private void UnitEditor_SelectedUnitChanged(object sender, EventArgs e)
         {
@@ -39,9 +40,15 @@ namespace UnitEditor
             propertyGrid.SelectedObject = ((SelectedActionChangedEventArgs)e).Action;
         }
 
+        private void EffectEditor_SelectedEffectChanged(object sender, EventArgs e)
+        {
+            propertyGrid.SelectedObject = ((SelectedEffectChangedEventArgs)e).Effect;
+        }
+
         private void b_save_Click(object sender, EventArgs e)
         {
             _repWkr.SaveAll();
+            MessageBox.Show("Готово", "Сохранение");
         }
     }
 }

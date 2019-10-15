@@ -4,13 +4,13 @@ using System.Windows.Forms;
 
 namespace Common.Controls
 {
-    public partial class UnitEditor : UserControl
+    public partial class EffectEditor : UserControl
     {
         RepositoryWorker _worker = null;
 
-        public event EventHandler SelectedUnitChanged;
+        public event EventHandler SelectedEffectChanged;
 
-        public UnitEditor()
+        public EffectEditor()
         {
             InitializeComponent();
         }
@@ -18,21 +18,21 @@ namespace Common.Controls
         public void SetRepWorker(RepositoryWorker worker)
         {
             this._worker = worker;
-            UpdateUnitList();
+            UpdateEffectList();
         }
 
-        public void UpdateUnitList()
+        public void UpdateEffectList()
         {
-            lb_units.Items.Clear();
-            for (int i = 0; i < _worker.BaseUnits.Count; i++)
-                lb_units.Items.Add(_worker.BaseUnits[i]);
+            lb_effects.Items.Clear();
+            for (int i = 0; i < _worker.Effects.Count; i++)
+                lb_effects.Items.Add(_worker.Effects[i]);
         }
 
         private void b_add_Click(object sender, EventArgs e)
         {
             if (_worker == null) return;
-            BaseUnit unit = _worker.CreateUnit();
-            lb_units.Items.Add(unit);
+            Effect effect = _worker.CreateEffect();
+            lb_effects.Items.Add(effect);
         }
 
         private void b_del_Click(object sender, EventArgs e)
@@ -41,15 +41,15 @@ namespace Common.Controls
             var snd = (ListBox)sender;
             if (snd.SelectedIndex < 0) return;
             var ind = snd.SelectedIndex;
-            _worker.DeleteUnit((BaseUnit)snd.SelectedItem);
+            _worker.DeleteEffect((Effect)snd.SelectedItem);
             snd.Items.RemoveAt(ind);
         }
 
         private void lb_units_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedUnitChanged?.Invoke(this, new SelectedUnitChangedEventArgs()
+            SelectedEffectChanged?.Invoke(this, new SelectedEffectChangedEventArgs()
             {
-                BaseUnit = lb_units.SelectedIndex == -1 ? null : (BaseUnit)lb_units.SelectedItem,
+                Effect = lb_effects.SelectedIndex == -1 ? null : (Effect)lb_effects.SelectedItem,
             });
         }
     }

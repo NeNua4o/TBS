@@ -59,12 +59,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Action.cs" />
+    <Compile Include="Act.cs" />
     <Compile Include="Controls\ActionEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ActionEditor.Designer.cs">
       <DependentUpon>ActionEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EffectEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EffectEditor.Designer.cs">
+      <DependentUpon>EffectEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\UnitEditor.cs">
       <SubType>UserControl</SubType>
@@ -72,9 +78,11 @@
     <Compile Include="Controls\UnitEditor.Designer.cs">
       <DependentUpon>UnitEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Effect.cs" />
     <Compile Include="PropEditors\ImagePropertyEditor.cs" />
     <Compile Include="StringUtils.cs" />
     <Compile Include="TBSEventArgs\SelectedActionChangedEventArgs.cs" />
+    <Compile Include="TBSEventArgs\SelectedEffectChangedEventArgs.cs" />
     <Compile Include="TBSEventArgs\SelectedUnitChangedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeConverters\EnumTypeConverter.cs" />
@@ -82,6 +90,9 @@
     <Compile Include="RepositoryWorker.cs" />
     <EmbeddedResource Include="Controls\ActionEditor.resx">
       <DependentUpon>ActionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EffectEditor.resx">
+      <DependentUpon>EffectEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UnitEditor.resx">
       <DependentUpon>UnitEditor.cs</DependentUpon>

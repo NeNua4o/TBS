@@ -1,13 +1,11 @@
 ﻿using NLog;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using TBS;
 
 namespace Common
 {
@@ -15,20 +13,25 @@ namespace Common
     {
         const string BaseUnitsPath = "BaseUnits.xml";
         const string ActionsPath = "Actions.xml";
+        const string EffectsPath = "Effects.xml";
 
         public List<BaseUnit> BaseUnits = new List<BaseUnit>();
         public List<Act> Actions = new List<Act>();
+        public List<Effect> Effects = new List<Effect>();
 
         Logger _logger = LogManager.GetCurrentClassLogger();
 
         public void LoadAll()
         {
-            LoadUnits();
+            LoadEffects();
             LoadActions();
+            LoadUnits();
         }
 
         public void SaveAll()
         {
+            SaveEffects();
+            SaveActions();
             SaveUnits();
         }
 
@@ -48,16 +51,32 @@ namespace Common
                 {
                     if (!String.IsNullOrEmpty(BaseUnits[i].IconPath))
                     {
-                        tmpImage = Image.FromFile(BaseUnits[i].IconPath);
-                        tmpImage.Tag = BaseUnits[i].IconPath;
-                        BaseUnits[i].Icon = tmpImage;
+                        try
+                        {
+                            tmpImage = Image.FromFile(BaseUnits[i].IconPath);
+                            tmpImage.Tag = BaseUnits[i].IconPath;
+                            BaseUnits[i].Icon = tmpImage;
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.Log(LogLevel.Error, ex.Message);
+                            BaseUnits[i].IconPath = "";
+                        }
                     }
 
                     if (!String.IsNullOrEmpty(BaseUnits[i].ModelPath))
                     {
-                        tmpImage = Image.FromFile(BaseUnits[i].ModelPath);
-                        tmpImage.Tag = BaseUnits[i].ModelPath;
-                        BaseUnits[i].Model = tmpImage;
+                        try
+                        {
+                            tmpImage = Image.FromFile(BaseUnits[i].ModelPath);
+                            tmpImage.Tag = BaseUnits[i].ModelPath;
+                            BaseUnits[i].Model = tmpImage;
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.Log(LogLevel.Error, ex.Message);
+                            BaseUnits[i].ModelPath = "";
+                        }
                     }
                 }
             }
@@ -122,8 +141,6 @@ namespace Common
 
 
 
-
-
         public void LoadActions()
         {
             Actions.Clear();
@@ -140,9 +157,17 @@ namespace Common
                 {
                     if (!String.IsNullOrEmpty(Actions[i].IconPath))
                     {
-                        tmpImage = Image.FromFile(Actions[i].IconPath);
-                        tmpImage.Tag = Actions[i].IconPath;
-                        Actions[i].Icon = tmpImage;
+                        try
+                        {
+                            tmpImage = Image.FromFile(Actions[i].IconPath);
+                            tmpImage.Tag = Actions[i].IconPath;
+                            Actions[i].Icon = tmpImage;
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.Log(LogLevel.Error, ex.Message);
+                            Actions[i].IconPath = "";
+                        }
                     }
                 }
             }
@@ -200,6 +225,97 @@ namespace Common
         {
             int id = 0;
             int[] existedIds = Actions.Select(x => x.Id).ToArray();
+            while (existedIds.Contains(id)) { id++; }
+            existedIds = null;
+            return id;
+        }
+
+
+
+        public void LoadEffects()
+        {
+            Effects.Clear();
+            FileStream fs = null;
+            XmlSerializer s;
+            Image tmpImage = null;
+            try
+            {
+                fs = new FileStream(EffectsPath, FileMode.Open);
+                s = new XmlSerializer(typeof(List<Effect>));
+                Effects = (List<Effect>)s.Deserialize(fs);
+
+                for (int i = 0; i < Effects.Count; i++)
+                {
+                    if (!String.IsNullOrEmpty(Effects[i].IconPath))
+                    {
+                        try
+                        {
+                            tmpImage = Image.FromFile(Effects[i].IconPath);
+                            tmpImage.Tag = Effects[i].IconPath;
+                            Effects[i].Icon = tmpImage;
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.Log(LogLevel.Error, ex.Message);
+                            Effects[i].IconPath = "";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, ex.Message);
+                return;
+            }
+            finally
+            {
+                tmpImage = null;
+                s = null;
+                if (fs != null)
+                    fs.Dispose();
+            }
+        }
+
+        public void SaveEffects()
+        {
+            FileStream fs = null;
+            XmlSerializer s;
+            try
+            {
+                fs = new FileStream(EffectsPath, FileMode.Create);
+                s = new XmlSerializer(typeof(List<Effect>));
+                s.Serialize(fs, Effects);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, ex.Message);
+                return;
+            }
+            finally
+            {
+                s = null;
+                if (fs != null)
+                    fs.Dispose();
+            }
+        }
+
+        public Effect CreateEffect()
+        {
+            var newEffect = new Effect();
+            newEffect.Id = GenerateEffectId();
+            Effects.Add(newEffect);
+            return newEffect;
+        }
+
+        public void DeleteEffect(Effect effect)
+        {
+            Effects.Remove(effect);
+        }
+
+        private int GenerateEffectId()
+        {
+            int id = 0;
+            int[] existedIds = Effects.Select(x => x.Id).ToArray();
             while (existedIds.Contains(id)) { id++; }
             existedIds = null;
             return id;

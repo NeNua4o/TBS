@@ -6,20 +6,23 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Xml.Serialization;
 
-namespace TBS
+namespace Common
 {
     public class Act
     {
         [DisplayName("Id")]
+        [XmlAttribute]
         public int Id { get; set; }
 
         [DisplayName("Название")]
         [DefaultValue("New Action")]
+        [XmlAttribute]
         public string Name { get; set; }
 
         [DisplayName("Уровень")]
-        [Description("Уровень действия. Используется для заклинаний.")]
+        [Description("Уровень действия. Используется для заклинаний как уровень заклинания.")]
         [DefaultValue(0)]
+        [XmlAttribute]
         public int ActLevel { get; set; }
 
         Image _icon;
@@ -34,12 +37,6 @@ namespace TBS
         [ReadOnly(true)]
         [XmlAttribute]
         public string IconPath { get; set; }
-
-        [DisplayName("Пассивное")]
-        [Description("Указывает на то что действие применяется автоматически (ауры, пассивные навыки, эффекты артефактов и т.д.)")]
-        [DefaultValue(false)]
-        [XmlAttribute]
-        public bool Passive { get; set; }
 
         int _rad;
         [DisplayName("Радиус действия")]
@@ -74,12 +71,16 @@ namespace TBS
         [DisplayName("Точки прицеливания")]
         [Description("Перечень целей на которые игрок сможет навести курсор для совершения действия")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        [XmlAttribute]
         public Targets Targetting { get; set; }
 
         [DisplayName("Коэффициенты расстояния")]
         [Description("Множитель урона в зависимости от расстояния до цели")]
         public float[] RadKoeffs { get; set; }
+
+        [DisplayName("Стоимость")]
+        [Description("Какие характеристики юнита уменьшатся после применения действия")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public Characteristics Cost { get; set; }
 
         [DisplayName("Id эффекта на пути")]
         [Description("Эффект который применится на линии атаки с учётом обозначенных целей наложения эффекта")]
@@ -102,7 +103,6 @@ namespace TBS
         [DisplayName("Цели наложения эффекта")]
         [Description("Перечень целей на которые будет применено действие")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        [XmlAttribute]
         public Targets AppliesOn { get; set; }
 
         [DisplayName("Id конечных эффектов")]
@@ -114,6 +114,7 @@ namespace TBS
             Name = "New Action";
             _rad = 1;
             RadKoeffs = new float[] { 1 };
+            Cost = new Characteristics();
             Targetting = new Targets();
             AppliesOn = new Targets();
             PathEffect = -1;
@@ -121,7 +122,7 @@ namespace TBS
 
         public override string ToString()
         {
-            return Name + " | " + Passive + " | " + ActLevel + " | " + Rad;
+            return Name + " | " + ActLevel + " | " + Rad;
         }
     }
 
@@ -162,19 +163,6 @@ namespace TBS
             return Self + " | " + Allies + " | " + Enemies + " | " + Dead + " | " + MapCells;
         }
     }
-
-    public class Effect
-    {
-        public int Chance { get; set; }
-        public Characteristics Chars { get; set; }
-        public int Turns { get; set; }
-
-        public Effect()
-        {
-            Chars = new Characteristics();
-        }
-    }
-
 
     public enum ShemeTypes
     {

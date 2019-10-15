@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Xml.Serialization;
 
-namespace TBS
+namespace Common
 {
     public class Unit : BaseUnit
     {
