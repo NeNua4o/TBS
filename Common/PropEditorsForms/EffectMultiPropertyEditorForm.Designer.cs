@@ -55,6 +55,7 @@
             this.b_ok.TabIndex = 0;
             this.b_ok.Text = "ok";
             this.b_ok.UseVisualStyleBackColor = true;
+            this.b_ok.Click += new System.EventHandler(this.b_ok_Click);
             // 
             // EffectMultiPropertyEditorForm
             // 

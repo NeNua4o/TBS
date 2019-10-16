@@ -103,6 +103,7 @@
     <Compile Include="PropEditorsForms\EffectPropertyEditorForm.Designer.cs">
       <DependentUpon>EffectPropertyEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PropEditors\EffectMultiPropertyEditor.cs" />
     <Compile Include="PropEditors\EffectPropertyEditor.cs" />
     <Compile Include="PropEditors\ImagePropertyEditor.cs" />
     <Compile Include="StringUtils.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="TBSEventArgs\SelectedEffectChangedEventArgs.cs" />
     <Compile Include="TBSEventArgs\SelectedUnitChangedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeConverters\CollectionTypeConverter.cs" />
     <Compile Include="TypeConverters\EnumTypeConverter.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="RepositoryWorker.cs" />

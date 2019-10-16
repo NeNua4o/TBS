@@ -108,6 +108,8 @@ namespace Common
 
         [DisplayName("Id конечных эффектов")]
         [Description("Эффекты которые применятся к конечным целям")]
+        [Editor(typeof(EffectMultiPropertyEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(CollectionTypeConverter))]
         public int[] Effects { get; set; }
 
         public Act()

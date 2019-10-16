@@ -51,6 +51,7 @@
             this.cb_selected.TabIndex = 3;
             this.cb_selected.Text = "checkBox1";
             this.cb_selected.UseVisualStyleBackColor = true;
+            this.cb_selected.CheckedChanged += new System.EventHandler(this.cb_selected_CheckedChanged);
             // 
             // ItemMultiSelector
             // 
