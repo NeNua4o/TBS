@@ -1,4 +1,4 @@
-﻿using Common.PropEditors;
+﻿using Common.PropertyEditors;
 using Common.TypeConverters;
 using System;
 using System.Collections.Generic;
@@ -67,31 +67,43 @@ namespace Common
         public Characteristics Chars { get; set; }
 
         [DisplayName("Id основного действия")]
-        [DefaultValue(0)]
+        [DefaultValue(-1)]
+        [Editor(typeof(ActionSelector), typeof(UITypeEditor))]
         [XmlAttribute]
         public int MainActId { get; set; }
 
         [DisplayName("Id альтернативного действия")]
-        [DefaultValue(0)]
+        [DefaultValue(-1)]
+        [Editor(typeof(ActionSelector), typeof(UITypeEditor))]
         [XmlAttribute]
         public int SecondActId { get; set; }
 
         [DisplayName("Id навыков")]
-        public List<int> SkillsIds { get; set; }
+        [Editor(typeof(ActionMSelector), typeof(UITypeEditor))]
+        [TypeConverter(typeof(CollectionTypeConverter))]
+        public int[] SkillsIds { get; set; }
 
         [DisplayName("Id заклинаний")]
-        public List<int> SpellsIds { get; set; }
+        [Editor(typeof(ActionMSelector), typeof(UITypeEditor))]
+        [TypeConverter(typeof(CollectionTypeConverter))]
+        public int[] SpellsIds { get; set; }
 
         [DisplayName("Id пассивных навыков")]
-        public List<int> PassivesIds { get; set; }
+        [Editor(typeof(ActionMSelector), typeof(UITypeEditor))]
+        [TypeConverter(typeof(CollectionTypeConverter))]
+        public int[] PassivesIds { get; set; }
 
         public BaseUnit()
         {
             Name = "New BaseUnit";
+            MainActId = -1;
+            SecondActId = -1;
             Chars = new Characteristics();
+            /*
             SkillsIds = new List<int>();
             SpellsIds = new List<int>();
             PassivesIds = new List<int>();
+            */
         }
 
         public override string ToString()

@@ -28,42 +28,43 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.unitsPage = new System.Windows.Forms.TabPage();
             this.unitEditor = new Common.Controls.UnitEditor();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.actionsPage = new System.Windows.Forms.TabPage();
             this.actionEditor = new Common.Controls.ActionEditor();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.effectsPage = new System.Windows.Forms.TabPage();
+            this.effectEditor = new Common.Controls.EffectEditor();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.b_save = new System.Windows.Forms.Button();
-            this.effectEditor = new Common.Controls.EffectEditor();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.tabControl.SuspendLayout();
+            this.unitsPage.SuspendLayout();
+            this.actionsPage.SuspendLayout();
+            this.effectsPage.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(269, 465);
-            this.tabControl1.TabIndex = 0;
+            this.tabControl.Controls.Add(this.unitsPage);
+            this.tabControl.Controls.Add(this.actionsPage);
+            this.tabControl.Controls.Add(this.effectsPage);
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(269, 465);
+            this.tabControl.TabIndex = 0;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
-            // tabPage1
+            // unitsPage
             // 
-            this.tabPage1.Controls.Add(this.unitEditor);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(261, 439);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Юниты";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.unitsPage.Controls.Add(this.unitEditor);
+            this.unitsPage.Location = new System.Drawing.Point(4, 22);
+            this.unitsPage.Name = "unitsPage";
+            this.unitsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.unitsPage.Size = new System.Drawing.Size(261, 439);
+            this.unitsPage.TabIndex = 0;
+            this.unitsPage.Text = "Юниты";
+            this.unitsPage.UseVisualStyleBackColor = true;
             // 
             // unitEditor
             // 
@@ -73,16 +74,16 @@
             this.unitEditor.Size = new System.Drawing.Size(250, 427);
             this.unitEditor.TabIndex = 2;
             // 
-            // tabPage2
+            // actionsPage
             // 
-            this.tabPage2.Controls.Add(this.actionEditor);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(261, 439);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Действия";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.actionsPage.Controls.Add(this.actionEditor);
+            this.actionsPage.Location = new System.Drawing.Point(4, 22);
+            this.actionsPage.Name = "actionsPage";
+            this.actionsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.actionsPage.Size = new System.Drawing.Size(261, 439);
+            this.actionsPage.TabIndex = 1;
+            this.actionsPage.Text = "Действия";
+            this.actionsPage.UseVisualStyleBackColor = true;
             // 
             // actionEditor
             // 
@@ -91,16 +92,23 @@
             this.actionEditor.Size = new System.Drawing.Size(250, 397);
             this.actionEditor.TabIndex = 0;
             // 
-            // tabPage3
+            // effectsPage
             // 
-            this.tabPage3.Controls.Add(this.effectEditor);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(261, 439);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Эффекты";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.effectsPage.Controls.Add(this.effectEditor);
+            this.effectsPage.Location = new System.Drawing.Point(4, 22);
+            this.effectsPage.Name = "effectsPage";
+            this.effectsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.effectsPage.Size = new System.Drawing.Size(261, 439);
+            this.effectsPage.TabIndex = 2;
+            this.effectsPage.Text = "Эффекты";
+            this.effectsPage.UseVisualStyleBackColor = true;
+            // 
+            // effectEditor
+            // 
+            this.effectEditor.Location = new System.Drawing.Point(5, 6);
+            this.effectEditor.Name = "effectEditor";
+            this.effectEditor.Size = new System.Drawing.Size(250, 427);
+            this.effectEditor.TabIndex = 0;
             // 
             // propertyGrid
             // 
@@ -121,39 +129,32 @@
             this.b_save.UseVisualStyleBackColor = true;
             this.b_save.Click += new System.EventHandler(this.b_save_Click);
             // 
-            // effectEditor
-            // 
-            this.effectEditor.Location = new System.Drawing.Point(5, 6);
-            this.effectEditor.Name = "effectEditor";
-            this.effectEditor.Size = new System.Drawing.Size(250, 427);
-            this.effectEditor.TabIndex = 0;
-            // 
             // UnitEditoMn
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(803, 464);
             this.Controls.Add(this.b_save);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.propertyGrid);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "UnitEditoMn";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Editor";
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
+            this.unitsPage.ResumeLayout(false);
+            this.actionsPage.ResumeLayout(false);
+            this.effectsPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage unitsPage;
+        private System.Windows.Forms.TabPage actionsPage;
+        private System.Windows.Forms.TabPage effectsPage;
         private System.Windows.Forms.PropertyGrid propertyGrid;
         private Common.Controls.UnitEditor unitEditor;
         private System.Windows.Forms.Button b_save;

@@ -1,4 +1,4 @@
-﻿using Common.PropEditors;
+﻿using Common.PropertyEditors;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
@@ -9,6 +9,7 @@ namespace Common
     public class Effect
     {
         [DisplayName("Id")]
+        [ReadOnly(true)]
         [XmlAttribute]
         public int Id { get; set; }
 

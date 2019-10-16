@@ -10,6 +10,8 @@ namespace Common.Controls
 
         public event EventHandler SelectedEffectChanged;
 
+        public Effect Effect;
+
         public EffectEditor()
         {
             InitializeComponent();
@@ -47,9 +49,10 @@ namespace Common.Controls
 
         private void lb_units_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Effect = lb_effects.SelectedIndex == -1 ? null : (Effect)lb_effects.SelectedItem;
             SelectedEffectChanged?.Invoke(this, new SelectedEffectChangedEventArgs()
             {
-                Effect = lb_effects.SelectedIndex == -1 ? null : (Effect)lb_effects.SelectedItem,
+                Effect = this.Effect,
             });
         }
     }

@@ -10,6 +10,8 @@ namespace Common.Controls
 
         public event EventHandler SelectedUnitChanged;
 
+        public BaseUnit BaseUnit;
+
         public UnitEditor()
         {
             InitializeComponent();
@@ -47,9 +49,10 @@ namespace Common.Controls
 
         private void lb_units_SelectedIndexChanged(object sender, EventArgs e)
         {
+            BaseUnit = lb_units.SelectedIndex == -1 ? null : (BaseUnit)lb_units.SelectedItem;
             SelectedUnitChanged?.Invoke(this, new SelectedUnitChangedEventArgs()
             {
-                BaseUnit = lb_units.SelectedIndex == -1 ? null : (BaseUnit)lb_units.SelectedItem,
+                BaseUnit = this.BaseUnit,
             });
         }
     }

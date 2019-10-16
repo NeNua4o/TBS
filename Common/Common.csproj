@@ -91,21 +91,24 @@
       <DependentUpon>UnitEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Effect.cs" />
-    <Compile Include="PropEditorsForms\EffectMultiPropertyEditorForm.cs">
+    <Compile Include="Enums\SelectorTypes.cs" />
+    <Compile Include="PropEditorsForms\MultiSelectorEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PropEditorsForms\EffectMultiPropertyEditorForm.Designer.cs">
-      <DependentUpon>EffectMultiPropertyEditorForm.cs</DependentUpon>
+    <Compile Include="PropEditorsForms\MultiSelectorEditorForm.Designer.cs">
+      <DependentUpon>MultiSelectorEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PropEditorsForms\EffectPropertyEditorForm.cs">
+    <Compile Include="PropEditorsForms\SingleSelectorEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PropEditorsForms\EffectPropertyEditorForm.Designer.cs">
-      <DependentUpon>EffectPropertyEditorForm.cs</DependentUpon>
+    <Compile Include="PropEditorsForms\SingleSelectorEditorForm.Designer.cs">
+      <DependentUpon>SingleSelectorEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PropEditors\EffectMultiPropertyEditor.cs" />
-    <Compile Include="PropEditors\EffectPropertyEditor.cs" />
-    <Compile Include="PropEditors\ImagePropertyEditor.cs" />
+    <Compile Include="PropertyEditors\ActionMSelector.cs" />
+    <Compile Include="PropertyEditors\ActionSelector.cs" />
+    <Compile Include="PropertyEditors\EffectMSelector.cs" />
+    <Compile Include="PropertyEditors\EffectSelector.cs" />
+    <Compile Include="PropertyEditors\ImagePropertyEditor.cs" />
     <Compile Include="StringUtils.cs" />
     <Compile Include="TBSEventArgs\SelectedActionChangedEventArgs.cs" />
     <Compile Include="TBSEventArgs\SelectedEffectChangedEventArgs.cs" />
@@ -130,11 +133,11 @@
     <EmbeddedResource Include="Controls\UnitEditor.resx">
       <DependentUpon>UnitEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PropEditorsForms\EffectMultiPropertyEditorForm.resx">
-      <DependentUpon>EffectMultiPropertyEditorForm.cs</DependentUpon>
+    <EmbeddedResource Include="PropEditorsForms\MultiSelectorEditorForm.resx">
+      <DependentUpon>MultiSelectorEditorForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PropEditorsForms\EffectPropertyEditorForm.resx">
-      <DependentUpon>EffectPropertyEditorForm.cs</DependentUpon>
+    <EmbeddedResource Include="PropEditorsForms\SingleSelectorEditorForm.resx">
+      <DependentUpon>SingleSelectorEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

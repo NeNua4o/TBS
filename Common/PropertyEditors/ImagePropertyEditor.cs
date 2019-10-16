@@ -1,17 +1,12 @@
-﻿using Common.PropEditorsForms;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Common.PropEditors
+namespace Common.PropertyEditors
 {
-    public class EffectPropertyEditor : UITypeEditor
+    public class ImagePropertyEditor : UITypeEditor
     {
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
@@ -20,12 +15,14 @@ namespace Common.PropEditors
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            using (EffectPropertyEditorForm effPropEditorForm = new EffectPropertyEditorForm())
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                effPropEditorForm.Text = "Выберите эффект";
-                if (effPropEditorForm.ShowDialog() == DialogResult.OK)
+                openFileDialog.Filter = "Изображения | *.bmp;*.png;*.jpg;*.jpeg;*.ico";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    return effPropEditorForm.SelectedId;
+                    Image image = Image.FromFile(openFileDialog.FileName);
+                    image.Tag = StringUtils.GetRelativePath(Application.StartupPath, openFileDialog.FileName);
+                    return image;
                 }
             }
             return value;

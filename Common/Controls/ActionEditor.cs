@@ -10,6 +10,8 @@ namespace Common.Controls
 
         public event EventHandler SelectedActionChanged;
 
+        public Act Action;
+
         public ActionEditor()
         {
             InitializeComponent();
@@ -47,9 +49,10 @@ namespace Common.Controls
 
         private void lb_actions_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Action = lb_actions.SelectedIndex == -1 ? null : (Act)lb_actions.SelectedItem;
             SelectedActionChanged?.Invoke(this, new SelectedActionChangedEventArgs()
             {
-                Action = lb_actions.SelectedIndex == -1 ? null : (Act)lb_actions.SelectedItem,
+                Action = this.Action,
             });
         }
     }

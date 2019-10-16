@@ -31,6 +31,17 @@ namespace UnitEditor
             effectEditor.UpdateEffectList();
         }
 
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (tabControl.SelectedIndex)
+            {
+                case 0: propertyGrid.SelectedObject = unitEditor.BaseUnit; break;
+                case 1: propertyGrid.SelectedObject = actionEditor.Action; break;
+                case 2: propertyGrid.SelectedObject = effectEditor.Effect; break;
+                default: propertyGrid.SelectedObject = null; break;
+            }
+        }
+
         private void UnitEditor_SelectedUnitChanged(object sender, EventArgs e)
         {
             propertyGrid.SelectedObject = ((SelectedUnitChangedEventArgs)e).BaseUnit;
@@ -51,5 +62,7 @@ namespace UnitEditor
             _repWkr.SaveAll();
             MessageBox.Show("Готово", "Сохранение");
         }
+
+        
     }
 }

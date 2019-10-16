@@ -1,4 +1,4 @@
-﻿using Common.PropEditors;
+﻿using Common.PropertyEditors;
 using Common.TypeConverters;
 using System;
 using System.ComponentModel;
@@ -11,6 +11,7 @@ namespace Common
     public class Act
     {
         [DisplayName("Id")]
+        [ReadOnly(true)]
         [XmlAttribute]
         public int Id { get; set; }
 
@@ -40,7 +41,7 @@ namespace Common
 
         int _rad;
         [DisplayName("Радиус действия")]
-        [DefaultValue(1)]
+        [DefaultValue(0)]
         [XmlAttribute]
         public int Rad
         {
@@ -85,7 +86,7 @@ namespace Common
         [DisplayName("Id эффекта на пути")]
         [Description("Эффект который применится на линии атаки с учётом обозначенных целей наложения эффекта")]
         [DefaultValue(-1)]
-        [Editor(typeof(EffectPropertyEditor), typeof(UITypeEditor))]
+        [Editor(typeof(EffectSelector), typeof(UITypeEditor))]
         [XmlAttribute]
         public int PathEffect { get; set; }
 
@@ -108,14 +109,14 @@ namespace Common
 
         [DisplayName("Id конечных эффектов")]
         [Description("Эффекты которые применятся к конечным целям")]
-        [Editor(typeof(EffectMultiPropertyEditor), typeof(UITypeEditor))]
+        [Editor(typeof(EffectMSelector), typeof(UITypeEditor))]
         [TypeConverter(typeof(CollectionTypeConverter))]
         public int[] Effects { get; set; }
 
         public Act()
         {
             Name = "New Action";
-            _rad = 1;
+            _rad = 0;
             RadKoeffs = new float[] { 1 };
             Cost = new Characteristics();
             Targetting = new Targets();
