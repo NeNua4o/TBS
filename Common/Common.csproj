@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Act.cs" />
+    <Compile Include="Axial.cs" />
+    <Compile Include="BMap.cs" />
     <Compile Include="Controls\ActionEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -90,8 +92,11 @@
     <Compile Include="Controls\UnitEditor.Designer.cs">
       <DependentUpon>UnitEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cube.cs" />
     <Compile Include="Effect.cs" />
     <Compile Include="Enums\SelectorTypes.cs" />
+    <Compile Include="Extensions\IntExtensions.cs" />
+    <Compile Include="Hex.cs" />
     <Compile Include="PropEditorsForms\MultiSelectorEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>

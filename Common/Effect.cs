@@ -1,4 +1,5 @@
 ﻿using Common.PropertyEditors;
+using Common.TypeConverters;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
@@ -31,6 +32,12 @@ namespace Common
         [XmlAttribute]
         public string IconPath { get; set; }
 
+        [DisplayName("Источник")]
+        [DefaultValue(EffectTypes.Physical)]
+        [TypeConverter(typeof(EnumTypeConverter))]
+        [XmlAttribute]
+        public EffectTypes EffectType { get; set; }
+
         [DisplayName("Шанс наложения")]
         [Description("Шанс с которым применится эффект. Если эффект длительного действия и уже наложен на цель, то повторных проверок не происходит")]
         [DefaultValue(0)]
@@ -59,5 +66,13 @@ namespace Common
         {
             return Name + " | " + Chance + " | " + Turns;
         }
+    }
+
+    public enum EffectTypes
+    {
+        [Description("Физический")]
+        Physical,
+        [Description("Магический")]
+        Magical
     }
 }

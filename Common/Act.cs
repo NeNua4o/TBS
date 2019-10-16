@@ -97,6 +97,15 @@ namespace Common
         [XmlAttribute]
         public ShemeTypes ShemeType { get; set; }
 
+        [DisplayName("Считать схему от точки прицеливания")]
+        [Description(
+            "True - точкой отсчёта будет точка на которую навёл игрок. "
+            + "False - точкой отсчёта будет точка предшествующая той на которую навёл игрок в направлении противоположном направлению действия."
+            + "Работает если в типе распространения указана схема.")]
+        [DefaultValue(false)]
+        [XmlAttribute]
+        public bool CalcFromTarget { get; set; }
+
         [DisplayName("Схема распространения")]
         [Description("Работает если в типе распространения указана схема")]
         [DefaultValue(ShemeTypes.One)]
