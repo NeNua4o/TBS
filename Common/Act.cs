@@ -79,9 +79,10 @@ namespace Common
         public float[] RadKoeffs { get; set; }
 
         [DisplayName("Стоимость")]
-        [Description("Какие характеристики юнита уменьшатся после применения действия")]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        public Characteristics Cost { get; set; }
+        [Description("Какой эффект наложится на того кто использовал действие")]
+        [Editor(typeof(EffectSelector), typeof(UITypeEditor))]
+        [XmlAttribute]
+        public int UserEffectId { get; set; }
 
         [DisplayName("Id эффекта на пути")]
         [Description("Эффект который применится на линии атаки с учётом обозначенных целей наложения эффекта")]
@@ -127,7 +128,7 @@ namespace Common
             Name = "New Action";
             _rad = 0;
             RadKoeffs = new float[] { 1 };
-            Cost = new Characteristics();
+            UserEffectId = -1;
             Targetting = new Targets();
             AppliesOn = new Targets();
             PathEffect = -1;
