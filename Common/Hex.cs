@@ -25,9 +25,9 @@ namespace Common
         private void CalcCorners()
         {
             for (int i = 0; i < 7; i++) K[i] = CalcCorner(C, S, i);
-            for (int i = 0; i < 7; i++) K10[i] = CalcCorner(C, (float)(S - S * 0.1), i);
-            for (int i = 0; i < 7; i++) K20[i] = CalcCorner(C, (float)(S - S * 0.2), i);
-            for (int i = 0; i < 7; i++) K30[i] = CalcCorner(C, (float)(S - S * 0.3), i);
+            for (int i = 0; i < 7; i++) K10[i] = CalcCorner(C, (float)(S - S * 0.05), i);
+            for (int i = 0; i < 7; i++) K20[i] = CalcCorner(C, (float)(S - S * 0.1), i);
+            for (int i = 0; i < 7; i++) K30[i] = CalcCorner(C, (float)(S - S * 0.15), i);
         }
 
         public PointF CalcCorner(PointF center, float size, int corner)
