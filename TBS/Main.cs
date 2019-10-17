@@ -27,5 +27,10 @@ namespace TBS
             pb_field.Height = _map.Height;
             DrawMap();
         }
+
+        private void b_editArmies_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

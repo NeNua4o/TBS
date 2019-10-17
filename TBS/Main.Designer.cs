@@ -42,12 +42,13 @@
             this.b_editArmies.TabIndex = 0;
             this.b_editArmies.Text = "edit armies";
             this.b_editArmies.UseVisualStyleBackColor = true;
+            this.b_editArmies.Click += new System.EventHandler(this.b_editArmies_Click);
             // 
             // pb_field
             // 
-            this.pb_field.Location = new System.Drawing.Point(117, 102);
+            this.pb_field.Location = new System.Drawing.Point(93, 41);
             this.pb_field.Name = "pb_field";
-            this.pb_field.Size = new System.Drawing.Size(100, 50);
+            this.pb_field.Size = new System.Drawing.Size(370, 312);
             this.pb_field.TabIndex = 1;
             this.pb_field.TabStop = false;
             // 

@@ -68,6 +68,12 @@
     <Compile Include="Controls\ActionEditor.Designer.cs">
       <DependentUpon>ActionEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ArmyBrowser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ArmyBrowser.Designer.cs">
+      <DependentUpon>ArmyBrowser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EffectEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -96,7 +102,9 @@
     <Compile Include="Effect.cs" />
     <Compile Include="Enums\SelectorTypes.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
+    <Compile Include="Hero.cs" />
     <Compile Include="Hex.cs" />
+    <Compile Include="Pl.cs" />
     <Compile Include="PropEditorsForms\MultiSelectorEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +133,9 @@
     <Compile Include="RepositoryWorker.cs" />
     <EmbeddedResource Include="Controls\ActionEditor.resx">
       <DependentUpon>ActionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ArmyBrowser.resx">
+      <DependentUpon>ArmyBrowser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EffectEditor.resx">
       <DependentUpon>EffectEditor.cs</DependentUpon>

@@ -89,7 +89,7 @@ namespace Common
 
             Bitmap b = new Bitmap(Width, Height);
             Graphics g = Graphics.FromImage(b);
-            //g.FillRectangle(Brushes.White, new Rectangle(0, 0, b.Width, b.Height));
+            g.FillRectangle(Brushes.White, new Rectangle(0, 0, b.Width, b.Height));
             for (int r = 0; r < ArraySize; r++)
                 for (int c = 0; c < ArraySize; c++)
                     if (Cells[c, r] != null)

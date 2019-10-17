@@ -14,7 +14,17 @@ namespace Common
         public int BId = -1;
         public int HeroId = -1;
         public int TeamId = -1;
+        public Axial StartPos;
+        public Axial CurPos;
         public List<Effect> Effects = new List<Effect>();
+
+        public Unit(BaseUnit baseUnit, Axial start, int teamId) : base(baseUnit)
+        {
+            BId = baseUnit.Id;
+            TeamId = teamId;
+            StartPos = new Axial(start);
+            CurPos = new Axial(start);
+        }
     }
 
     public class BaseUnit
@@ -106,9 +116,26 @@ namespace Common
             */
         }
 
+        public BaseUnit(BaseUnit baseUnit)
+        {
+            Race        = baseUnit.Race;
+            Id          = baseUnit.Id;
+            Name        = baseUnit.Name;
+            Icon        = baseUnit.Icon;
+            IconPath    = baseUnit.IconPath;
+            Model       = baseUnit.Model;
+            ModelPath   = baseUnit.ModelPath;
+            Chars       = new Characteristics(baseUnit.Chars);
+            MainActId   = baseUnit.MainActId;
+            SecondActId = baseUnit.SecondActId;
+            SkillsIds   = new int[baseUnit.SkillsIds.Length];   Array.Copy(baseUnit.SkillsIds, SkillsIds, SkillsIds.Length);
+            SpellsIds   = new int[baseUnit.SpellsIds.Length];   Array.Copy(baseUnit.SpellsIds, SpellsIds, SpellsIds.Length);
+            PassivesIds = new int[baseUnit.PassivesIds.Length]; Array.Copy(baseUnit.PassivesIds, PassivesIds, PassivesIds.Length);
+        }
+
         public override string ToString()
         {
-            return Name;
+            return Race + " | " + Name + " | " + Id;
         }
     }
 
@@ -171,6 +198,21 @@ namespace Common
         public int MDefence { get; set; }
 
         public Characteristics() { }
+
+        public Characteristics(Characteristics chars)
+        {
+            Alive = chars.Alive;
+            HP = chars.HP;
+            MP = chars.MP;
+            Initiative = chars.Initiative;
+            Lane = chars.Lane;
+            MoveRad = chars.MoveRad;
+            MoveType = chars.MoveType;
+            PAttack = chars.PAttack;
+            PDefence = chars.PDefence;
+            MAttack = chars.MAttack;
+            MDefence = chars.MDefence;
+        }
 
         public override string ToString()
         {
