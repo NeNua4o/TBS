@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -39,7 +41,7 @@ namespace Common.Controls
 
         private void p_unit_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(Unit)))
+            if (e.Data.GetDataPresent(typeof(BaseUnit)))
             {
                 e.Effect = e.AllowedEffect;
             }
@@ -47,20 +49,20 @@ namespace Common.Controls
 
         private void p_unit_DragDrop(object sender, DragEventArgs e)
         {
-            /*
+            
             if (e.Effect == DragDropEffects.Copy)
             {
                 var snd = (Panel)sender;
                 var dragableUnit = (Unit)e.Data.GetData(typeof(Unit));
-                dragableUnit.S = GetFromPan(snd);
                 var oldUnit = GetUnitByTag(snd.Tag);
                 if (oldUnit == null)
                 {
-                    if (String.IsNullOrEmpty(pl.Hero.Name) || pl.Hero.Leader > pl.Units.Count)
+                    if (Pl.Units.Count < 7)
                     {
-                        dragableUnit.Ad = GetNewAd();
-                        pl.Units.Add(new Unit(dragableUnit));
-                        snd.BackgroundImage = dragableUnit.Icon;
+                        var newUnit = new Unit(dragableUnit, GetFromPan(snd), Pl.TeamId);
+                        newUnit.Id = GetNewGlobalId();
+                        Pl.Units.Add(newUnit);
+                        snd.BackgroundImage = newUnit.Icon;
                     }
                 }
                 else
@@ -92,7 +94,17 @@ namespace Common.Controls
                     snd.BackgroundImage = srcUnit.Icon;
                 }
             }
-            */
+            
+        }
+
+        private Axial GetFromPan(Panel pan)
+        {
+            var res = new Axial();
+            var rw = pan.Name.Split('_');
+            int.TryParse(rw[1], out res.Q);
+            int.TryParse(rw[2], out res.R);
+            return res;
+
         }
     }
 }

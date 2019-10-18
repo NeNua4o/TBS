@@ -59,7 +59,7 @@
             this.team1tab.Location = new System.Drawing.Point(4, 22);
             this.team1tab.Name = "team1tab";
             this.team1tab.Padding = new System.Windows.Forms.Padding(3);
-            this.team1tab.Size = new System.Drawing.Size(383, 333);
+            this.team1tab.Size = new System.Drawing.Size(287, 333);
             this.team1tab.TabIndex = 0;
             this.team1tab.Text = "Команда слева";
             this.team1tab.UseVisualStyleBackColor = true;
@@ -96,10 +96,13 @@
             // 
             this.lv_units.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lv_units.Location = new System.Drawing.Point(3, 3);
+            this.lv_units.MultiSelect = false;
             this.lv_units.Name = "lv_units";
             this.lv_units.Size = new System.Drawing.Size(295, 359);
             this.lv_units.TabIndex = 1;
             this.lv_units.UseCompatibleStateImageBehavior = false;
+            this.lv_units.SelectedIndexChanged += new System.EventHandler(this.lv_units_SelectedIndexChanged);
+            this.lv_units.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lv_units_MouseMove);
             // 
             // b_apply
             // 
@@ -114,6 +117,7 @@
             // 
             // armyBrowser1
             // 
+            this.armyBrowser1.AllowDrop = true;
             this.armyBrowser1.Location = new System.Drawing.Point(6, 6);
             this.armyBrowser1.Name = "armyBrowser1";
             this.armyBrowser1.Size = new System.Drawing.Size(275, 163);
@@ -121,6 +125,7 @@
             // 
             // armyBrowser2
             // 
+            this.armyBrowser2.AllowDrop = true;
             this.armyBrowser2.Location = new System.Drawing.Point(6, 6);
             this.armyBrowser2.Name = "armyBrowser2";
             this.armyBrowser2.Size = new System.Drawing.Size(275, 163);
