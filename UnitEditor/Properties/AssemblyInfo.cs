@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("UnitEditor")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ОАО КНГФ")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("UnitEditor")]
-[assembly: AssemblyCopyright("Copyright © ОАО КНГФ 2019")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Common")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ОАО КНГФ")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Common")]
-[assembly: AssemblyCopyright("Copyright © ОАО КНГФ 2019")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

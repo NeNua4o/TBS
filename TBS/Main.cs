@@ -30,7 +30,8 @@ namespace TBS
 
         private void b_editArmies_Click(object sender, EventArgs e)
         {
-
+            ArmyEditor ae = new ArmyEditor();
+            ae.ShowDialog();
         }
     }
 }

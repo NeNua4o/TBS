@@ -42,6 +42,7 @@
             // 
             // p_1_2
             // 
+            this.p_1_2.AllowDrop = true;
             this.p_1_2.BackColor = System.Drawing.Color.PeachPuff;
             this.p_1_2.Location = new System.Drawing.Point(0, 56);
             this.p_1_2.Name = "p_1_2";
@@ -50,6 +51,7 @@
             // 
             // p_1_3
             // 
+            this.p_1_3.AllowDrop = true;
             this.p_1_3.BackColor = System.Drawing.Color.PeachPuff;
             this.p_1_3.Location = new System.Drawing.Point(56, 56);
             this.p_1_3.Name = "p_1_3";
@@ -58,6 +60,7 @@
             // 
             // p_0_4
             // 
+            this.p_0_4.AllowDrop = true;
             this.p_0_4.BackColor = System.Drawing.Color.PeachPuff;
             this.p_0_4.Location = new System.Drawing.Point(87, 112);
             this.p_0_4.Name = "p_0_4";
@@ -66,6 +69,7 @@
             // 
             // p_0_5
             // 
+            this.p_0_5.AllowDrop = true;
             this.p_0_5.BackColor = System.Drawing.Color.PeachPuff;
             this.p_0_5.Location = new System.Drawing.Point(143, 112);
             this.p_0_5.Name = "p_0_5";
@@ -74,6 +78,7 @@
             // 
             // p_0_3
             // 
+            this.p_0_3.AllowDrop = true;
             this.p_0_3.BackColor = System.Drawing.Color.PeachPuff;
             this.p_0_3.Location = new System.Drawing.Point(29, 112);
             this.p_0_3.Name = "p_0_3";
@@ -82,6 +87,7 @@
             // 
             // p_1_4
             // 
+            this.p_1_4.AllowDrop = true;
             this.p_1_4.BackColor = System.Drawing.Color.PeachPuff;
             this.p_1_4.Location = new System.Drawing.Point(112, 56);
             this.p_1_4.Name = "p_1_4";
@@ -90,6 +96,7 @@
             // 
             // p_1_5
             // 
+            this.p_1_5.AllowDrop = true;
             this.p_1_5.BackColor = System.Drawing.Color.PeachPuff;
             this.p_1_5.Location = new System.Drawing.Point(168, 56);
             this.p_1_5.Name = "p_1_5";
@@ -98,6 +105,7 @@
             // 
             // p_1_6
             // 
+            this.p_1_6.AllowDrop = true;
             this.p_1_6.BackColor = System.Drawing.Color.PeachPuff;
             this.p_1_6.Location = new System.Drawing.Point(224, 56);
             this.p_1_6.Name = "p_1_6";
@@ -106,6 +114,7 @@
             // 
             // p_0_6
             // 
+            this.p_0_6.AllowDrop = true;
             this.p_0_6.BackColor = System.Drawing.Color.PeachPuff;
             this.p_0_6.Location = new System.Drawing.Point(199, 112);
             this.p_0_6.Name = "p_0_6";

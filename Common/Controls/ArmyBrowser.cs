@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Common.Controls
@@ -31,7 +25,7 @@ namespace Common.Controls
         public void Set(Pl pl)
         {
             if (pl == null) return;
-            this.Pl = pl;
+            Pl = pl;
             //p_hero.BackgroundImage = pl.Hero.Icon;
             for (int i = 0; i < pl.Units.Count; i++)
             {
@@ -41,6 +35,64 @@ namespace Common.Controls
                 if (p != null)
                     p.BackgroundImage = u.Icon;
             }
+        }
+
+        private void p_unit_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(Unit)))
+            {
+                e.Effect = e.AllowedEffect;
+            }
+        }
+
+        private void p_unit_DragDrop(object sender, DragEventArgs e)
+        {
+            /*
+            if (e.Effect == DragDropEffects.Copy)
+            {
+                var snd = (Panel)sender;
+                var dragableUnit = (Unit)e.Data.GetData(typeof(Unit));
+                dragableUnit.S = GetFromPan(snd);
+                var oldUnit = GetUnitByTag(snd.Tag);
+                if (oldUnit == null)
+                {
+                    if (String.IsNullOrEmpty(pl.Hero.Name) || pl.Hero.Leader > pl.Units.Count)
+                    {
+                        dragableUnit.Ad = GetNewAd();
+                        pl.Units.Add(new Unit(dragableUnit));
+                        snd.BackgroundImage = dragableUnit.Icon;
+                    }
+                }
+                else
+                {
+                    dragableUnit.Ad = oldUnit.Ad;
+                    var ind = pl.Units.IndexOf(oldUnit);
+                    pl.Units.Insert(ind, new Unit(dragableUnit));
+                    pl.Units.Remove(oldUnit);
+                    snd.BackgroundImage = dragableUnit.Icon;
+                }
+            }
+            if (e.Effect == DragDropEffects.Move)
+            {
+                var snd = (Panel)sender;
+                var srcUnit = (Unit)e.Data.GetData(typeof(Unit));
+                var srcPan = GetPanelByS(srcUnit);
+                var oldUnit = GetUnitByTag(snd.Tag);
+                if (oldUnit == null)
+                {
+                    srcUnit.S = GetFromPan(snd);
+                    srcPan.BackgroundImage = null;
+                    snd.BackgroundImage = srcUnit.Icon;
+                }
+                else
+                {
+                    oldUnit.S = srcUnit.S;
+                    srcUnit.S = GetFromPan(snd);
+                    srcPan.BackgroundImage = oldUnit.Icon;
+                    snd.BackgroundImage = srcUnit.Icon;
+                }
+            }
+            */
         }
     }
 }

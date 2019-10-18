@@ -28,7 +28,10 @@ namespace Common
         public static RepositoryWorker GetInstance()
         {
             if (_instance == null)
+            {
                 _instance = new RepositoryWorker();
+                _instance.LoadAll();
+            }
             return _instance;
         }
 
