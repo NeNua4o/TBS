@@ -11,12 +11,19 @@ namespace Common
 {
     public class Unit : BaseUnit
     {
+        [XmlAttribute]
         public int BId = -1;
+        [XmlIgnore]
+        public BaseUnit Bu;
+        [XmlAttribute]
         public int HeroId = -1;
+        [XmlAttribute]
         public int TeamId = -1;
         public Axial StartPos;
         public Axial CurPos;
         public List<Effect> Effects = new List<Effect>();
+
+        public Unit() { }
 
         public Unit(BaseUnit baseUnit, Axial start, int teamId) : base(baseUnit)
         {
@@ -118,6 +125,7 @@ namespace Common
 
         public BaseUnit(BaseUnit baseUnit)
         {
+            if (baseUnit == null) return;
             Race        = baseUnit.Race;
             Id          = baseUnit.Id;
             Name        = baseUnit.Name;
@@ -125,12 +133,12 @@ namespace Common
             IconPath    = baseUnit.IconPath;
             Model       = baseUnit.Model;
             ModelPath   = baseUnit.ModelPath;
-            Chars       = new Characteristics(baseUnit.Chars);
+            Chars = new Characteristics(baseUnit.Chars);
             MainActId   = baseUnit.MainActId;
             SecondActId = baseUnit.SecondActId;
-            SkillsIds   = new int[baseUnit.SkillsIds.Length];   Array.Copy(baseUnit.SkillsIds, SkillsIds, SkillsIds.Length);
-            SpellsIds   = new int[baseUnit.SpellsIds.Length];   Array.Copy(baseUnit.SpellsIds, SpellsIds, SpellsIds.Length);
-            PassivesIds = new int[baseUnit.PassivesIds.Length]; Array.Copy(baseUnit.PassivesIds, PassivesIds, PassivesIds.Length);
+            if (baseUnit.SkillsIds != null) { SkillsIds = new int[baseUnit.SkillsIds.Length]; Array.Copy(baseUnit.SkillsIds, SkillsIds, SkillsIds.Length); }
+            if (baseUnit.SpellsIds != null) { SpellsIds = new int[baseUnit.SpellsIds.Length]; Array.Copy(baseUnit.SpellsIds, SpellsIds, SpellsIds.Length); }
+            if (baseUnit.PassivesIds != null) { PassivesIds = new int[baseUnit.PassivesIds.Length]; Array.Copy(baseUnit.PassivesIds, PassivesIds, PassivesIds.Length); }
         }
 
         public override string ToString()
@@ -141,6 +149,8 @@ namespace Common
 
     public class Characteristics
     {
+        
+
         [DisplayName("Живой/Мертвый")]
         [DefaultValue(0)]
         [XmlAttribute]
@@ -165,6 +175,10 @@ namespace Common
         [DefaultValue(0)]
         [XmlAttribute]
         public float Lane { get; set; }
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public float LaneUp { get; set; }
 
         [DisplayName("Дальность перемещения")]
         [DefaultValue(0)]

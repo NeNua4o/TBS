@@ -6,13 +6,10 @@ namespace Common
     public class Pl
     {
         [XmlAttribute]
-        public int TeamId;
+        public int Id;
         [XmlAttribute]
-        public int HeroId;
-        [XmlIgnore]
+        public int TeamId;
         public Hero Hero;
-        public List<int> UnitsIds = new List<int>();
-        [XmlIgnore]
         public List<Unit> Units = new List<Unit>();
     }
 }

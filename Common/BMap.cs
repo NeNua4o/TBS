@@ -65,8 +65,8 @@ namespace Common
                                 HexOutRadius + row * HeightSpacing), HexOutRadius
                                 );
                         Cells[col, row].Hex = hex;
+                        Cells[col, row].ModelSize = new RectangleF(hex.C.X - (HexWidth * 0.9f) / 2f, hex.C.Y - (HexWidth * 0.9f) / 2f, HexWidth * 0.9f, HexWidth * 0.9f);
                         /*
-                        Cells[col, row].UiRec = new RectangleF(hex.C.X - 30, hex.C.Y - 30, 60, 60);
                         Cells[col, row].StRec = new RectangleF(hex.C.X - 15, hex.C.Y - 15, 30, 30);
                         */
                         neighs.Clear();
@@ -100,6 +100,16 @@ namespace Common
             b = null;
 
         }
+
+        public List<BMapCell> GetCellsWithUnits()
+        {
+            var tempResult = new List<BMapCell>();
+            for (int r = 0; r < ArraySize; r++)
+                for (int c = 0; c < ArraySize; c++)
+                    if (Cells[c, r] != null && Cells[c, r].Unit != null)
+                        tempResult.Add(Cells[c, r]);
+            return tempResult;
+        }
     }
 
     public class BMapCell
@@ -108,6 +118,8 @@ namespace Common
         public Cube Cube;
         public Hex Hex;
         public BMapCell[] Dirs = new BMapCell[6];
+        public Unit Unit;
+        public RectangleF ModelSize;
 
         public BMapCell() { }
 

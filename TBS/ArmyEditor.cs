@@ -1,6 +1,6 @@
 ﻿using Common;
 using Common.Repositories;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -10,7 +10,8 @@ namespace TBS
     {
         RepositoryWorker _repWorker;
         ImageList _icons = new ImageList();
-        public ArmyEditor()
+        List<Pl> _pls;
+        public ArmyEditor(List<Pl> pls)
         {
             InitializeComponent();
             _icons.ImageSize = new Size(50, 50);
@@ -25,15 +26,16 @@ namespace TBS
                 lv_units.Items.Add(item);
             }
             units = null;
+            _pls = pls;
+            armyBrowser1.Set(_pls[0]);
+            armyBrowser2.Set(_pls[1]);
         }
 
         private void lv_units_MouseMove(object sender, MouseEventArgs e)
         {
             if (_selectedUnitPos == -1) return;
-
             if (e.Button == MouseButtons.Left)
                 lv_units.DoDragDrop(_repWorker.BaseUnits[_selectedUnitPos], DragDropEffects.Copy);
-
         }
 
         int _selectedUnitPos=-1;
@@ -46,6 +48,12 @@ namespace TBS
                 return;
             }
             _selectedUnitPos = snd.SelectedIndices[0];
+        }
+
+        private void b_apply_Click(object sender, System.EventArgs e)
+        {
+            _repWorker.SaveAll();
+            Close();
         }
     }
 }

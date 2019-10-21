@@ -1,7 +1,6 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -27,24 +26,88 @@ namespace Common.Repositories
 
         public void LoadItems()
         {
-            throw new NotImplementedException();
+            _pls.Clear();
+            FileStream fs = null;
+            XmlSerializer s;
+            try
+            {
+                fs = new FileStream(_dataPath, FileMode.Open);
+                s = new XmlSerializer(typeof(List<Pl>));
+                _pls = (List<Pl>)s.Deserialize(fs);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, ex.Message);
+                return;
+            }
+            finally
+            {
+                s = null;
+                if (fs != null)
+                    fs.Dispose();
+            }
         }
 
         public void SaveItems()
         {
-            throw new NotImplementedException();
+            FileStream fs = null;
+            XmlSerializer s;
+            try
+            {
+                fs = new FileStream(_dataPath, FileMode.Create);
+                s = new XmlSerializer(typeof(List<Pl>));
+                s.Serialize(fs, _pls);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, ex.Message);
+                return;
+            }
+            finally
+            {
+                s = null;
+                if (fs != null)
+                    fs.Dispose();
+            }
+        }
+
+        public void UpdateUnits(List<BaseUnit> list)
+        {
+            for (int plc = 0; plc < _pls.Count; plc++)
+            {
+                for (int uc = 0; uc < _pls[plc].Units.Count; uc++)
+                {
+                    var u = _pls[plc].Units[uc];
+                    var bu = list.FirstOrDefault(unit => unit.Id == u.BId);
+                    if (bu != null)
+                    {
+                        u.Icon = bu.Icon;
+                        u.Model = bu.Model;
+                    }
+                }
+            }
         }
 
         public Pl CreateItem()
         {
-            throw new NotImplementedException();
+            var newPl = new Pl();
+            newPl.Id = GeneratePlId();
+            _pls.Add(newPl);
+            return newPl;
         }
 
         public void RemoveItem(Pl item)
         {
-            throw new NotImplementedException();
+            _pls.Remove(item);
         }
 
-        
+        private int GeneratePlId()
+        {
+            int id = 0;
+            int[] existedIds = _pls.Select(x => x.Id).ToArray();
+            while (existedIds.Contains(id)) { id++; }
+            existedIds = null;
+            return id;
+        }
     }
 }

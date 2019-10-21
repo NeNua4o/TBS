@@ -1,8 +1,13 @@
-﻿namespace Common
+﻿using System.Xml.Serialization;
+
+namespace Common
 {
     public class Axial
     {
-        public int Q = -1, R = -1;
+        [XmlAttribute]
+        public int Q = -1;
+        [XmlAttribute]
+        public int R = -1;
 
         public Axial() { }
 

@@ -30,12 +30,12 @@
         {
             this.teamsTabControl = new System.Windows.Forms.TabControl();
             this.team1tab = new System.Windows.Forms.TabPage();
+            this.armyBrowser1 = new Common.Controls.ArmyBrowser();
             this.team2tab = new System.Windows.Forms.TabPage();
+            this.armyBrowser2 = new Common.Controls.ArmyBrowser();
             this.tableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.lv_units = new System.Windows.Forms.ListView();
             this.b_apply = new System.Windows.Forms.Button();
-            this.armyBrowser1 = new Common.Controls.ArmyBrowser();
-            this.armyBrowser2 = new Common.Controls.ArmyBrowser();
             this.teamsTabControl.SuspendLayout();
             this.team1tab.SuspendLayout();
             this.team2tab.SuspendLayout();
@@ -64,6 +64,14 @@
             this.team1tab.Text = "Команда слева";
             this.team1tab.UseVisualStyleBackColor = true;
             // 
+            // armyBrowser1
+            // 
+            this.armyBrowser1.AllowDrop = true;
+            this.armyBrowser1.Location = new System.Drawing.Point(6, 6);
+            this.armyBrowser1.Name = "armyBrowser1";
+            this.armyBrowser1.Size = new System.Drawing.Size(275, 163);
+            this.armyBrowser1.TabIndex = 0;
+            // 
             // team2tab
             // 
             this.team2tab.Controls.Add(this.armyBrowser2);
@@ -74,6 +82,14 @@
             this.team2tab.TabIndex = 1;
             this.team2tab.Text = "Команда справа";
             this.team2tab.UseVisualStyleBackColor = true;
+            // 
+            // armyBrowser2
+            // 
+            this.armyBrowser2.AllowDrop = true;
+            this.armyBrowser2.Location = new System.Drawing.Point(6, 6);
+            this.armyBrowser2.Name = "armyBrowser2";
+            this.armyBrowser2.Size = new System.Drawing.Size(275, 163);
+            this.armyBrowser2.TabIndex = 0;
             // 
             // tableLayout
             // 
@@ -114,22 +130,7 @@
             this.b_apply.TabIndex = 2;
             this.b_apply.Text = "Применить";
             this.b_apply.UseVisualStyleBackColor = true;
-            // 
-            // armyBrowser1
-            // 
-            this.armyBrowser1.AllowDrop = true;
-            this.armyBrowser1.Location = new System.Drawing.Point(6, 6);
-            this.armyBrowser1.Name = "armyBrowser1";
-            this.armyBrowser1.Size = new System.Drawing.Size(275, 163);
-            this.armyBrowser1.TabIndex = 0;
-            // 
-            // armyBrowser2
-            // 
-            this.armyBrowser2.AllowDrop = true;
-            this.armyBrowser2.Location = new System.Drawing.Point(6, 6);
-            this.armyBrowser2.Name = "armyBrowser2";
-            this.armyBrowser2.Size = new System.Drawing.Size(275, 163);
-            this.armyBrowser2.TabIndex = 0;
+            this.b_apply.Click += new System.EventHandler(this.b_apply_Click);
             // 
             // ArmyEditor
             // 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -35,16 +36,14 @@ namespace Common.Controls
                 var s = u.StartPos.Q + "" + u.StartPos.R;
                 var p = pans.FirstOrDefault(x => (string)x.Tag == s);
                 if (p != null)
-                    p.BackgroundImage = u.Icon;
+                    p.BackgroundImage = new Bitmap(u.Icon, p.Size);
             }
         }
 
         private void p_unit_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(BaseUnit)))
-            {
-                e.Effect = e.AllowedEffect;
-            }
+            if (e.Data.GetDataPresent(typeof(BaseUnit))) { e.Effect = e.AllowedEffect; }
+            if (e.Data.GetDataPresent(typeof(Unit))) { e.Effect = e.AllowedEffect; }
         }
 
         private void p_unit_DragDrop(object sender, DragEventArgs e)
@@ -53,7 +52,7 @@ namespace Common.Controls
             if (e.Effect == DragDropEffects.Copy)
             {
                 var snd = (Panel)sender;
-                var dragableUnit = (Unit)e.Data.GetData(typeof(Unit));
+                var dragableUnit = (BaseUnit)e.Data.GetData(typeof(BaseUnit));
                 var oldUnit = GetUnitByTag(snd.Tag);
                 if (oldUnit == null)
                 {
@@ -62,7 +61,7 @@ namespace Common.Controls
                         var newUnit = new Unit(dragableUnit, GetFromPan(snd), Pl.TeamId);
                         newUnit.Id = GetNewGlobalId();
                         Pl.Units.Add(newUnit);
-                        snd.BackgroundImage = newUnit.Icon;
+                        snd.BackgroundImage = new Bitmap(newUnit.Icon, snd.Size);
                     }
                 }
                 else
@@ -71,7 +70,7 @@ namespace Common.Controls
                     var ind = Pl.Units.IndexOf(oldUnit);
                     Pl.Units.Insert(ind, new Unit(dragableUnit, oldUnit.StartPos, Pl.TeamId));
                     Pl.Units.Remove(oldUnit);
-                    snd.BackgroundImage = dragableUnit.Icon;
+                    snd.BackgroundImage = new Bitmap(dragableUnit.Icon, snd.Size);
                 }
             }
             if (e.Effect == DragDropEffects.Move)
@@ -84,17 +83,29 @@ namespace Common.Controls
                 {
                     srcUnit.StartPos = GetFromPan(snd);
                     srcPan.BackgroundImage = null;
-                    snd.BackgroundImage = srcUnit.Icon;
+                    snd.BackgroundImage = new Bitmap(srcUnit.Icon, snd.Size);
                 }
                 else
                 {
                     oldUnit.StartPos = srcUnit.StartPos;
                     srcUnit.StartPos = GetFromPan(snd);
-                    srcPan.BackgroundImage = oldUnit.Icon;
-                    snd.BackgroundImage = srcUnit.Icon;
+                    srcPan.BackgroundImage = new Bitmap(oldUnit.Icon, snd.Size);
+                    snd.BackgroundImage = new Bitmap(srcUnit.Icon, snd.Size);
                 }
             }
-            
+        }
+
+        private void p_unit_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                var snd = (Panel)sender;
+                var resUnit = GetUnitByTag(snd.Tag);
+                if (resUnit != null)
+                {
+                    this.DoDragDrop(resUnit, DragDropEffects.Move);
+                }
+            }
         }
 
         private Axial GetFromPan(Panel pan)

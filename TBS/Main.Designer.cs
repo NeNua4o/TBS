@@ -31,6 +31,7 @@
             this.b_editArmies = new System.Windows.Forms.Button();
             this.pb_field = new System.Windows.Forms.PictureBox();
             this.b_reset = new System.Windows.Forms.Button();
+            this.turnQueue = new Common.Controls.TurnQueue();
             ((System.ComponentModel.ISupportInitialize)(this.pb_field)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,7 +47,7 @@
             // 
             // pb_field
             // 
-            this.pb_field.Location = new System.Drawing.Point(93, 41);
+            this.pb_field.Location = new System.Drawing.Point(175, 41);
             this.pb_field.Name = "pb_field";
             this.pb_field.Size = new System.Drawing.Size(370, 312);
             this.pb_field.TabIndex = 1;
@@ -62,11 +63,21 @@
             this.b_reset.UseVisualStyleBackColor = true;
             this.b_reset.Click += new System.EventHandler(this.b_reset_Click);
             // 
+            // turnQueue
+            // 
+            this.turnQueue.BackColor = System.Drawing.Color.Gainsboro;
+            this.turnQueue.Location = new System.Drawing.Point(0, 359);
+            this.turnQueue.Name = "turnQueue";
+            this.turnQueue.Size = new System.Drawing.Size(1005, 85);
+            this.turnQueue.TabIndex = 3;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(516, 395);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(757, 468);
+            this.Controls.Add(this.turnQueue);
             this.Controls.Add(this.b_reset);
             this.Controls.Add(this.pb_field);
             this.Controls.Add(this.b_editArmies);
@@ -85,6 +96,7 @@
         private System.Windows.Forms.Button b_editArmies;
         private System.Windows.Forms.PictureBox pb_field;
         private System.Windows.Forms.Button b_reset;
+        private Common.Controls.TurnQueue turnQueue;
     }
 }
 
