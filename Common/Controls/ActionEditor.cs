@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Common.TBSEventArgs;
+using Common.Repositories;
 
 namespace Common.Controls
 {

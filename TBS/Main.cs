@@ -8,9 +8,13 @@ namespace TBS
     public partial class Main : Form
     {
         BMap _map;
+        Pl pl1, pl2;
+
         public Main()
         {
             InitializeComponent();
+            pl1 = new Pl() { TeamId = 1 };
+            pl2 = new Pl() { TeamId = 2 };
         }
 
         private void DrawMap()

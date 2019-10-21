@@ -67,10 +67,10 @@ namespace Common.Controls
                 }
                 else
                 {
-                    dragableUnit.Ad = oldUnit.Ad;
-                    var ind = pl.Units.IndexOf(oldUnit);
-                    pl.Units.Insert(ind, new Unit(dragableUnit));
-                    pl.Units.Remove(oldUnit);
+                    dragableUnit.Id = oldUnit.Id;
+                    var ind = Pl.Units.IndexOf(oldUnit);
+                    Pl.Units.Insert(ind, new Unit(dragableUnit, oldUnit.StartPos, Pl.TeamId));
+                    Pl.Units.Remove(oldUnit);
                     snd.BackgroundImage = dragableUnit.Icon;
                 }
             }
@@ -82,14 +82,14 @@ namespace Common.Controls
                 var oldUnit = GetUnitByTag(snd.Tag);
                 if (oldUnit == null)
                 {
-                    srcUnit.S = GetFromPan(snd);
+                    srcUnit.StartPos = GetFromPan(snd);
                     srcPan.BackgroundImage = null;
                     snd.BackgroundImage = srcUnit.Icon;
                 }
                 else
                 {
-                    oldUnit.S = srcUnit.S;
-                    srcUnit.S = GetFromPan(snd);
+                    oldUnit.StartPos = srcUnit.StartPos;
+                    srcUnit.StartPos = GetFromPan(snd);
                     srcPan.BackgroundImage = oldUnit.Icon;
                     snd.BackgroundImage = srcUnit.Icon;
                 }
@@ -105,6 +105,42 @@ namespace Common.Controls
             int.TryParse(rw[2], out res.R);
             return res;
 
+        }
+
+        private Unit GetUnitByTag(object rawTag)
+        {
+            var tag = (string)rawTag;
+            for (int i = 0; i < Pl.Units.Count; i++)
+            {
+                var u = Pl.Units[i];
+                int q = u.StartPos.Q;
+                int r = u.StartPos.R;
+                var s = q + "" + r;
+                if (s == tag)
+                    return Pl.Units[i];
+            }
+            return null;
+        }
+
+        private int GetNewGlobalId()
+        {
+            int k = 1;
+            while (Pl.Units.Any(unit=>unit.Id==k))
+            {
+                k++;
+            }
+            return k;
+        }
+
+        private Panel GetPanelByS(Unit u)
+        {
+            var tg = u.StartPos.Q + "" + u.StartPos.R;
+            for (int i = 0; i < pans.Count; i++)
+            {
+                if ((string)pans[i].Tag == tg)
+                    return pans[i];
+            }
+            return null;
         }
     }
 }

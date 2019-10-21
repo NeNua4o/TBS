@@ -48,6 +48,7 @@
             this.p_1_2.Name = "p_1_2";
             this.p_1_2.Size = new System.Drawing.Size(50, 50);
             this.p_1_2.TabIndex = 0;
+            this.p_1_2.DragDrop += new System.Windows.Forms.DragEventHandler(this.p_unit_DragDrop);
             this.p_1_2.DragEnter += new System.Windows.Forms.DragEventHandler(this.p_unit_DragEnter);
             // 
             // p_1_3
@@ -58,6 +59,7 @@
             this.p_1_3.Name = "p_1_3";
             this.p_1_3.Size = new System.Drawing.Size(50, 50);
             this.p_1_3.TabIndex = 1;
+            this.p_1_3.DragDrop += new System.Windows.Forms.DragEventHandler(this.p_unit_DragDrop);
             this.p_1_3.DragEnter += new System.Windows.Forms.DragEventHandler(this.p_unit_DragEnter);
             // 
             // p_0_4
@@ -68,6 +70,7 @@
             this.p_0_4.Name = "p_0_4";
             this.p_0_4.Size = new System.Drawing.Size(50, 50);
             this.p_0_4.TabIndex = 1;
+            this.p_0_4.DragDrop += new System.Windows.Forms.DragEventHandler(this.p_unit_DragDrop);
             this.p_0_4.DragEnter += new System.Windows.Forms.DragEventHandler(this.p_unit_DragEnter);
             // 
             // p_0_5
@@ -78,6 +81,7 @@
             this.p_0_5.Name = "p_0_5";
             this.p_0_5.Size = new System.Drawing.Size(50, 50);
             this.p_0_5.TabIndex = 2;
+            this.p_0_5.DragDrop += new System.Windows.Forms.DragEventHandler(this.p_unit_DragDrop);
             this.p_0_5.DragEnter += new System.Windows.Forms.DragEventHandler(this.p_unit_DragEnter);
             // 
             // p_0_3
@@ -88,6 +92,7 @@
             this.p_0_3.Name = "p_0_3";
             this.p_0_3.Size = new System.Drawing.Size(50, 50);
             this.p_0_3.TabIndex = 1;
+            this.p_0_3.DragDrop += new System.Windows.Forms.DragEventHandler(this.p_unit_DragDrop);
             this.p_0_3.DragEnter += new System.Windows.Forms.DragEventHandler(this.p_unit_DragEnter);
             // 
             // p_1_4
@@ -98,6 +103,7 @@
             this.p_1_4.Name = "p_1_4";
             this.p_1_4.Size = new System.Drawing.Size(50, 50);
             this.p_1_4.TabIndex = 1;
+            this.p_1_4.DragDrop += new System.Windows.Forms.DragEventHandler(this.p_unit_DragDrop);
             this.p_1_4.DragEnter += new System.Windows.Forms.DragEventHandler(this.p_unit_DragEnter);
             // 
             // p_1_5
@@ -108,6 +114,7 @@
             this.p_1_5.Name = "p_1_5";
             this.p_1_5.Size = new System.Drawing.Size(50, 50);
             this.p_1_5.TabIndex = 1;
+            this.p_1_5.DragDrop += new System.Windows.Forms.DragEventHandler(this.p_unit_DragDrop);
             this.p_1_5.DragEnter += new System.Windows.Forms.DragEventHandler(this.p_unit_DragEnter);
             // 
             // p_1_6
@@ -118,6 +125,7 @@
             this.p_1_6.Name = "p_1_6";
             this.p_1_6.Size = new System.Drawing.Size(50, 50);
             this.p_1_6.TabIndex = 3;
+            this.p_1_6.DragDrop += new System.Windows.Forms.DragEventHandler(this.p_unit_DragDrop);
             this.p_1_6.DragEnter += new System.Windows.Forms.DragEventHandler(this.p_unit_DragEnter);
             // 
             // p_0_6
@@ -128,6 +136,7 @@
             this.p_0_6.Name = "p_0_6";
             this.p_0_6.Size = new System.Drawing.Size(50, 50);
             this.p_0_6.TabIndex = 1;
+            this.p_0_6.DragDrop += new System.Windows.Forms.DragEventHandler(this.p_unit_DragDrop);
             this.p_0_6.DragEnter += new System.Windows.Forms.DragEventHandler(this.p_unit_DragEnter);
             // 
             // panel10

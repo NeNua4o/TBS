@@ -122,6 +122,11 @@
     <Compile Include="PropertyEditors\EffectMSelector.cs" />
     <Compile Include="PropertyEditors\EffectSelector.cs" />
     <Compile Include="PropertyEditors\ImagePropertyEditor.cs" />
+    <Compile Include="Repositories\ActionsRepository.cs" />
+    <Compile Include="Repositories\EffectsRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\BaseUnitsRepository.cs" />
+    <Compile Include="Repositories\PlsRepositories.cs" />
     <Compile Include="StringUtils.cs" />
     <Compile Include="TBSEventArgs\SelectedActionChangedEventArgs.cs" />
     <Compile Include="TBSEventArgs\SelectedEffectChangedEventArgs.cs" />
@@ -130,7 +135,7 @@
     <Compile Include="TypeConverters\CollectionTypeConverter.cs" />
     <Compile Include="TypeConverters\EnumTypeConverter.cs" />
     <Compile Include="Unit.cs" />
-    <Compile Include="RepositoryWorker.cs" />
+    <Compile Include="Repositories\RepositoryWorker.cs" />
     <EmbeddedResource Include="Controls\ActionEditor.resx">
       <DependentUpon>ActionEditor.cs</DependentUpon>
     </EmbeddedResource>

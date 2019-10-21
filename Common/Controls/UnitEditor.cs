@@ -1,4 +1,5 @@
-﻿using Common.TBSEventArgs;
+﻿using Common.Repositories;
+using Common.TBSEventArgs;
 using System;
 using System.Windows.Forms;
 
@@ -33,7 +34,7 @@ namespace Common.Controls
         private void b_add_Click(object sender, EventArgs e)
         {
             if (_worker == null) return;
-            BaseUnit unit = _worker.CreateUnit();
+            BaseUnit unit = _worker.CreateBaseUnit();
             lb_units.Items.Add(unit);
         }
 
@@ -43,7 +44,7 @@ namespace Common.Controls
             var snd = (ListBox)sender;
             if (snd.SelectedIndex < 0) return;
             var ind = snd.SelectedIndex;
-            _worker.DeleteUnit((BaseUnit)snd.SelectedItem);
+            _worker.DeleteBaseUnit((BaseUnit)snd.SelectedItem);
             snd.Items.RemoveAt(ind);
         }
 
