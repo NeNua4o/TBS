@@ -74,6 +74,12 @@
     <Compile Include="Controls\ArmyBrowser.Designer.cs">
       <DependentUpon>ArmyBrowser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CurrentUnit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CurrentUnit.Designer.cs">
+      <DependentUpon>CurrentUnit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EffectEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -153,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ArmyBrowser.resx">
       <DependentUpon>ArmyBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CurrentUnit.resx">
+      <DependentUpon>CurrentUnit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EffectEditor.resx">
       <DependentUpon>EffectEditor.cs</DependentUpon>

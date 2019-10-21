@@ -63,6 +63,7 @@ namespace TBS
             CalcTurns();
             DrawMap();
             turnQueue.Top = pb_field.Bottom + 5;
+            currentUnit.Top = pb_field.Bottom - currentUnit.Height;
         }
 
         private void GenerateMap()
@@ -75,18 +76,7 @@ namespace TBS
         private void PlaceAllUnits()
         {
             PlaceUnits(_pls[0]);
-            /*
-            if (_pls[0].Hero != null) pb_h1.Image = _pls[0].Hero.Icon;
-            pb_h1.Left = pb_field.Left;
-            pb_h1.Top = pb_field.Bottom - pb_h1.Height;
-            */
             PlaceUnits(_pls[1], true);
-            /*
-            if (pl2.Hero != null) pb_h2.Image = pl2.Hero.Icon;
-            pb_h2.Left = pb_field.Right - pb_h2.Width;
-            pb_h2.Top = pb_field.Top;
-            */
-            //TOS.Clear();
         }
 
         private void PlaceUnits(Pl pl, bool toRight = false)
@@ -118,7 +108,7 @@ namespace TBS
         private void CalcTurns()
         {
             var t = new List<Unit>();
-            t.AddRange(_pls[0].Units.Where(unit => unit.Chars.Alive==1));
+            t.AddRange(_pls[0].Units.Where(unit => unit.Chars.Alive == 1));
             t.AddRange(_pls[1].Units.Where(unit => unit.Chars.Alive == 1));
 
             t = t.OrderByDescending(x => x.Chars.Initiative).ThenByDescending(x => x.Chars.Lane).ToList();
@@ -153,6 +143,7 @@ namespace TBS
                 }
             }
             turnQueue.SetQueue(_turnQueueUnits);
+            currentUnit.Set(_turnQueueUnits[0]);
         }
     }
 }

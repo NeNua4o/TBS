@@ -31,6 +31,7 @@
             this.b_editArmies = new System.Windows.Forms.Button();
             this.pb_field = new System.Windows.Forms.PictureBox();
             this.b_reset = new System.Windows.Forms.Button();
+            this.currentUnit = new Common.Controls.CurrentUnit();
             this.turnQueue = new Common.Controls.TurnQueue();
             ((System.ComponentModel.ISupportInitialize)(this.pb_field)).BeginInit();
             this.SuspendLayout();
@@ -47,7 +48,7 @@
             // 
             // pb_field
             // 
-            this.pb_field.Location = new System.Drawing.Point(175, 41);
+            this.pb_field.Location = new System.Drawing.Point(170, 41);
             this.pb_field.Name = "pb_field";
             this.pb_field.Size = new System.Drawing.Size(370, 312);
             this.pb_field.TabIndex = 1;
@@ -63,6 +64,14 @@
             this.b_reset.UseVisualStyleBackColor = true;
             this.b_reset.Click += new System.EventHandler(this.b_reset_Click);
             // 
+            // currentUnit
+            // 
+            this.currentUnit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.currentUnit.Location = new System.Drawing.Point(10, 185);
+            this.currentUnit.Name = "currentUnit";
+            this.currentUnit.Size = new System.Drawing.Size(150, 120);
+            this.currentUnit.TabIndex = 4;
+            // 
             // turnQueue
             // 
             this.turnQueue.BackColor = System.Drawing.Color.Gainsboro;
@@ -77,6 +86,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(757, 468);
+            this.Controls.Add(this.currentUnit);
             this.Controls.Add(this.turnQueue);
             this.Controls.Add(this.b_reset);
             this.Controls.Add(this.pb_field);
@@ -97,6 +107,7 @@
         private System.Windows.Forms.PictureBox pb_field;
         private System.Windows.Forms.Button b_reset;
         private Common.Controls.TurnQueue turnQueue;
+        private Common.Controls.CurrentUnit currentUnit;
     }
 }
 

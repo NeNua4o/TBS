@@ -11,6 +11,7 @@ namespace Common.Repositories
         public List<Effect> Effects { get { return _effectRepository.GetItems(); } }
         public List<Pl> Pls { get { return _plRepository.GetItems(); } }
 
+        
 
         private static RepositoryWorker _instance;
         private BaseUnitsRepository _baseUnitRepository;
@@ -66,17 +67,31 @@ namespace Common.Repositories
 
         public Pl CreatePl() { return _plRepository.CreateItem(); }
 
-        public BaseUnit GetBaseUnit(int bId)
+        public void DeletePl(Pl pl) { _plRepository.RemoveItem(pl); }
+
+
+
+
+        public BaseUnit GetBaseUnit(int id)
         {
             var bUnits = _baseUnitRepository.GetItems();
             for (int i = 0; i < bUnits.Count; i++)
             {
-                if (bUnits[i].Id == bId)
+                if (bUnits[i].Id == id)
                     return bUnits[i];
             }
             return null;
         }
 
-        public void DeletePl(Pl pl) { _plRepository.RemoveItem(pl); }
+        internal Act GetAction(int id)
+        {
+            var actions = _actionRepository.GetItems();
+            for (int i = 0; i < actions.Count; i++)
+            {
+                if (actions[i].Id == id)
+                    return actions[i];
+            }
+            return null;
+        }
     }
 }
