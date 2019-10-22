@@ -84,6 +84,16 @@ namespace Common
         [XmlAttribute]
         public int UserEffectId { get; set; }
 
+        [DisplayName("Откат")]
+        [Description("Количество ходов до повторного использования")]
+        [DefaultValue(0)]
+        [XmlAttribute]
+        public int CoolTimeMax { get; set; }
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public int CoolTime;
+
         [DisplayName("Id эффекта на пути")]
         [Description("Эффект который применится на линии атаки с учётом обозначенных целей наложения эффекта")]
         [DefaultValue(-1)]

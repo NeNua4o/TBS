@@ -29,8 +29,10 @@
         private void InitializeComponent()
         {
             this.pb_icon = new System.Windows.Forms.PictureBox();
-            this.b_main = new System.Windows.Forms.Button();
-            this.b_sec = new System.Windows.Forms.Button();
+            this.actionMultiSelectorSkills = new Common.Controls.ActionMultiSelector();
+            this.actionSelectorSec = new Common.Controls.ActionSelector();
+            this.actionSelectorMain = new Common.Controls.ActionSelector();
+            this.actionMultiSelectorSpells = new Common.Controls.ActionMultiSelector();
             ((System.ComponentModel.ISupportInitialize)(this.pb_icon)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,39 +44,49 @@
             this.pb_icon.TabIndex = 0;
             this.pb_icon.TabStop = false;
             // 
-            // b_main
+            // actionMultiSelectorSkills
             // 
-            this.b_main.BackColor = System.Drawing.Color.Silver;
-            this.b_main.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.b_main.FlatAppearance.BorderSize = 0;
-            this.b_main.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.b_main.Location = new System.Drawing.Point(13, 0);
-            this.b_main.Margin = new System.Windows.Forms.Padding(0);
-            this.b_main.Name = "b_main";
-            this.b_main.Size = new System.Drawing.Size(25, 25);
-            this.b_main.TabIndex = 1;
-            this.b_main.UseVisualStyleBackColor = false;
+            this.actionMultiSelectorSkills.Location = new System.Drawing.Point(80, 0);
+            this.actionMultiSelectorSkills.Margin = new System.Windows.Forms.Padding(0);
+            this.actionMultiSelectorSkills.Name = "actionMultiSelectorSkills";
+            this.actionMultiSelectorSkills.Size = new System.Drawing.Size(25, 25);
+            this.actionMultiSelectorSkills.TabIndex = 7;
             // 
-            // b_sec
+            // actionSelectorSec
             // 
-            this.b_sec.BackColor = System.Drawing.Color.Silver;
-            this.b_sec.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.b_sec.FlatAppearance.BorderSize = 0;
-            this.b_sec.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.b_sec.Location = new System.Drawing.Point(50, 0);
-            this.b_sec.Margin = new System.Windows.Forms.Padding(0);
-            this.b_sec.Name = "b_sec";
-            this.b_sec.Size = new System.Drawing.Size(25, 25);
-            this.b_sec.TabIndex = 2;
-            this.b_sec.UseVisualStyleBackColor = false;
+            this.actionSelectorSec.BackColor = System.Drawing.Color.LemonChiffon;
+            this.actionSelectorSec.Location = new System.Drawing.Point(45, 0);
+            this.actionSelectorSec.Margin = new System.Windows.Forms.Padding(0);
+            this.actionSelectorSec.Name = "actionSelectorSec";
+            this.actionSelectorSec.Size = new System.Drawing.Size(25, 25);
+            this.actionSelectorSec.TabIndex = 6;
+            // 
+            // actionSelectorMain
+            // 
+            this.actionSelectorMain.BackColor = System.Drawing.Color.LemonChiffon;
+            this.actionSelectorMain.Location = new System.Drawing.Point(10, 0);
+            this.actionSelectorMain.Margin = new System.Windows.Forms.Padding(0);
+            this.actionSelectorMain.Name = "actionSelectorMain";
+            this.actionSelectorMain.Size = new System.Drawing.Size(25, 25);
+            this.actionSelectorMain.TabIndex = 5;
+            // 
+            // actionMultiSelectorSpells
+            // 
+            this.actionMultiSelectorSpells.Location = new System.Drawing.Point(115, 0);
+            this.actionMultiSelectorSpells.Margin = new System.Windows.Forms.Padding(0);
+            this.actionMultiSelectorSpells.Name = "actionMultiSelectorSpells";
+            this.actionMultiSelectorSpells.Size = new System.Drawing.Size(25, 25);
+            this.actionMultiSelectorSpells.TabIndex = 8;
             // 
             // CurrentUnit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.Controls.Add(this.b_sec);
-            this.Controls.Add(this.b_main);
+            this.Controls.Add(this.actionMultiSelectorSpells);
+            this.Controls.Add(this.actionMultiSelectorSkills);
+            this.Controls.Add(this.actionSelectorSec);
+            this.Controls.Add(this.actionSelectorMain);
             this.Controls.Add(this.pb_icon);
             this.Name = "CurrentUnit";
             this.Size = new System.Drawing.Size(150, 120);
@@ -86,7 +98,9 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pb_icon;
-        private System.Windows.Forms.Button b_main;
-        private System.Windows.Forms.Button b_sec;
+        private ActionSelector actionSelectorMain;
+        private ActionSelector actionSelectorSec;
+        private ActionMultiSelector actionMultiSelectorSkills;
+        private ActionMultiSelector actionMultiSelectorSpells;
     }
 }

@@ -68,6 +68,18 @@
     <Compile Include="Controls\ActionEditor.Designer.cs">
       <DependentUpon>ActionEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ActionMultiSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ActionMultiSelector.Designer.cs">
+      <DependentUpon>ActionMultiSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ActionSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ActionSelector.Designer.cs">
+      <DependentUpon>ActionSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ArmyBrowser.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -156,6 +168,12 @@
     <Compile Include="Repositories\RepositoryWorker.cs" />
     <EmbeddedResource Include="Controls\ActionEditor.resx">
       <DependentUpon>ActionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ActionMultiSelector.resx">
+      <DependentUpon>ActionMultiSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ActionSelector.resx">
+      <DependentUpon>ActionSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ArmyBrowser.resx">
       <DependentUpon>ArmyBrowser.cs</DependentUpon>
