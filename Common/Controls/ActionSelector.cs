@@ -27,6 +27,12 @@ namespace Common.Controls
             if (_bArea == null) _bArea = new RectangleF(0, 0, b_action.Width, b_action.Height);
         }
 
+        public void Init(string fileName)
+        {
+            var b = new Bitmap(fileName);
+            b_action.BackgroundImage = new Bitmap(b, b_action.Size);
+        }
+
         public void Set(Act action)
         {
             if (action == null) return;

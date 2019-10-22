@@ -29,11 +29,13 @@
         private void InitializeComponent()
         {
             this.pb_icon = new System.Windows.Forms.PictureBox();
-            this.actionMultiSelectorSkills = new Common.Controls.ActionMultiSelector();
+            this.pb_curAct = new System.Windows.Forms.PictureBox();
             this.actionSelectorSec = new Common.Controls.ActionSelector();
             this.actionSelectorMain = new Common.Controls.ActionSelector();
-            this.actionMultiSelectorSpells = new Common.Controls.ActionMultiSelector();
+            this.actionSelectorSkills = new Common.Controls.ActionSelector();
+            this.actionSelectorSpells = new Common.Controls.ActionSelector();
             ((System.ComponentModel.ISupportInitialize)(this.pb_icon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_curAct)).BeginInit();
             this.SuspendLayout();
             // 
             // pb_icon
@@ -44,13 +46,13 @@
             this.pb_icon.TabIndex = 0;
             this.pb_icon.TabStop = false;
             // 
-            // actionMultiSelectorSkills
+            // pb_curAct
             // 
-            this.actionMultiSelectorSkills.Location = new System.Drawing.Point(80, 0);
-            this.actionMultiSelectorSkills.Margin = new System.Windows.Forms.Padding(0);
-            this.actionMultiSelectorSkills.Name = "actionMultiSelectorSkills";
-            this.actionMultiSelectorSkills.Size = new System.Drawing.Size(25, 25);
-            this.actionMultiSelectorSkills.TabIndex = 7;
+            this.pb_curAct.Location = new System.Drawing.Point(0, 37);
+            this.pb_curAct.Name = "pb_curAct";
+            this.pb_curAct.Size = new System.Drawing.Size(30, 30);
+            this.pb_curAct.TabIndex = 9;
+            this.pb_curAct.TabStop = false;
             // 
             // actionSelectorSec
             // 
@@ -70,27 +72,39 @@
             this.actionSelectorMain.Size = new System.Drawing.Size(25, 25);
             this.actionSelectorMain.TabIndex = 5;
             // 
-            // actionMultiSelectorSpells
+            // actionSelectorSkills
             // 
-            this.actionMultiSelectorSpells.Location = new System.Drawing.Point(115, 0);
-            this.actionMultiSelectorSpells.Margin = new System.Windows.Forms.Padding(0);
-            this.actionMultiSelectorSpells.Name = "actionMultiSelectorSpells";
-            this.actionMultiSelectorSpells.Size = new System.Drawing.Size(25, 25);
-            this.actionMultiSelectorSpells.TabIndex = 8;
+            this.actionSelectorSkills.BackColor = System.Drawing.Color.LemonChiffon;
+            this.actionSelectorSkills.Location = new System.Drawing.Point(80, 0);
+            this.actionSelectorSkills.Margin = new System.Windows.Forms.Padding(0);
+            this.actionSelectorSkills.Name = "actionSelectorSkills";
+            this.actionSelectorSkills.Size = new System.Drawing.Size(25, 25);
+            this.actionSelectorSkills.TabIndex = 10;
+            // 
+            // actionSelectorSpells
+            // 
+            this.actionSelectorSpells.BackColor = System.Drawing.Color.LemonChiffon;
+            this.actionSelectorSpells.Location = new System.Drawing.Point(115, 0);
+            this.actionSelectorSpells.Margin = new System.Windows.Forms.Padding(0);
+            this.actionSelectorSpells.Name = "actionSelectorSpells";
+            this.actionSelectorSpells.Size = new System.Drawing.Size(25, 25);
+            this.actionSelectorSpells.TabIndex = 11;
             // 
             // CurrentUnit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.Controls.Add(this.actionMultiSelectorSpells);
-            this.Controls.Add(this.actionMultiSelectorSkills);
+            this.Controls.Add(this.actionSelectorSpells);
+            this.Controls.Add(this.actionSelectorSkills);
+            this.Controls.Add(this.pb_curAct);
             this.Controls.Add(this.actionSelectorSec);
             this.Controls.Add(this.actionSelectorMain);
             this.Controls.Add(this.pb_icon);
             this.Name = "CurrentUnit";
             this.Size = new System.Drawing.Size(150, 120);
             ((System.ComponentModel.ISupportInitialize)(this.pb_icon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_curAct)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -100,7 +114,8 @@
         private System.Windows.Forms.PictureBox pb_icon;
         private ActionSelector actionSelectorMain;
         private ActionSelector actionSelectorSec;
-        private ActionMultiSelector actionMultiSelectorSkills;
-        private ActionMultiSelector actionMultiSelectorSpells;
+        private System.Windows.Forms.PictureBox pb_curAct;
+        private ActionSelector actionSelectorSkills;
+        private ActionSelector actionSelectorSpells;
     }
 }

@@ -3,6 +3,7 @@
     public enum SelectorTypes
     {
         Actions,
-        Effects
+        Effects,
+        ActionsCustom
     }
 }

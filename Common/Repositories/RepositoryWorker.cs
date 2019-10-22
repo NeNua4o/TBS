@@ -10,14 +10,15 @@ namespace Common.Repositories
         public List<Act> Actions { get { return _actionRepository.GetItems(); } }
         public List<Effect> Effects { get { return _effectRepository.GetItems(); } }
         public List<Pl> Pls { get { return _plRepository.GetItems(); } }
+        public List<Team> Teams { get { return _teamRepository.GetItems(); } }
 
         
-
         private static RepositoryWorker _instance;
         private BaseUnitsRepository _baseUnitRepository;
         private ActionsRepository _actionRepository;
         private EffectsRepository _effectRepository;
-        private PlsRepositories _plRepository;
+        private PlsRepository _plRepository;
+        private TeamRepository _teamRepository;
 
         Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -26,7 +27,8 @@ namespace Common.Repositories
             _baseUnitRepository = new BaseUnitsRepository("BaseUnits.xml");
             _actionRepository = new ActionsRepository("Actions.xml");
             _effectRepository = new EffectsRepository("Effects.xml");
-            _plRepository = new PlsRepositories("Pls.xml");
+            _plRepository = new PlsRepository("Pls.xml");
+            _teamRepository = new TeamRepository();
         }
 
         public static RepositoryWorker GetInstance()
@@ -93,5 +95,17 @@ namespace Common.Repositories
             }
             return null;
         }
+
+        internal Team GetTeam(int id)
+        {
+            var teams = _teamRepository.GetItems();
+            for (int i = 0; i < teams.Count; i++)
+            {
+                if (teams[i].Id == id)
+                    return teams[i];
+            }
+            return null;
+        }
+
     }
 }

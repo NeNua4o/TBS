@@ -45,7 +45,7 @@
             // l_init
             // 
             this.l_init.AutoSize = true;
-            this.l_init.Location = new System.Drawing.Point(1, 0);
+            this.l_init.Location = new System.Drawing.Point(1, 1);
             this.l_init.Name = "l_init";
             this.l_init.Size = new System.Drawing.Size(63, 13);
             this.l_init.TabIndex = 1;

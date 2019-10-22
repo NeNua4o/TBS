@@ -38,6 +38,7 @@
             this.p_1_6 = new System.Windows.Forms.Panel();
             this.p_0_6 = new System.Windows.Forms.Panel();
             this.panel10 = new System.Windows.Forms.Panel();
+            this.cb_team = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // p_1_2
@@ -156,10 +157,21 @@
             this.panel10.Size = new System.Drawing.Size(50, 50);
             this.panel10.TabIndex = 2;
             // 
+            // cb_team
+            // 
+            this.cb_team.FormattingEnabled = true;
+            this.cb_team.Location = new System.Drawing.Point(0, 0);
+            this.cb_team.Name = "cb_team";
+            this.cb_team.Size = new System.Drawing.Size(106, 21);
+            this.cb_team.TabIndex = 4;
+            this.cb_team.Text = "team";
+            this.cb_team.SelectedIndexChanged += new System.EventHandler(this.cb_team_SelectedIndexChanged);
+            // 
             // ArmyBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cb_team);
             this.Controls.Add(this.panel10);
             this.Controls.Add(this.p_0_6);
             this.Controls.Add(this.p_1_6);
@@ -188,5 +200,6 @@
         private System.Windows.Forms.Panel p_1_6;
         private System.Windows.Forms.Panel p_0_6;
         private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.ComboBox cb_team;
     }
 }

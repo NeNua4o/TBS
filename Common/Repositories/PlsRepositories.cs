@@ -7,16 +7,21 @@ using System.Xml.Serialization;
 
 namespace Common.Repositories
 {
-    public class PlsRepositories : IRepository<Pl>
+    public class PlsRepository : IRepository<Pl>
     {
         string _dataPath;
         List<Pl> _pls = new List<Pl>();
 
         Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public PlsRepositories(string dataPath)
+        public PlsRepository(string dataPath)
         {
             _dataPath = dataPath;
+        }
+
+        ~PlsRepository()
+        {
+            _dataPath = null;
         }
 
         public List<Pl> GetItems()

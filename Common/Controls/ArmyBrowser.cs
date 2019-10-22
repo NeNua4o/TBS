@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -11,6 +12,7 @@ namespace Common.Controls
     {
         public Pl Pl;
         List<Panel> pans = new List<Panel>();
+        RepositoryWorker _repWkr; 
         public ArmyBrowser()
         {
             InitializeComponent();
@@ -23,6 +25,10 @@ namespace Common.Controls
             p_1_4.Tag = "14"; pans.Add(p_1_4);
             p_1_5.Tag = "15"; pans.Add(p_1_5);
             p_1_6.Tag = "16"; pans.Add(p_1_6);
+
+            _repWkr = RepositoryWorker.GetInstance();
+            for (int i = 0; i < _repWkr.Teams.Count; i++)
+                cb_team.Items.Add(_repWkr.Teams[i].Id);
         }
 
         public void Set(Pl pl)
@@ -38,6 +44,7 @@ namespace Common.Controls
                 if (p != null)
                     p.BackgroundImage = new Bitmap(u.Icon, p.Size);
             }
+            cb_team.SelectedItem = Pl.TeamId;
         }
 
         private void p_unit_DragEnter(object sender, DragEventArgs e)
@@ -60,17 +67,20 @@ namespace Common.Controls
                     {
                         var newUnit = new Unit(dragableUnit, GetFromPan(snd), Pl.TeamId);
                         newUnit.Id = GetNewGlobalId();
+                        newUnit.TeamId = Pl.TeamId;
                         Pl.Units.Add(newUnit);
                         snd.BackgroundImage = new Bitmap(newUnit.Icon, snd.Size);
                     }
                 }
                 else
                 {
-                    dragableUnit.Id = oldUnit.Id;
+                    var newUnit = new Unit(dragableUnit, GetFromPan(snd), Pl.TeamId);
+                    newUnit.Id = oldUnit.Id;
+                    newUnit.TeamId = Pl.TeamId;
                     var ind = Pl.Units.IndexOf(oldUnit);
-                    Pl.Units.Insert(ind, new Unit(dragableUnit, oldUnit.StartPos, Pl.TeamId));
+                    Pl.Units.Insert(ind, newUnit);
                     Pl.Units.Remove(oldUnit);
-                    snd.BackgroundImage = new Bitmap(dragableUnit.Icon, snd.Size);
+                    snd.BackgroundImage = new Bitmap(newUnit.Icon, snd.Size);
                 }
             }
             if (e.Effect == DragDropEffects.Move)
@@ -102,9 +112,7 @@ namespace Common.Controls
                 var snd = (Panel)sender;
                 var resUnit = GetUnitByTag(snd.Tag);
                 if (resUnit != null)
-                {
                     this.DoDragDrop(resUnit, DragDropEffects.Move);
-                }
             }
         }
 
@@ -115,7 +123,6 @@ namespace Common.Controls
             int.TryParse(rw[1], out res.Q);
             int.TryParse(rw[2], out res.R);
             return res;
-
         }
 
         private Unit GetUnitByTag(object rawTag)
@@ -152,6 +159,12 @@ namespace Common.Controls
                     return pans[i];
             }
             return null;
+        }
+
+        private void cb_team_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cb_team.SelectedIndex < 0) return;
+            Pl.TeamId = (int)cb_team.SelectedItem;
         }
     }
 }

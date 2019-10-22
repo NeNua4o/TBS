@@ -41,6 +41,29 @@ namespace Common.PropEditorsForms
             item = null;
         }
 
+        public SingleSelectorEditorForm(SelectorTypes selectorType, int[] ids)
+        {
+            InitializeComponent();
+            _repWkr = RepositoryWorker.GetInstance();
+            ItemSelector item;
+            flp_items.Controls.Clear();
+            switch (selectorType)
+            {
+                case SelectorTypes.ActionsCustom:
+                    for (int i = 0; i < ids.Length; i++)
+                    {
+                        var act = _repWkr.GetAction(ids[i]);
+                        item = new ItemSelector(act.Id, act.Icon, act.Name);
+                        item.Click += Item_Click;
+                        flp_items.Controls.Add(item);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            item = null;
+        }
+
         private void Item_Click(object sender, System.EventArgs e)
         {
             var snd = (ItemSelector)sender;
