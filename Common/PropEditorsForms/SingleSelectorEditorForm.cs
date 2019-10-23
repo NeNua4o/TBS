@@ -44,6 +44,8 @@ namespace Common.PropEditorsForms
         public SingleSelectorEditorForm(SelectorTypes selectorType, int[] ids)
         {
             InitializeComponent();
+            if (ids == null || ids.Length == 0)
+                return;
             _repWkr = RepositoryWorker.GetInstance();
             ItemSelector item;
             flp_items.Controls.Clear();

@@ -7,6 +7,7 @@ namespace Common
     {
         public PointF C;
         public PointF[] K = new PointF[7];
+        public PointF[] K1 = new PointF[7];
         public PointF[] K10 = new PointF[7];
         public PointF[] K20 = new PointF[7];
         public PointF[] K30 = new PointF[7];
@@ -25,6 +26,7 @@ namespace Common
         private void CalcCorners()
         {
             for (int i = 0; i < 7; i++) K[i] = CalcCorner(C, S, i);
+            for (int i = 0; i < 7; i++) K1[i] = CalcCorner(C, S - 1, i);
             for (int i = 0; i < 7; i++) K10[i] = CalcCorner(C, (float)(S - S * 0.05), i);
             for (int i = 0; i < 7; i++) K20[i] = CalcCorner(C, (float)(S - S * 0.1), i);
             for (int i = 0; i < 7; i++) K30[i] = CalcCorner(C, (float)(S - S * 0.15), i);

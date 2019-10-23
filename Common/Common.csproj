@@ -104,6 +104,12 @@
     <Compile Include="Controls\ItemSelector.Designer.cs">
       <DependentUpon>ItemSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TurnControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TurnControl.Designer.cs">
+      <DependentUpon>TurnControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TurnQueue.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -188,6 +194,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ItemSelector.resx">
       <DependentUpon>ItemSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TurnControl.resx">
+      <DependentUpon>TurnControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TurnQueue.resx">
       <DependentUpon>TurnQueue.cs</DependentUpon>

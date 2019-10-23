@@ -12,12 +12,19 @@ namespace Common.Repositories
 
         public TeamRepository()
         {
-            _teams.Add(new Team() { Id = 1, Color = Color.Blue });
-            _teams.Add(new Team() { Id = 2, Color = Color.Red });
-            _teams.Add(new Team() { Id = 3, Color = Color.Orange });
-            _teams.Add(new Team() { Id = 4, Color = Color.Green });
-            _teams.Add(new Team() { Id = 5, Color = Color.Violet });
-            _teams.Add(new Team() { Id = 6, Color = Color.Brown });
+            var alfa = 255;
+            var col = Color.FromArgb(alfa, Color.Blue);
+            _teams.Add(new Team() { Id = 1, Color = col, Pen = new Pen(col), Brush = new SolidBrush(col) });
+            col = Color.FromArgb(alfa, Color.Red);
+            _teams.Add(new Team() { Id = 2, Color = col, Pen = new Pen(col), Brush = new SolidBrush(col) });
+            col = Color.FromArgb(alfa, Color.Orange);
+            _teams.Add(new Team() { Id = 3, Color = col, Pen = new Pen(col), Brush = new SolidBrush(col) });
+            col = Color.FromArgb(alfa, Color.Green);
+            _teams.Add(new Team() { Id = 4, Color = col, Pen = new Pen(col), Brush = new SolidBrush(col) });
+            col = Color.FromArgb(alfa, Color.Violet);
+            _teams.Add(new Team() { Id = 5, Color = col, Pen = new Pen(col), Brush = new SolidBrush(col) });
+            col = Color.FromArgb(alfa, Color.Brown);
+            _teams.Add(new Team() { Id = 6, Color = col, Pen = new Pen(col), Brush = new SolidBrush(col) });
         }
 
         public List<Team> GetItems()

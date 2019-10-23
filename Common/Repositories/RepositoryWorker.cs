@@ -41,6 +41,8 @@ namespace Common.Repositories
             return _instance;
         }
 
+        
+
         public void LoadAll()
         {
             _effectRepository.LoadItems();
@@ -52,7 +54,7 @@ namespace Common.Repositories
 
         public void SaveAll()
         {
-            _effectRepository.LoadItems();
+            _effectRepository.SaveItems();
             _actionRepository.SaveItems();
             _baseUnitRepository.SaveItems();
             _plRepository.SaveItems();
@@ -85,7 +87,7 @@ namespace Common.Repositories
             return null;
         }
 
-        internal Act GetAction(int id)
+        public Act GetAction(int id)
         {
             var actions = _actionRepository.GetItems();
             for (int i = 0; i < actions.Count; i++)
@@ -96,7 +98,7 @@ namespace Common.Repositories
             return null;
         }
 
-        internal Team GetTeam(int id)
+        public Team GetTeam(int id)
         {
             var teams = _teamRepository.GetItems();
             for (int i = 0; i < teams.Count; i++)

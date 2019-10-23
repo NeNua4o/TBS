@@ -12,66 +12,81 @@ namespace Common.Controls
     public partial class CurrentUnit : UserControl
     {
         RepositoryWorker _repWkr;
-        
+        Unit _unit;
+        bool _iconsSetted;
+
         public int ActionId = -1;
         public event EventHandler ActionChanged;
+        
 
         public CurrentUnit()
         {
             InitializeComponent();
             _repWkr = RepositoryWorker.GetInstance();
-            actionSelectorSkills.Init("Icons/z_skl.png");
-            actionSelectorSpells.Init("Icons/z_mag.png");
-
             actionSelectorMain.ActionChanged += ActionSelector_ActionChanged;
             actionSelectorSec.ActionChanged += ActionSelector_ActionChanged;
+        }
+        
+        public void Set(Unit unit)
+        {
+            if (!_iconsSetted)
+            {
+                actionSelectorSkills.Init("Icons/z_skl.png");
+                actionSelectorSpells.Init("Icons/z_mag.png");
+                _iconsSetted = true;
+            }
 
-            actionSelectorSkills.Click += ActionSelectorSkills_Click;
+            _unit = unit;
+            pb_icon.Image = new Bitmap(unit.Icon, pb_icon.Size);
+
+            Act act = _repWkr.GetAction(unit.MainActId);
+            actionSelectorMain.Set(act);
+
+            SetCurrentAction(act);
+
+            act = _repWkr.GetAction(unit.SecondActId);
+            actionSelectorSec.Set(act);
         }
 
-        private void ActionSelectorSkills_Click(object sender, EventArgs e)
+        private void SetCurrentAction(int id)
         {
-            Debug.WriteLine("click");
-            using (SingleSelectorEditorForm actionSelectorForm = new SingleSelectorEditorForm(SelectorTypes.ActionsCustom, _unit.SkillsIds))
+            SetCurrentAction(_repWkr.GetAction(id));
+        }
+
+        private void SetCurrentAction(Act act)
+        {
+            if (act != null)
             {
-                actionSelectorForm.Text = "Выберите навык";
-                if (actionSelectorForm.ShowDialog() == DialogResult.OK)
-                {
-                    ActionId = actionSelectorForm.SelectedId;
-                    ActionChanged?.Invoke(this, null);
-                }
+                pb_curAct.Image = new Bitmap(act.Icon, pb_curAct.Size);
+                ActionId = act.Id;
+                ActionChanged?.Invoke(this, null);
             }
         }
 
         private void ActionSelector_ActionChanged(object sender, EventArgs e)
         {
             var snd = (ActionSelector)sender;
-            Act act = _repWkr.GetAction(snd.ActionId);
-            if (act != null)
-            {
-                pb_curAct.Image = new Bitmap(act.Icon, pb_curAct.Size);
-                ActionId = act.Id;
-                ActionChanged?.Invoke(this, null);
-            }
+            SetCurrentAction(snd.ActionId);
         }
 
-        Unit _unit;
-        public void Set(Unit unit)
+        private void ActionSelectorSkills_Click(object sender, EventArgs e)
         {
-            _unit = unit;
-            pb_icon.Image = new Bitmap(unit.Icon, pb_icon.Size);
-            Act act = _repWkr.GetAction(unit.MainActId);
-            actionSelectorMain.Set(act);
-            if (act != null)
+            using (SingleSelectorEditorForm actionSelectorForm = new SingleSelectorEditorForm(SelectorTypes.ActionsCustom, _unit.SkillsIds))
             {
-                pb_curAct.Image = new Bitmap(act.Icon, pb_curAct.Size);
-                ActionId = act.Id;
-                ActionChanged?.Invoke(this, null);
+                actionSelectorForm.Text = "Выберите навык";
+                if (actionSelectorForm.ShowDialog() == DialogResult.OK)
+                    SetCurrentAction(actionSelectorForm.SelectedId);
             }
-            act = _repWkr.GetAction(unit.SecondActId);
-            actionSelectorSec.Set(act);
         }
 
-        
+        private void actionSelectorSpells_Click(object sender, EventArgs e)
+        {
+            using (SingleSelectorEditorForm actionSelectorForm = new SingleSelectorEditorForm(SelectorTypes.ActionsCustom, _unit.SpellsIds))
+            {
+                actionSelectorForm.Text = "Выберите заклинание";
+                if (actionSelectorForm.ShowDialog() == DialogResult.OK)
+                    SetCurrentAction(actionSelectorForm.SelectedId);
+            }
+        }
     }
 }

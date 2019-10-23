@@ -6,5 +6,7 @@ namespace Common
     {
         public int Id;
         public Color Color;
+        public Pen Pen;
+        public Brush Brush;
     }
 }

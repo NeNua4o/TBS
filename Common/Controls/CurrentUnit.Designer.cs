@@ -30,10 +30,10 @@
         {
             this.pb_icon = new System.Windows.Forms.PictureBox();
             this.pb_curAct = new System.Windows.Forms.PictureBox();
+            this.actionSelectorSpells = new Common.Controls.ActionSelector();
+            this.actionSelectorSkills = new Common.Controls.ActionSelector();
             this.actionSelectorSec = new Common.Controls.ActionSelector();
             this.actionSelectorMain = new Common.Controls.ActionSelector();
-            this.actionSelectorSkills = new Common.Controls.ActionSelector();
-            this.actionSelectorSpells = new Common.Controls.ActionSelector();
             ((System.ComponentModel.ISupportInitialize)(this.pb_icon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_curAct)).BeginInit();
             this.SuspendLayout();
@@ -54,6 +54,26 @@
             this.pb_curAct.TabIndex = 9;
             this.pb_curAct.TabStop = false;
             // 
+            // actionSelectorSpells
+            // 
+            this.actionSelectorSpells.BackColor = System.Drawing.Color.LemonChiffon;
+            this.actionSelectorSpells.Location = new System.Drawing.Point(115, 0);
+            this.actionSelectorSpells.Margin = new System.Windows.Forms.Padding(0);
+            this.actionSelectorSpells.Name = "actionSelectorSpells";
+            this.actionSelectorSpells.Size = new System.Drawing.Size(25, 25);
+            this.actionSelectorSpells.TabIndex = 11;
+            this.actionSelectorSpells.Click += new System.EventHandler(this.actionSelectorSpells_Click);
+            // 
+            // actionSelectorSkills
+            // 
+            this.actionSelectorSkills.BackColor = System.Drawing.Color.LemonChiffon;
+            this.actionSelectorSkills.Location = new System.Drawing.Point(80, 0);
+            this.actionSelectorSkills.Margin = new System.Windows.Forms.Padding(0);
+            this.actionSelectorSkills.Name = "actionSelectorSkills";
+            this.actionSelectorSkills.Size = new System.Drawing.Size(25, 25);
+            this.actionSelectorSkills.TabIndex = 10;
+            this.actionSelectorSkills.Click += new System.EventHandler(this.ActionSelectorSkills_Click);
+            // 
             // actionSelectorSec
             // 
             this.actionSelectorSec.BackColor = System.Drawing.Color.LemonChiffon;
@@ -71,24 +91,6 @@
             this.actionSelectorMain.Name = "actionSelectorMain";
             this.actionSelectorMain.Size = new System.Drawing.Size(25, 25);
             this.actionSelectorMain.TabIndex = 5;
-            // 
-            // actionSelectorSkills
-            // 
-            this.actionSelectorSkills.BackColor = System.Drawing.Color.LemonChiffon;
-            this.actionSelectorSkills.Location = new System.Drawing.Point(80, 0);
-            this.actionSelectorSkills.Margin = new System.Windows.Forms.Padding(0);
-            this.actionSelectorSkills.Name = "actionSelectorSkills";
-            this.actionSelectorSkills.Size = new System.Drawing.Size(25, 25);
-            this.actionSelectorSkills.TabIndex = 10;
-            // 
-            // actionSelectorSpells
-            // 
-            this.actionSelectorSpells.BackColor = System.Drawing.Color.LemonChiffon;
-            this.actionSelectorSpells.Location = new System.Drawing.Point(115, 0);
-            this.actionSelectorSpells.Margin = new System.Windows.Forms.Padding(0);
-            this.actionSelectorSpells.Name = "actionSelectorSpells";
-            this.actionSelectorSpells.Size = new System.Drawing.Size(25, 25);
-            this.actionSelectorSpells.TabIndex = 11;
             // 
             // CurrentUnit
             // 

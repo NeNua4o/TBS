@@ -25,6 +25,7 @@ namespace TBS
             _pls = _repWkr.Pls;
             for (int i = _pls.Count; i < 2; i++)
                 _repWkr.CreatePl();
+            turnControl.Init();
         }
 
         private void b_editArmies_Click(object sender, EventArgs e)
@@ -43,6 +44,9 @@ namespace TBS
             for (int i = 0; i < cellsWithUnits.Count; i++)
             {
                 var c = cellsWithUnits[i];
+
+                g.DrawPolygon(_repWkr.GetTeam(c.Unit.TeamId).Pen, c.Hex.K1);
+
                 g.DrawImage(c.Unit.Icon, c.ModelSize, _srcModelSize, GraphicsUnit.Pixel);
                 g.DrawRectangle(Pens.Red, c.ModelSize.X, c.ModelSize.Y - 10, c.ModelSize.Width, 4);
                 var wd = c.Unit.Chars.HP / (float)c.Unit.Bu.Chars.HP * c.ModelSize.Width;
@@ -62,8 +66,16 @@ namespace TBS
             InitTurnOrder();
             CalcTurns();
             DrawMap();
-            turnQueue.Top = pb_field.Bottom + 5;
+
+
+            turnQueue.Left = 5;
+            currentUnit.Left = 5;
+            pb_field.Left = currentUnit.Right + 5;
+            turnControl.Left = pb_field.Right + 5;
+
             currentUnit.Top = pb_field.Bottom - currentUnit.Height;
+            turnControl.Top = pb_field.Bottom - turnControl.Height;
+            turnQueue.Top = pb_field.Bottom + 5;
         }
 
         private void GenerateMap()

@@ -41,11 +41,9 @@ namespace Common.Controls
         private void b_del_Click(object sender, EventArgs e)
         {
             if (_worker == null) return;
-            var snd = (ListBox)sender;
-            if (snd.SelectedIndex < 0) return;
-            var ind = snd.SelectedIndex;
-            _worker.DeleteBaseUnit((BaseUnit)snd.SelectedItem);
-            snd.Items.RemoveAt(ind);
+            if (lb_units.SelectedIndex < 0) return;
+            _worker.DeleteBaseUnit((BaseUnit)lb_units.SelectedItem);
+            lb_units.Items.RemoveAt(lb_units.SelectedIndex);
         }
 
         private void lb_units_SelectedIndexChanged(object sender, EventArgs e)

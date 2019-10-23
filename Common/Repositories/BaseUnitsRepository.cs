@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace Common.Repositories
@@ -17,7 +18,7 @@ namespace Common.Repositories
 
         public BaseUnitsRepository(string dataPath)
         {
-            _dataPath = dataPath;
+            _dataPath = Path.Combine(Application.StartupPath, dataPath);
         }
 
         ~BaseUnitsRepository()
