@@ -27,9 +27,15 @@ namespace Common.Controls
             b_action.BackgroundImage = new Bitmap(b, b_action.Size);
         }
 
+        protected Bitmap _NoSkill = new Bitmap(1, 1);
+
         public void Set(Act action)
         {
-            if (action == null) return;
+            if (action == null)
+            {
+                b_action.BackgroundImage = _NoSkill;
+                return;
+            }
             Bitmap b = new Bitmap(action.Icon, b_action.Size);
             Graphics g = Graphics.FromImage(b);
             if (action.CoolTime > 0)

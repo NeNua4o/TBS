@@ -1,10 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Common.Controls
 {
     public partial class TurnControl : UserControl
     {
+        public event EventHandler SkipClicked;
         public TurnControl()
         {
             InitializeComponent();
@@ -19,5 +21,7 @@ namespace Common.Controls
             b = new Bitmap("Icons/z_wait.png");
             b_wait.Image = new Bitmap(b, b_wait.Size);
         }
+
+        private void b_skip_Click(object sender, EventArgs e) { SkipClicked?.Invoke(null, null); }
     }
 }

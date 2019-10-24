@@ -43,6 +43,7 @@
             this.b_skip.Size = new System.Drawing.Size(30, 30);
             this.b_skip.TabIndex = 0;
             this.b_skip.UseVisualStyleBackColor = false;
+            this.b_skip.Click += new System.EventHandler(this.b_skip_Click);
             // 
             // b_def
             // 

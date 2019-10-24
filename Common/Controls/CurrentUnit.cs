@@ -12,7 +12,7 @@ namespace Common.Controls
     public partial class CurrentUnit : UserControl
     {
         RepositoryWorker _repWkr;
-        Unit _unit;
+        public Unit Unit;
         bool _iconsSetted;
 
         public int ActionId = -1;
@@ -26,17 +26,20 @@ namespace Common.Controls
             actionSelectorMain.ActionChanged += ActionSelector_ActionChanged;
             actionSelectorSec.ActionChanged += ActionSelector_ActionChanged;
         }
-        
+
         public void Set(Unit unit)
         {
-            if (!_iconsSetted)
+            Unit = unit;
+            if (unit == null)
             {
-                actionSelectorSkills.Init("Icons/z_skl.png");
-                actionSelectorSpells.Init("Icons/z_mag.png");
-                _iconsSetted = true;
+                SetCurrentAction(null);
+                return;
             }
 
-            _unit = unit;
+            actionSelectorSkills.Init("Icons/z_skl.png");
+            actionSelectorSpells.Init("Icons/z_mag.png");
+            _iconsSetted = true;
+
             pb_icon.Image = new Bitmap(unit.Icon, pb_icon.Size);
 
             Act act = _repWkr.GetAction(unit.MainActId);
@@ -46,6 +49,11 @@ namespace Common.Controls
 
             act = _repWkr.GetAction(unit.SecondActId);
             actionSelectorSec.Set(act);
+
+            if (unit.SkillsIds == null || unit.SkillsIds.Length == 0)
+                actionSelectorSkills.Set(null);
+            if (unit.SpellsIds == null || unit.SpellsIds.Length == 0)
+                actionSelectorSpells.Set(null);
         }
 
         private void SetCurrentAction(int id)
@@ -61,6 +69,11 @@ namespace Common.Controls
                 ActionId = act.Id;
                 ActionChanged?.Invoke(this, null);
             }
+            else
+            {
+                ActionId = -1;
+                ActionChanged?.Invoke(this, null);
+            }
         }
 
         private void ActionSelector_ActionChanged(object sender, EventArgs e)
@@ -71,21 +84,27 @@ namespace Common.Controls
 
         private void ActionSelectorSkills_Click(object sender, EventArgs e)
         {
-            using (SingleSelectorEditorForm actionSelectorForm = new SingleSelectorEditorForm(SelectorTypes.ActionsCustom, _unit.SkillsIds))
+            using (SingleSelectorEditorForm actionSelectorForm = new SingleSelectorEditorForm(SelectorTypes.ActionsCustom, Unit.SkillsIds))
             {
                 actionSelectorForm.Text = "Выберите навык";
                 if (actionSelectorForm.ShowDialog() == DialogResult.OK)
+                {
+                    actionSelectorSkills.Set(_repWkr.GetAction(actionSelectorForm.SelectedId));
                     SetCurrentAction(actionSelectorForm.SelectedId);
+                }
             }
         }
 
         private void actionSelectorSpells_Click(object sender, EventArgs e)
         {
-            using (SingleSelectorEditorForm actionSelectorForm = new SingleSelectorEditorForm(SelectorTypes.ActionsCustom, _unit.SpellsIds))
+            using (SingleSelectorEditorForm actionSelectorForm = new SingleSelectorEditorForm(SelectorTypes.ActionsCustom, Unit.SpellsIds))
             {
                 actionSelectorForm.Text = "Выберите заклинание";
                 if (actionSelectorForm.ShowDialog() == DialogResult.OK)
+                {
+                    actionSelectorSpells.Set(_repWkr.GetAction(actionSelectorForm.SelectedId));
                     SetCurrentAction(actionSelectorForm.SelectedId);
+                }
             }
         }
     }

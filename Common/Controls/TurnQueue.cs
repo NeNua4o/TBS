@@ -13,7 +13,9 @@ namespace Common.Controls
         public void SetQueue(List<Unit> units)
         {
             flp.Controls.Clear();
-            for (int i = 0; i < units.Count; i++)
+            // Выводим только 15 юнитов.
+            var end = units.Count > 15 ? 15 : units.Count;
+            for (int i = 0; i < end; i++)
             {
                 var newQueueItem = new TurnQueueItem(units[i]);
                 flp.Controls.Add(newQueueItem);

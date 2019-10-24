@@ -34,7 +34,9 @@
             this.currentUnit = new Common.Controls.CurrentUnit();
             this.turnQueue = new Common.Controls.TurnQueue();
             this.turnControl = new Common.Controls.TurnControl();
+            this.pb_debug = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pb_field)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_debug)).BeginInit();
             this.SuspendLayout();
             // 
             // b_editArmies
@@ -89,12 +91,22 @@
             this.turnControl.Size = new System.Drawing.Size(150, 155);
             this.turnControl.TabIndex = 5;
             // 
+            // pb_debug
+            // 
+            this.pb_debug.BackColor = System.Drawing.Color.White;
+            this.pb_debug.Location = new System.Drawing.Point(359, 21);
+            this.pb_debug.Name = "pb_debug";
+            this.pb_debug.Size = new System.Drawing.Size(211, 312);
+            this.pb_debug.TabIndex = 6;
+            this.pb_debug.TabStop = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(757, 468);
+            this.Controls.Add(this.pb_debug);
             this.Controls.Add(this.turnControl);
             this.Controls.Add(this.currentUnit);
             this.Controls.Add(this.turnQueue);
@@ -107,6 +119,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main";
             ((System.ComponentModel.ISupportInitialize)(this.pb_field)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_debug)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -119,6 +132,7 @@
         private Common.Controls.TurnQueue turnQueue;
         private Common.Controls.CurrentUnit currentUnit;
         private Common.Controls.TurnControl turnControl;
+        private System.Windows.Forms.PictureBox pb_debug;
     }
 }
 

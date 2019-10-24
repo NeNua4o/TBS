@@ -2,8 +2,11 @@
 using Common.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace TBS
@@ -26,6 +29,14 @@ namespace TBS
             for (int i = _pls.Count; i < 2; i++)
                 _repWkr.CreatePl();
             turnControl.Init();
+            turnControl.SkipClicked += TurnControl_SkipClicked;
+        }
+
+        private void TurnControl_SkipClicked(object sender, EventArgs e)
+        {
+            if (currentUnit.Unit == null) return;
+            currentUnit.Unit.Chars.Lane -= _baseLane;
+            CalcTurns();
         }
 
         private void b_editArmies_Click(object sender, EventArgs e)
@@ -59,6 +70,31 @@ namespace TBS
             pb_field.Image = b; g = null; b = null;
         }
 
+        Font _fnt = new Font("Calibri Light", 10, FontStyle.Regular); Brush _brush = Brushes.Black; StringFormat _drawFormat = new StringFormat();
+        private void DebugDraw(List<VUnit> vus, List<Unit> us)
+        {
+            const int vs = 15; int k = 0; var b = new Bitmap(pb_debug.Width, pb_debug.Height); var g = Graphics.FromImage(b);
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+
+            if (vus != null)
+                for (int i = 0; i < vus.Count; i++)
+                {
+                    var vu = vus[i];
+                    g.DrawString(String.Format("{0} {1} {2}", vu.Unit.Name, vu.Unit.TeamId, vu.Lane), _fnt, _brush, 0, k * vs, _drawFormat);
+                    g.FillRectangle(Brushes.Red, 100, k * vs, vu.Lane, 10);
+                    k++;
+                }
+
+            k++;
+            for (int i = 0; i < us.Count; i++)
+            {
+                var u = us[i];
+                g.DrawString(String.Format("{0} {1} {2}", u.Name, u.TeamId, u.Chars.Lane), _fnt, _brush, 0, k * vs, _drawFormat);
+                k++;
+            }
+            pb_debug.Image = b; g = null; b = null;
+        }
+
         private void b_reset_Click(object sender, EventArgs e)
         {
             GenerateMap();
@@ -66,7 +102,6 @@ namespace TBS
             InitTurnOrder();
             CalcTurns();
             DrawMap();
-
 
             turnQueue.Left = 5;
             currentUnit.Left = 5;
@@ -76,6 +111,8 @@ namespace TBS
             currentUnit.Top = pb_field.Bottom - currentUnit.Height;
             turnControl.Top = pb_field.Bottom - turnControl.Height;
             turnQueue.Top = pb_field.Bottom + 5;
+
+            pb_debug.Left = pb_field.Right + 10;
         }
 
         private void GenerateMap()
@@ -107,55 +144,85 @@ namespace TBS
         private void InitTurnOrder()
         {
             _turnQueueUnits.Clear();
+            currentUnit.Set(null);
             var t = new List<Unit>();
             t.AddRange(_pls[0].Units);
             t.AddRange(_pls[1].Units);
             for (int i = 0; i < t.Count; i++)
-            {
                 t[i].Chars.Lane = rng.Next(1, (int)(t[i].Chars.Initiative * 0.1)) / 100f;
-                t[i].Chars.LaneUp = t[i].Chars.Initiative / _baseLane;
+        }
+
+        public class VUnit
+        {
+            public Unit Unit;
+            public float Lane;
+            public int Initiative;
+            public float LaneUp;
+            public VUnit(Unit unit)
+            {
+                Unit = unit;
+                Initiative = unit.Chars.Initiative;
+                Lane = unit.Chars.Lane;
+                LaneUp = unit.Chars.LaneUp;
             }
         }
 
         private void CalcTurns()
         {
-            var t = new List<Unit>();
-            t.AddRange(_pls[0].Units.Where(unit => unit.Chars.Alive == 1));
-            t.AddRange(_pls[1].Units.Where(unit => unit.Chars.Alive == 1));
-
-            t = t.OrderByDescending(x => x.Chars.Initiative).ThenByDescending(x => x.Chars.Lane).ToList();
-            for (int i = 0; i < t.Count; i++)
+            var units = new List<Unit>();
+            units.AddRange(_pls[0].Units.Where(unit => unit.Chars.Alive == 1));
+            units.AddRange(_pls[1].Units.Where(unit => unit.Chars.Alive == 1));
+            
+            for (int i = 0; i < units.Count; i++)
             {
-                if (t[i].Chars.Lane >= _baseLane)
-                {
-                    if (_turnQueueUnits.Count < 15)
-                    {
-                        _turnQueueUnits.Add(t[i]);
-                        t[i].Chars.Lane -= _baseLane;
-                    }
-                    else break;
-                }
+                // TODO Учитывать эффекты.
+                units[i].Chars.LaneUp = units[i].Chars.Initiative / _baseLane;
             }
 
+            _turnQueueUnits.Clear();
+
+            // Заполним полосу хода для первого/первых юнитов.
+            while (_turnQueueUnits.Count == 0)
+            {
+                units = units.OrderByDescending(x => x.Chars.Lane).ThenByDescending(x => x.Chars.Initiative).ToList();
+                for (int i = 0; i < units.Count; i++)
+                {
+                    if (units[i].Chars.Lane >= _baseLane)
+                        _turnQueueUnits.Add(units[i]);
+                    units[i].Chars.Lane += units[i].Chars.LaneUp;
+                }
+            }
+            
+            currentUnit.Set(_turnQueueUnits[0]);
+            _turnQueueUnits.Clear();
+
+            var vunits = new List<VUnit>();
+            for (int i = 0; i < units.Count; i++)
+                vunits.Add(new VUnit(units[i]));
+
+            // При помощи виртуальных юнитов предсказываем порядок ходов.
             while (_turnQueueUnits.Count < 15)
             {
-                t = t.OrderByDescending(x => x.Chars.Initiative).ThenByDescending(x => x.Chars.Lane).ToList();
-                for (int i = 0; i < t.Count; i++)
+                vunits = vunits.OrderByDescending(x => x.Lane).ThenByDescending(x => x.Initiative).ToList();
+                for (int i = 0; i < vunits.Count; i++)
                 {
-                    t[i].Chars.Lane += t[i].Chars.LaneUp;
-                    if (t[i].Chars.Lane >= _baseLane)
+                    var vunit = vunits[i];
+                    if (vunit.Lane >= _baseLane)
                     {
                         if (_turnQueueUnits.Count < 15)
                         {
-                            _turnQueueUnits.Add(t[i]);
-                            t[i].Chars.Lane -= _baseLane;
+                            _turnQueueUnits.Add(vunit.Unit);
+                            vunit.Lane -= _baseLane;
                         }
-                        else break;
                     }
+                    vunit.Lane += vunit.LaneUp;
                 }
             }
+
             turnQueue.SetQueue(_turnQueueUnits);
-            currentUnit.Set(_turnQueueUnits[0]);
+
+            units = null;
+            vunits = null;
         }
     }
 }

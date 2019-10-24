@@ -170,6 +170,7 @@
     <Compile Include="TBSEventArgs\SelectedUnitChangedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Team.cs" />
+    <Compile Include="TemplarGide.cs" />
     <Compile Include="TypeConverters\CollectionTypeConverter.cs" />
     <Compile Include="TypeConverters\EnumTypeConverter.cs" />
     <Compile Include="Unit.cs" />
