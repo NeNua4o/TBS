@@ -42,7 +42,19 @@ namespace TBS
 
         private void CurrentUnit_ActionChanged(object sender, EventArgs e)
         {
+            ReSetCurrentParams();
+            DrawMap();
+        }
+
+        private void ReSetCurrentParams()
+        {
+            _currentUnit = currentUnit.Unit;
+            if (_currentUnit == null) return;
+            _currentCell = _map.Cell(_currentUnit.CurPos);
+            _cellsAvailableToMove = _map.GetCellsToMove(_currentCell, _currentUnit.Chars.MoveRad, _currentUnit.Chars.MoveType);
+            if (currentUnit.ActionId == -1)return;
             _selectedAction = _repWkr.GetAction(currentUnit.ActionId);
+            _cellsAvailableToAction = _map.GetCellsAvailableToAction(_currentUnit, _currentCell, _selectedAction, _selectedAction.Rad);
         }
 
         private void TurnControl_WaitClicked(object sender, EventArgs e)
@@ -61,6 +73,8 @@ namespace TBS
 
         private void b_editArmies_Click(object sender, EventArgs e) { ArmyEditor armyEditor = new ArmyEditor(_pls); armyEditor.ShowDialog(); }
 
+
+        Brush _targets = new SolidBrush(Color.FromArgb(60, Color.Red));
         private void DrawMap()
         {
             if (_map == null) return;
@@ -75,7 +89,7 @@ namespace TBS
 
             // Available for action
             for (int i = 0; i < _cellsAvailableToAction.Count; i++)
-                g.DrawPolygon(Pens.Violet, _cellsAvailableToAction[i].Hex.K10);
+                g.FillPolygon(_targets, _cellsAvailableToAction[i].Hex.K10);
 
             // LinePath
             if (_actionLinePath.Count > 0)
@@ -101,7 +115,6 @@ namespace TBS
             {
                 g.DrawPolygon(Pens.DarkBlue, _actionSheme[i].Hex.K30);
             }
-
 
 
             // Draw units
@@ -218,10 +231,7 @@ namespace TBS
                 }
             }
             currentUnit.Set(turnQueueUnits[0]);
-            _currentUnit = turnQueueUnits[0];
-            _currentCell = _map.Cell(_currentUnit.CurPos);
-            _cellsAvailableToMove = _map.GetCellsToMove(_currentCell, _currentUnit.Chars.MoveRad, _currentUnit.Chars.MoveType);
-            _cellsAvailableToAction = _map.GetCellsAvailableToAction(_currentUnit, _currentCell, _selectedAction, _selectedAction.Rad);
+            ReSetCurrentParams();
 
             turnQueueUnits.Clear();
             // Создадим виртуальных юнитов.

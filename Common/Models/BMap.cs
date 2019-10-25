@@ -343,9 +343,9 @@ namespace Common.Models
                 cell.Unit == null
                 ));
             }
-            if (a.Targetting.Self)
+            if (!a.Targetting.Self)
             {
-                res.Add(ownerCell);
+                res.Remove(ownerCell);
             }
             return res;
         }

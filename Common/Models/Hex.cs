@@ -27,9 +27,9 @@ namespace Common.Models
         {
             for (int i = 0; i < 7; i++) K[i] = CalcCorner(Center, S, i);
             for (int i = 0; i < 7; i++) K1[i] = CalcCorner(Center, S - 1, i);
-            for (int i = 0; i < 7; i++) K10[i] = CalcCorner(Center, (float)(S - S * 0.05), i);
-            for (int i = 0; i < 7; i++) K20[i] = CalcCorner(Center, (float)(S - S * 0.1), i);
-            for (int i = 0; i < 7; i++) K30[i] = CalcCorner(Center, (float)(S - S * 0.15), i);
+            for (int i = 0; i < 7; i++) K10[i] = CalcCorner(Center, (float)(S - S * 0.075), i);
+            for (int i = 0; i < 7; i++) K20[i] = CalcCorner(Center, (float)(S - S * 0.15), i);
+            for (int i = 0; i < 7; i++) K30[i] = CalcCorner(Center, (float)(S - S * 0.225), i);
         }
 
         public PointF CalcCorner(PointF center, float size, int corner)
