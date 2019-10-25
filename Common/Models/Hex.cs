@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Common
+namespace Common.Models
 {
     public class Hex
     {
-        public PointF C;
+        public PointF Center;
         public PointF[] K = new PointF[7];
         public PointF[] K1 = new PointF[7];
         public PointF[] K10 = new PointF[7];
@@ -19,17 +19,17 @@ namespace Common
         public Hex(float x, float y, float size)
         {
             S = size;
-            C = new PointF(x, y);
+            Center = new PointF(x, y);
             CalcCorners();
         }
 
         private void CalcCorners()
         {
-            for (int i = 0; i < 7; i++) K[i] = CalcCorner(C, S, i);
-            for (int i = 0; i < 7; i++) K1[i] = CalcCorner(C, S - 1, i);
-            for (int i = 0; i < 7; i++) K10[i] = CalcCorner(C, (float)(S - S * 0.05), i);
-            for (int i = 0; i < 7; i++) K20[i] = CalcCorner(C, (float)(S - S * 0.1), i);
-            for (int i = 0; i < 7; i++) K30[i] = CalcCorner(C, (float)(S - S * 0.15), i);
+            for (int i = 0; i < 7; i++) K[i] = CalcCorner(Center, S, i);
+            for (int i = 0; i < 7; i++) K1[i] = CalcCorner(Center, S - 1, i);
+            for (int i = 0; i < 7; i++) K10[i] = CalcCorner(Center, (float)(S - S * 0.05), i);
+            for (int i = 0; i < 7; i++) K20[i] = CalcCorner(Center, (float)(S - S * 0.1), i);
+            for (int i = 0; i < 7; i++) K30[i] = CalcCorner(Center, (float)(S - S * 0.15), i);
         }
 
         public PointF CalcCorner(PointF center, float size, int corner)
@@ -41,7 +41,7 @@ namespace Common
 
         public override string ToString()
         {
-            return "(" + C + ") " + S;
+            return "(" + Center + ") " + S;
         }
     }
 }

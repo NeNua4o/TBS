@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Common
+namespace Common.Models
 {
     public class Team
     {

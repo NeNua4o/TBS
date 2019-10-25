@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Xml.Serialization;
 
-namespace Common
+namespace Common.Models
 {
     public class Effect
     {

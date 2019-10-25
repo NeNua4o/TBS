@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Common.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;

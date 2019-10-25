@@ -1,4 +1,5 @@
-﻿using Common.Repositories;
+﻿using Common.Models;
+using Common.Repositories;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -19,7 +20,7 @@ namespace Common.Controls
             {
                 var b = new Bitmap(Width, Height);
                 var g = Graphics.FromImage(b);
-                g.DrawRectangle(new Pen(team.Color), 0, 0, b.Width - 1, b.Height - 1);
+                g.DrawRectangle(team.Pen, 0, 0, b.Width - 1, b.Height - 1);
                 BackgroundImage = b;
                 g = null;
                 b = null;

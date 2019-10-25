@@ -1,6 +1,7 @@
 ﻿using NLog;
 using System.Collections.Generic;
 using System;
+using Common.Models;
 
 namespace Common.Repositories
 {

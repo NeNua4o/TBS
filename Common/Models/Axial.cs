@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Common
+namespace Common.Models
 {
     public class Axial
     {

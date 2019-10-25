@@ -1,4 +1,5 @@
-﻿using Common.Repositories;
+﻿using Common.Models;
+using Common.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

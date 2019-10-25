@@ -7,6 +7,7 @@ namespace Common.Controls
     public partial class TurnControl : UserControl
     {
         public event EventHandler SkipClicked;
+        public event EventHandler WaitClicked;
         public TurnControl()
         {
             InitializeComponent();
@@ -23,5 +24,7 @@ namespace Common.Controls
         }
 
         private void b_skip_Click(object sender, EventArgs e) { SkipClicked?.Invoke(null, null); }
+
+        private void b_wait_Click(object sender, EventArgs e) { WaitClicked?.Invoke(null, null); }
     }
 }

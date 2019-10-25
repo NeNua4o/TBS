@@ -66,6 +66,7 @@
             this.b_wait.Size = new System.Drawing.Size(30, 30);
             this.b_wait.TabIndex = 2;
             this.b_wait.UseVisualStyleBackColor = false;
+            this.b_wait.Click += new System.EventHandler(this.b_wait_Click);
             // 
             // TurnControl
             // 

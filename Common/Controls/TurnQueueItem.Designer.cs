@@ -67,9 +67,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Tan;
-            this.Controls.Add(this.l_hp);
-            this.Controls.Add(this.l_init);
             this.Controls.Add(this.pb_icon);
+            this.Controls.Add(this.l_init);
+            this.Controls.Add(this.l_hp);
             this.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.Name = "TurnQueueItem";
             this.Size = new System.Drawing.Size(65, 85);

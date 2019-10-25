@@ -1,4 +1,4 @@
-﻿namespace Common
+﻿namespace Common.Models
 {
     public class Cube
     {
@@ -12,9 +12,13 @@
 
         public Cube(int q, int r) { X = q; Z = r; Y = -X - Z; }
 
+        public Cube(Cube cube) { X = cube.X; Y = cube.Y; Z = cube.Z; }
+
         public static Cube operator +(Cube a, Cube b) { return new Cube(a.X + b.X, a.Y + b.Y, a.Z + b.Z); }
 
         public static Cube operator -(Cube a, Cube b) { return new Cube(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
+
+        public static Cube operator *(Cube a, float v) { return new Cube(a.X * v, a.Y * v, a.Z * v); }
 
         public override string ToString() { return X + ":" + Y + ":" + Z; }
     }

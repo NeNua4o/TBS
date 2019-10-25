@@ -6,6 +6,7 @@ using Common.Extensions;
 using Common.PropEditorsForms;
 using Common.Enums;
 using System.Diagnostics;
+using Common.Models;
 
 namespace Common.Controls
 {
@@ -13,7 +14,6 @@ namespace Common.Controls
     {
         RepositoryWorker _repWkr;
         public Unit Unit;
-        bool _iconsSetted;
 
         public int ActionId = -1;
         public event EventHandler ActionChanged;
@@ -38,7 +38,6 @@ namespace Common.Controls
 
             actionSelectorSkills.Init("Icons/z_skl.png");
             actionSelectorSpells.Init("Icons/z_mag.png");
-            _iconsSetted = true;
 
             pb_icon.Image = new Bitmap(unit.Icon, pb_icon.Size);
 

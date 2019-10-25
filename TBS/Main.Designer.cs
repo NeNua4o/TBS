@@ -56,6 +56,8 @@
             this.pb_field.Size = new System.Drawing.Size(370, 312);
             this.pb_field.TabIndex = 1;
             this.pb_field.TabStop = false;
+            this.pb_field.Click += new System.EventHandler(this.pb_field_Click);
+            this.pb_field.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pb_field_MouseMove);
             // 
             // b_reset
             // 
