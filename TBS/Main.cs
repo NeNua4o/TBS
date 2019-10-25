@@ -74,8 +74,9 @@ namespace TBS
         private void b_editArmies_Click(object sender, EventArgs e) { ArmyEditor armyEditor = new ArmyEditor(_pls); armyEditor.ShowDialog(); }
 
 
-        Brush _targetsBrush = new SolidBrush(Color.FromArgb(60, Color.Red));
+        Brush _targetingBrush = new SolidBrush(Color.FromArgb(60, Color.Red));
         Brush _movePtBrush = new SolidBrush(Color.FromArgb(60, Color.Orange));
+        Brush _shemeBrush = new SolidBrush(Color.FromArgb(60, Color.Red));
         private void DrawMap()
         {
             if (_map == null) return;
@@ -90,7 +91,7 @@ namespace TBS
 
             // Available for action
             for (int i = 0; i < _cellsAvailableToAction.Count; i++)
-                g.FillPolygon(_targetsBrush, _cellsAvailableToAction[i].Hex.K10);
+                g.FillPolygon(_targetingBrush, _cellsAvailableToAction[i].Hex.K10);
 
             // LinePath
             if (_actionLinePath.Count > 0)
@@ -114,9 +115,8 @@ namespace TBS
             // ActionSheme
             for (int i = 0; i < _actionSheme.Count; i++)
             {
-                g.DrawPolygon(Pens.DarkBlue, _actionSheme[i].Hex.K30);
+                g.FillPolygon(_shemeBrush, _actionSheme[i].Hex.K20);
             }
-
 
             // Draw units
             var cellsWithUnits = _map.GetCellsWithUnits();
@@ -294,6 +294,7 @@ namespace TBS
             var actionCell = _cellsAvailableToAction.WitchIs(_hoveredCell);
             if (actionCell != null)
             {
+                
                 if (_selectedAction.Rad > 1)
                 {
                     // dist attack
@@ -305,13 +306,13 @@ namespace TBS
                     }
                     else _direction = _map.GetDirection(_hoveredCell, _actionLinePath[_actionLinePath.Count - 1]);
                     if (_direction == -1) goto end;
-                    _actionStartPoint = _hoveredCell;
+                    _actionStartPoint = _selectedAction.CalcFromTarget ? _hoveredCell : _hoveredCell.GetDir(_direction);
                 }
                 else
                 {
                     // close attack
                     _direction = _map.GetDirection(_hoveredCell, e.X, e.Y);
-                    _actionStartPoint = _hoveredCell.GetDir(_direction);
+                    _actionStartPoint = _selectedAction.CalcFromTarget ? _hoveredCell : _hoveredCell.GetDir(_direction);
                     if (_actionStartPoint == null)
                     {
                         _direction = -1;
@@ -336,10 +337,12 @@ namespace TBS
                         }
                     }
                 }
+                
                 _actionSheme = _map.GetSheme(_actionStartPoint, _selectedAction, (_direction + 3) % 6, _direction, _cellsAvailableToAction);
             }
             else // Action miss
             {
+                _direction = -1;
                 var movementCell = _cellsAvailableToMove.WitchIs(_hoveredCell);
                 if (movementCell != null)
                 {

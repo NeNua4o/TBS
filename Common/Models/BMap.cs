@@ -362,6 +362,7 @@ namespace Common.Models
                     res.AddRange(GetSheme(actionStart, action.Sheme, dir));
                     break;
                 case ShemeTypes.One:
+                    res.Add(actionStart);
                     break;
                 case ShemeTypes.All:
                     res.AddRange(availableToAction);
@@ -388,7 +389,7 @@ namespace Common.Models
                 while (inSheme < sheme[shemeNumber])
                 {
                     var ax = ring[curPos].Axial;
-                    if (IsCell(ax) && Cells[ax.Q, ax.R] != null && res.All(x => x.Axial != ax))
+                    if (IsCell(ax) && res.All(x => x.Axial != ax))
                         res.Add(Cells[ax.Q, ax.R]);
                     inSheme++;
                     if (isLeft)
