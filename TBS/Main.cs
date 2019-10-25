@@ -54,7 +54,7 @@ namespace TBS
             _cellsAvailableToMove = _map.GetCellsToMove(_currentCell, _currentUnit.Chars.MoveRad, _currentUnit.Chars.MoveType);
             if (currentUnit.ActionId == -1)return;
             _selectedAction = _repWkr.GetAction(currentUnit.ActionId);
-            _cellsAvailableToAction = _map.GetCellsAvailableToAction(_currentUnit, _currentCell, _selectedAction, _selectedAction.Rad);
+            _cellsAvailableToAction = _map.GetCellsAvailableToAction(_currentUnit, _currentCell, _selectedAction);
         }
 
         private void TurnControl_WaitClicked(object sender, EventArgs e)
@@ -74,7 +74,8 @@ namespace TBS
         private void b_editArmies_Click(object sender, EventArgs e) { ArmyEditor armyEditor = new ArmyEditor(_pls); armyEditor.ShowDialog(); }
 
 
-        Brush _targets = new SolidBrush(Color.FromArgb(60, Color.Red));
+        Brush _targetsBrush = new SolidBrush(Color.FromArgb(60, Color.Red));
+        Brush _movePtBrush = new SolidBrush(Color.FromArgb(60, Color.Orange));
         private void DrawMap()
         {
             if (_map == null) return;
@@ -89,7 +90,7 @@ namespace TBS
 
             // Available for action
             for (int i = 0; i < _cellsAvailableToAction.Count; i++)
-                g.FillPolygon(_targets, _cellsAvailableToAction[i].Hex.K10);
+                g.FillPolygon(_targetsBrush, _cellsAvailableToAction[i].Hex.K10);
 
             // LinePath
             if (_actionLinePath.Count > 0)
@@ -108,7 +109,7 @@ namespace TBS
 
             // MoveDestination
             if (_moveDestination != null)
-                g.DrawPolygon(Pens.Orange, _moveDestination.Hex.K20);
+                g.FillPolygon(_movePtBrush, _moveDestination.Hex.K20);
 
             // ActionSheme
             for (int i = 0; i < _actionSheme.Count; i++)

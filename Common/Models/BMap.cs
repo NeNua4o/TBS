@@ -308,7 +308,7 @@ namespace Common.Models
         }
 
 
-        public List<BMapCell> GetCellsAvailableToAction(Unit owner, BMapCell ownerCell, Act a, int n, bool forHero = false)
+        public List<BMapCell> GetCellsAvailableToAction(Unit owner, BMapCell ownerCell, Act a, bool forHero = false)
         {
             var res = new List<BMapCell>();
             if (a == null || ownerCell == null || ownerCell.Unit == null)
@@ -319,6 +319,8 @@ namespace Common.Models
                     if (ownerCell.Neighbors[i] != null && ownerCell.Neighbors[i].Unit != null && ownerCell.Unit.TeamId != ownerCell.Neighbors[i].Unit.TeamId)
                         return res;
             }
+
+            var n = a.Rad == 1 ? owner.Chars.MoveRad + 1 : a.Rad;
 
             var all = GetCellsInRange(ownerCell.Axial, n);
             if(a.Targetting.Allies)
