@@ -1,5 +1,6 @@
 ﻿using Common.PropertyEditors;
 using Common.TypeConverters;
+using Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -48,6 +49,21 @@ namespace Common.Models
             if (unit.SkillsIds != null) { SkillsIds = new int[unit.SkillsIds.Length]; Array.Copy(unit.SkillsIds, SkillsIds, SkillsIds.Length); }
             if (unit.SpellsIds != null) { SpellsIds = new int[unit.SpellsIds.Length]; Array.Copy(unit.SpellsIds, SpellsIds, SpellsIds.Length); }
             if (unit.PassivesIds != null) { PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length); }
+        }
+
+        public void ApplyEffect(Effect effect)
+        {
+            Chars.Add(effect);
+        }
+
+        private void ApplyEffectNow(Effect effect)
+        {
+            
+        }
+
+        private void AddEffectToList(Effect effect)
+        {
+
         }
     }
 

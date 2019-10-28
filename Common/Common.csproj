@@ -144,6 +144,7 @@
     <Compile Include="Models\Hex.cs" />
     <Compile Include="Models\Pl.cs" />
     <Compile Include="Models\Targets.cs" />
+    <Compile Include="Models\VUnit.cs" />
     <Compile Include="PropEditorsForms\ActionSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +176,7 @@
     <Compile Include="Repositories\TeamRepository.cs" />
     <Compile Include="Utils\AxialUtils.cs" />
     <Compile Include="Utils\CubeUtils.cs" />
+    <Compile Include="Utils\RUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="TBSEventArgs\SelectedActionChangedEventArgs.cs" />
     <Compile Include="TBSEventArgs\SelectedEffectChangedEventArgs.cs" />

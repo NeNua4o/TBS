@@ -111,5 +111,15 @@ namespace Common.Repositories
             return null;
         }
 
+        public Effect GetEffect(int id)
+        {
+            var effects = _effectRepository.GetItems();
+            for (int i = 0; i < effects.Count; i++)
+            {
+                if (effects[i].Id == id)
+                    return effects[i];
+            }
+            return null;
+        }
     }
 }

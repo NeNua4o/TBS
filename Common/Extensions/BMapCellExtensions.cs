@@ -15,6 +15,14 @@ namespace Common.Extensions
             return null;
         }
 
-        
+        public static List<BMapCell> Intersection (this List<BMapCell> array, List<BMapCell> intersectionWith)
+        {
+            var result = new List<BMapCell>();
+            for (int sourceCounter = 0; sourceCounter < array.Count; sourceCounter++)
+                for (int intersectCounter = 0; intersectCounter < intersectionWith.Count; intersectCounter++)
+                    if (array[sourceCounter].Axial == intersectionWith[intersectCounter].Axial)
+                        result.Add(array[sourceCounter]);
+            return result;
+        }
     }
 }

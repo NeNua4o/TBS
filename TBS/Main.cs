@@ -2,6 +2,7 @@
 using Common.Extensions;
 using Common.Models;
 using Common.Repositories;
+using Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,7 +19,7 @@ namespace TBS
         List<Pl> _pls = new List<Pl>();
         RepositoryWorker _repWkr = RepositoryWorker.GetInstance();
 
-        Random rng = new Random();
+        RUtils _rng = RUtils.Inst();
         RectangleF _srcModelSize = new RectangleF(0, 0, 60, 60);
         RectangleF _step_srec = new RectangleF(0, 0, 40, 40);
         Bitmap _steps, _stepsD;
@@ -221,7 +222,7 @@ namespace TBS
         {
             currentUnit.Set(null);
             var units = new List<Unit>(); units.AddRange(_pls[0].Units); units.AddRange(_pls[1].Units);
-            for (int i = 0; i < units.Count; i++) units[i].Chars.Lane = rng.Next(1, (int)(units[i].Chars.Initiative * 0.1)) / 100f;
+            for (int i = 0; i < units.Count; i++) units[i].Chars.Lane = _rng.Next(1, (int)(units[i].Chars.Initiative / 4f)) / 100f;
             units = null;
         }
 
@@ -390,7 +391,7 @@ namespace TBS
             if (a.Button == MouseButtons.Left)
             {
                 bool doMove = false, doAtack = false;
-                if (_moveDestination != null) // If move
+                if (_moveDestination != null) // Если есть куда идти - идём.
                 {
                     _currentCell.Unit = null;
                     var u = _currentUnit;
@@ -401,33 +402,47 @@ namespace TBS
                     doMove = true;
                 }
 
-                if (_selectedAction != null && _actionSheme.Count > 0) // If attack
+                if (_selectedAction != null && _actionSheme.Count > 0) // Выбрано действие и есть по кому ударить.
                 {
+                    var directAttacked = _actionSheme.Intersection(_cellsAvailableForApply);
+                    for (int i = 0; i < directAttacked.Count; i++) // Для каждого юнита.
+                    {
+                        var unit = directAttacked[i].Unit;
+                        for (int j = 0; j < _selectedAction.Effects.Length; j++) // Применим эффект.
+                        {
+                            
+                            var effect = _repWkr.GetEffect(_selectedAction.Effects[j]);
+                            var chance = RUtils.Inst().Get100();
+                            if (chance <= effect.Chance) // Попадание.
+                            {
+                                if (effect.Turns > 0) // Длительного действия.
+                                {
+                                    unit.Effects.Add(effect);
+                                }
+                                else // Моментального действия.
+                                {
+                                    unit.ApplyEffect(effect);
+                                }
+                            }
+                        }
+                    }
                     doAtack = true;
                 }
-                if (doMove || doAtack)
+
+                if (doMove || doAtack) // Двигались или применяли действие. 
                 {
+                    // Снимем полоску хода.
                     currentUnit.Unit.Chars.Lane -= _baseLane;
+                    // Пересчитаем ходы.
                     CalcTurns();
                 }
             }
-        }
+        }// click.
 
-    }
 
-    public class VUnit
-    {
-        public Unit Unit;
-        public float Lane;
-        public int Initiative;
-        public float LaneUp;
-        public VUnit(Unit unit)
-        {
-            Unit = unit;
-            Initiative = unit.Chars.Initiative;
-            Lane = unit.Chars.Lane;
-            LaneUp = unit.Chars.LaneUp;
-        }
-    }
-}
+
+    }// class end.
+
+    
+}// namespace.
 
