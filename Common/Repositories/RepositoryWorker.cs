@@ -25,11 +25,12 @@ namespace Common.Repositories
 
         private RepositoryWorker()
         {
+            _teamRepository = new TeamRepository();
             _baseUnitRepository = new BaseUnitsRepository("BaseUnits.xml");
             _actionRepository = new ActionsRepository("Actions.xml");
             _effectRepository = new EffectsRepository("Effects.xml");
             _plRepository = new PlsRepository("Pls.xml");
-            _teamRepository = new TeamRepository();
+            
         }
 
         public static RepositoryWorker GetInstance()

@@ -11,6 +11,7 @@ namespace Common.Models
         public PointF[] K10 = new PointF[7];
         public PointF[] K20 = new PointF[7];
         public PointF[] K30 = new PointF[7];
+        public PointF[] K40 = new PointF[7];
 
         public float S;
 
@@ -30,6 +31,7 @@ namespace Common.Models
             for (int i = 0; i < 7; i++) K10[i] = CalcCorner(Center, (float)(S - S * 0.075), i);
             for (int i = 0; i < 7; i++) K20[i] = CalcCorner(Center, (float)(S - S * 0.15), i);
             for (int i = 0; i < 7; i++) K30[i] = CalcCorner(Center, (float)(S - S * 0.225), i);
+            for (int i = 0; i < 7; i++) K40[i] = CalcCorner(Center, (float)(S - S * 0.3), i);
         }
 
         public PointF CalcCorner(PointF center, float size, int corner)

@@ -1,4 +1,5 @@
-﻿using Common.PropertyEditors;
+﻿using Common.Enums;
+using Common.PropertyEditors;
 using Common.TypeConverters;
 using System;
 using System.ComponentModel;
@@ -39,27 +40,27 @@ namespace Common.Models
         [XmlAttribute]
         public string IconPath { get; set; }
 
-        int _rad;
-        [DisplayName("Радиус действия")]
+        int _range;
+        [DisplayName("Дальность действия")]
         [DefaultValue(0)]
         [XmlAttribute]
-        public int Rad
+        public int Range
         {
             get
             {
-                return _rad;
+                return _range;
             }
             set
             {
-                _rad = value;
+                _range = value;
                 int end;
-                if (RadKoeffs.Length > value) end = value;
-                else end = RadKoeffs.Length;
+                if (RangeKoeffs.Length > value) end = value;
+                else end = RangeKoeffs.Length;
                 var t = new float[value];
-                for (int i = 0; i < end; i++) t[i] = RadKoeffs[i];
+                for (int i = 0; i < end; i++) t[i] = RangeKoeffs[i];
                 for (int i = end; i < value; i++) t[i] = 1;
-                RadKoeffs = new float[value];
-                Array.Copy(t, RadKoeffs, value);
+                RangeKoeffs = new float[value];
+                Array.Copy(t, RangeKoeffs, value);
                 t = null;
             }
         }
@@ -76,7 +77,7 @@ namespace Common.Models
 
         [DisplayName("Коэффициенты расстояния")]
         [Description("Множитель урона в зависимости от расстояния до цели")]
-        public float[] RadKoeffs { get; set; }
+        public float[] RangeKoeffs { get; set; }
 
         [DisplayName("Стоимость")]
         [Description("Какой эффект наложится на того кто использовал действие")]
@@ -117,6 +118,16 @@ namespace Common.Models
         [XmlAttribute]
         public bool CalcFromTarget { get; set; }
 
+        [DisplayName("Включить точку отсчёта в схему")]
+        [Description(
+            "True - точка отсчёта будет включена в схему распространения урона. "
+            + "False - точка отсчёта НЕ будет включена в схему распространения урона."
+            + "Работает если в типе распространения указан тип схема."
+            )]
+        [DefaultValue(false)]
+        [XmlAttribute]
+        public bool IncludeStartPoint { get; set; }
+
         [DisplayName("Схема распространения")]
         [Description("Работает если в типе распространения указана схема")]
         [DefaultValue(ShemeTypes.One)]
@@ -136,8 +147,8 @@ namespace Common.Models
         public Act()
         {
             Name = "New Action";
-            _rad = 0;
-            RadKoeffs = new float[] { 1 };
+            _range = 0;
+            RangeKoeffs = new float[] { 1 };
             UserEffectId = -1;
             Targetting = new Targets();
             AppliesOn = new Targets();
@@ -146,55 +157,22 @@ namespace Common.Models
 
         public override string ToString()
         {
-            return Name + " | " + ActLevel + " | " + Rad;
+            return 
+                Name 
+                + " " + ActLevel 
+                + " " + Range 
+                + " " + ShemeType 
+                + " [ " + (Targetting.Self ? "1" : "0") 
+                + (Targetting.Allies ? "1" : "0")
+                + (Targetting.Enemies ? "1" : "0")
+                + (Targetting.Dead ? "1" : "0")
+                + (Targetting.MapCells ? "1" : "0") + " ]"
+                + " [ " + (AppliesOn.Self ? "1" : "0")
+                + (AppliesOn.Allies ? "1" : "0")
+                + (AppliesOn.Enemies ? "1" : "0")
+                + (AppliesOn.Dead ? "1" : "0")
+                + (AppliesOn.MapCells ? "1" : "0") + " ]"
+                ;
         }
-    }
-
-    public class Targets
-    {
-        [DisplayName("На себя")]
-        [Description("Учитывать в качестве цели самого атакующего")]
-        [DefaultValue(false)]
-        [XmlAttribute]
-        public bool Self { get; set; }
-
-        [DisplayName("Союзники")]
-        [Description("Учитывать в качестве цели союзные войска")]
-        [DefaultValue(false)]
-        [XmlAttribute]
-        public bool Allies { get; set; }
-
-        [DisplayName("Враги")]
-        [Description("Учитывать в качестве цели врагов")]
-        [DefaultValue(false)]
-        [XmlAttribute]
-        public bool Enemies { get; set; }
-
-        [DisplayName("Мертвые юниты")]
-        [Description("Учитывать в качестве цели мертвых юнитов. Работает если выбраны союзники/враги")]
-        [DefaultValue(false)]
-        [XmlAttribute]
-        public bool Dead { get; set; }
-
-        [DisplayName("Клетка карты")]
-        [Description("Учитывать в качестве цели свободные клетки карты в радиусе атаки")]
-        [DefaultValue(false)]
-        [XmlAttribute]
-        public bool MapCells { get; set; }
-
-        public override string ToString()
-        {
-            return Self + " | " + Allies + " | " + Enemies + " | " + Dead + " | " + MapCells;
-        }
-    }
-
-    public enum ShemeTypes
-    {
-        [Description("Только цель под курсором")]
-        One,
-        [Description("По схеме")]
-        Sheme,
-        [Description("Все цели в радиусе от атакующего")]
-        All
     }
 }

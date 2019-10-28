@@ -1,8 +1,10 @@
-﻿using Common.Extensions;
+﻿using Common.Enums;
+using Common.Extensions;
 using Common.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 
 namespace Common.Models
@@ -84,9 +86,10 @@ namespace Common.Models
                     {
                         var hex = new Hex(
                             new PointF(
-                                HexWidth + (col - (ArraySize - sideCellCount - 1)) * WidthSpacing + row * HexInRadius,
-                                HexOutRadius + row * HeightSpacing), HexOutRadius
-                                );
+                                HexWidth + (col - (ArraySize - sideCellCount - 1)) * (WidthSpacing+5) + row * (HexInRadius+5), 
+                                HexOutRadius + row * (HeightSpacing + 5)
+                                ), 
+                                HexOutRadius);
                         Cells[col, row].Hex = hex;
                         Cells[col, row].ModelSize = new RectangleF(hex.Center.X - (HexWidth * 0.9f) / 2f, hex.Center.Y - (HexWidth * 0.9f) / 2f, HexWidth * 0.9f, HexWidth * 0.9f);
                         Cells[col, row].StepsSize = new RectangleF(hex.Center.X - (HexWidth * 0.4f) / 2f, hex.Center.Y - (HexWidth * 0.4f) / 2f, HexWidth * 0.4f, HexWidth * 0.4f);
@@ -104,22 +107,33 @@ namespace Common.Models
             neighs = null;
 
             // Prepare layout
-            Width = (int)Math.Round(HexWidth * ArraySize + 1, MidpointRounding.AwayFromZero);
-            Height = (int)Math.Round(HexHeight + HeightSpacing * (ArraySize - 1) + 1, MidpointRounding.AwayFromZero);
+            Width = (int)Math.Round(HexWidth * ArraySize + 1 + (ArraySize*5), MidpointRounding.AwayFromZero);
+            Height = (int)Math.Round(HexHeight + HeightSpacing * (ArraySize - 1) + 1 + (ArraySize*5), MidpointRounding.AwayFromZero);
 
             Bitmap b = new Bitmap(Width, Height);
             Graphics g = Graphics.FromImage(b);
-            g.FillRectangle(Brushes.White, new Rectangle(0, 0, b.Width, b.Height));
-            for (int r = 0; r < ArraySize; r++)
-                for (int c = 0; c < ArraySize; c++)
-                    if (Cells[c, r] != null)
-                        g.DrawPolygon(Pens.Gray, Cells[c, r].Hex.K);
+            //g.FillRectangle(Brushes.White, new Rectangle(0, 0, b.Width, b.Height));
+
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+            for (int i = 0; i < _notNullCells.Length; i++)
+            {
+                g.FillPolygon(Brushes.Gainsboro, _notNullCells[i].Hex.K);
+                var s = String.Format("{0}", _notNullCells[i].Axial); var w = g.MeasureString(s, _fnt).Width;
+                g.DrawString(s, _fnt, _brush, _notNullCells[i].Hex.Center.X - w / 2, _notNullCells[i].Hex.Center.Y - 35, _drawFormat);
+                s = String.Format("{0}", _notNullCells[i].Cube); w = g.MeasureString(s, _fnt).Width;
+                g.DrawString(s, _fnt, _brush, _notNullCells[i].Hex.Center.X - w / 2, _notNullCells[i].Hex.Center.Y + 20, _drawFormat);
+            }
             g.Flush();
             GridLayout = new Bitmap(b);
             g = null;
             b = null;
 
         }
+
+        
+
+        Font _fnt = new Font("Calibri Light", 10, FontStyle.Regular); Brush _brush = Brushes.Black; StringFormat _drawFormat = new StringFormat();
+
 
         public List<BMapCell> GetCellsWithUnits()
         {
@@ -266,7 +280,7 @@ namespace Common.Models
             return result;
         }
 
-        public List<BMapCell> GetCellsToMove(BMapCell start, int range, MoveTypes moveType)
+        public List<BMapCell> GetAvailableForMove(BMapCell start, int range, MoveTypes moveType)
         {
             if (moveType == MoveTypes.Walk)
             {
@@ -307,59 +321,64 @@ namespace Common.Models
             }
         }
 
-
-        public List<BMapCell> GetCellsAvailableToAction(Unit owner, BMapCell ownerCell, Act a, bool forHero = false)
+        public List<BMapCell> GetAvailableForAction(Unit owner, BMapCell ownerCell, Act action, bool forHero = false)
         {
             var res = new List<BMapCell>();
-            if (a == null || ownerCell == null || ownerCell.Unit == null)
+            if (action == null || ownerCell == null || ownerCell.Unit == null)
                 return res;
-            if (a.BlockIfEnemyClose)
-            {
+            if (action.BlockIfEnemyClose)
                 for (int i = 0; i < 6; i++)
                     if (ownerCell.Neighbors[i] != null && ownerCell.Neighbors[i].Unit != null && ownerCell.Unit.TeamId != ownerCell.Neighbors[i].Unit.TeamId)
                         return res;
-            }
+            res.AddRange(GetByTargetFilter(owner, ownerCell, action.Targetting, action.Range == 1 ? owner.Chars.MoveRad + 1 : action.Range));
+            return res;
+        }
 
-            var n = a.Rad == 1 ? owner.Chars.MoveRad + 1 : a.Rad;
+        public List<BMapCell> GetAvailableForApply(Unit owner, BMapCell ownerCell, Targets appliesOn)
+        {
+            return GetByTargetFilter(owner, ownerCell, appliesOn, 7);
+        }
 
-            var all = GetCellsInRange(ownerCell.Axial, n);
-            if(a.Targetting.Allies)
+        public List<BMapCell> GetByTargetFilter(Unit owner, BMapCell ownerCell, Targets appliesOn, int range)
+        {
+            var res = new List<BMapCell>();
+            var all = GetCellsInRange(ownerCell.Axial, range);
+            if (appliesOn.Allies)
             {
                 res.AddRange(all.Where(cell =>
                 cell.Unit != null &&
                 cell.Unit.TeamId == owner.TeamId &&
-                (a.Targetting.Dead ? cell.Unit.Chars.Alive == 1 : cell.Unit.Chars.Alive == 1)
+                (appliesOn.Dead ? cell.Unit.Chars.Alive == 1 : cell.Unit.Chars.Alive == 1)
                 ));
             }
-            if (a.Targetting.Enemies)
+            if (appliesOn.Enemies)
             {
                 res.AddRange(all.Where(cell =>
                 cell.Unit != null &&
                 cell.Unit.TeamId != owner.TeamId &&
-                (a.Targetting.Dead ? cell.Unit.Chars.Alive == 1 : cell.Unit.Chars.Alive == 1)
+                (appliesOn.Dead ? cell.Unit.Chars.Alive == 1 : cell.Unit.Chars.Alive == 1)
                 ));
             }
-            if (a.Targetting.MapCells)
+            if (appliesOn.MapCells)
             {
                 res.AddRange(all.Where(cell =>
                 cell.Unit == null
                 ));
             }
-            if (!a.Targetting.Self)
+            if (!appliesOn.Self)
             {
                 res.Remove(ownerCell);
             }
             return res;
         }
 
-
-        public List<BMapCell> GetSheme(BMapCell actionStart, Act action, int dir, int revDir, List<BMapCell> availableToAction)
+        public List<BMapCell> GetSheme(BMapCell actionStart, Act action, int goesTo, List<BMapCell> availableToAction)
         {
             var res = new List<BMapCell>();
             switch (action.ShemeType)
             {
                 case ShemeTypes.Sheme:
-                    res.AddRange(GetSheme(actionStart, action.Sheme, dir));
+                    res.AddRange(GetSheme(actionStart, action.Sheme, goesTo, action.IncludeStartPoint));
                     break;
                 case ShemeTypes.One:
                     res.Add(actionStart);
@@ -370,42 +389,19 @@ namespace Common.Models
                 default:
                     break;
             }
-            if (action.Rad > 1)
-                res.Insert(0, actionStart);
             return res;
         }
 
-        public List<BMapCell> GetSheme(BMapCell attackPoint, int[] sheme, int dir)
+        public List<BMapCell> GetSheme(BMapCell startPoint, int[] sheme, int goesTo, bool includeStartPoint)
         {
             var res = new List<BMapCell>();
-            if (attackPoint == null) return res;
-            // GetRingByRing
-            for (int shemeNumber = 0; shemeNumber < sheme.Length; shemeNumber++)
-            {
-                List<ECube> ring = CubeUtils.GetRing(attackPoint.Cube, dir, shemeNumber + 1);
-                int left = 0, right = ring.Count, curPos = 0, inSheme = 0;
-                bool isLeft = true;
-
-                while (inSheme < sheme[shemeNumber])
-                {
-                    var ax = ring[curPos].Axial;
-                    if (IsCell(ax) && res.All(x => x.Axial != ax))
-                        res.Add(Cells[ax.Q, ax.R]);
-                    inSheme++;
-                    if (isLeft)
-                    {
-                        isLeft = false;
-                        left++;
-                        curPos = left;
-                    }
-                    else
-                    {
-                        isLeft = true;
-                        right--;
-                        curPos = right;
-                    }
-                }
-            }
+            var cubes = CubeUtils.GetSheme(startPoint.Cube, sheme, goesTo, includeStartPoint);
+            // Определим какие части схемы попали на карту.
+            for (int cellsCounter = 0; cellsCounter < _notNullCells.Length; cellsCounter++)
+                for (int cubesCounter = 0; cubesCounter < cubes.Count; cubesCounter++)
+                    if (_notNullCells[cellsCounter].Cube == cubes[cubesCounter])
+                        res.Add(_notNullCells[cellsCounter]);
+            cubes = null;
             return res;
         }
 

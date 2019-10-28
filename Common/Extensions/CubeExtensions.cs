@@ -5,9 +5,14 @@ namespace Common.Extensions
 {
     public static class CubeExtensions
     {
-        public static float DistanceTo(this Cube a, Cube b)
+        public static float DistanceToF(this Cube a, Cube b)
         {
             return Math.Max(Math.Max(Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y)), Math.Abs(a.Z - b.Z));
+        }
+
+        public static int DistanceToI(this Cube a, Cube b)
+        {
+            return (int)Math.Round(Math.Max(Math.Max(Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y)), Math.Abs(a.Z - b.Z)), MidpointRounding.AwayFromZero);
         }
 
         public static Axial ToAxial(this Cube a)

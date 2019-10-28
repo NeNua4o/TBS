@@ -59,6 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\ShemeTypes.cs" />
+    <Compile Include="Extensions\AxialExtensions.cs" />
     <Compile Include="Extensions\CubeExtensions.cs" />
     <Compile Include="Extensions\PointFExtensions.cs" />
     <Compile Include="Models\Act.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="Models\Hero.cs" />
     <Compile Include="Models\Hex.cs" />
     <Compile Include="Models\Pl.cs" />
+    <Compile Include="Models\Targets.cs" />
     <Compile Include="PropEditorsForms\ActionSelector.cs">
       <SubType>Form</SubType>
     </Compile>

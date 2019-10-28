@@ -32,6 +32,23 @@ namespace Common.Models
             StartPos = new Axial(start);
             CurPos = new Axial(start);
         }
+
+        public void UpdateStats(BaseUnit unit)
+        {
+            if (unit == null) return;
+            Race = unit.Race;
+            Name = unit.Name;
+            Icon = unit.Icon;
+            IconPath = unit.IconPath;
+            Model = unit.Model;
+            ModelPath = unit.ModelPath;
+            Chars = new Characteristics(unit.Chars);
+            MainActId = unit.MainActId;
+            SecondActId = unit.SecondActId;
+            if (unit.SkillsIds != null) { SkillsIds = new int[unit.SkillsIds.Length]; Array.Copy(unit.SkillsIds, SkillsIds, SkillsIds.Length); }
+            if (unit.SpellsIds != null) { SpellsIds = new int[unit.SpellsIds.Length]; Array.Copy(unit.SpellsIds, SpellsIds, SpellsIds.Length); }
+            if (unit.PassivesIds != null) { PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length); }
+        }
     }
 
     public class BaseUnit

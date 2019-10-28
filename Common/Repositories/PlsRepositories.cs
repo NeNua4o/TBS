@@ -85,11 +85,7 @@ namespace Common.Repositories
                 {
                     var u = _pls[plc].Units[uc];
                     var bu = bUnits.FirstOrDefault(unit => unit.Id == u.BId);
-                    if (bu != null)
-                    {
-                        u.Icon = bu.Icon;
-                        u.Model = bu.Model;
-                    }
+                    u.UpdateStats(bu);
                 }
             }
         }

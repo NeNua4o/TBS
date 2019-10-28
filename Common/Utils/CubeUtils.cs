@@ -2,6 +2,7 @@
 using Common.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Common.Utils
 {
@@ -15,7 +16,7 @@ namespace Common.Utils
         public static List<Cube> GetCubesOnLine(Cube start, Cube end, bool includeStart = true, bool includeEnd = true)
         {
             var result = new List<Cube>();
-            var distanceF = start.DistanceTo(end);
+            var distanceF = start.DistanceToF(end);
             var distance = Math.Round(distanceF, MidpointRounding.AwayFromZero);
             for (int i = 0; i <= distance; i++)
                 result.Add(Interpolate(start, end, 1f / distanceF * i));
@@ -24,25 +25,65 @@ namespace Common.Utils
             return result;
         }
 
-        public static List<ECube> GetRing(Cube start, int dir, int rad)
+        public static List<Cube> GetSheme(Cube startPoint, int[] sheme, int goesTo, bool includeStartPoint)
         {
-            var result = new List<ECube>();//var results = []
-            var ecube = new ECube(start, true); //var cube = cube_add(center, cube_scale(cube_direction(4), radius))
-            ecube.Scale(dir, rad);
-            var dirsPassed = 0;
-            var i = (dir + 2) % 6;
-            while (dirsPassed < 6)
+            var res = new List<Cube>();
+            if (startPoint == null) return res;
+            if (sheme == null) return res;
+            // Кольцо за кольцом.
+            for (int shemeNumber = 0; shemeNumber < sheme.Length; shemeNumber++)
             {
-                for (int j = 0; j < rad; j++) //for each 0 ≤ j < radius:
+                List<VCube> ring = GetRing(startPoint, goesTo, shemeNumber + 1);
+                int left = 0, right = ring.Count, curPos = 0, inSheme = 0;
+                bool isLeft = true; // Начинаем обход слева.
+
+                while (inSheme < sheme[shemeNumber]) // Пока не дойдём до конца схемы.
                 {
-                    if (ecube == null) break;
-                    result.Add(ecube); //results.append(cube)
-                    ecube = ecube.Dirs[i]; //cube = cube_neighbor(cube, i)
-                    ecube.GenerateDirs();
+                    for (int resultCounter = 0; resultCounter < res.Count; resultCounter++)
+                        if (res[resultCounter] == ring[curPos])
+                            goto noAdd; // Если уже есть такие координаты, то перескочим этап добавления.
+                    res.Add(ring[curPos]);
+                    noAdd:
+                    inSheme++;
+                    if (isLeft) // Меняем направление.
+                    {
+                        isLeft = false;
+                        left++;
+                        curPos = left;
+                    }
+                    else
+                    {
+                        isLeft = true;
+                        right--;
+                        curPos = right;
+                    }
                 }
-                i++;
-                i = i % 6;
-                dirsPassed++;
+            }
+            if (includeStartPoint) // Если нужно добавить точку отсчёта в схему то добавим.
+                res.Add(startPoint);
+            return res;
+        }
+
+        public static List<VCube> GetRing(Cube startPoint, int direction, int radius)
+        {
+            var result = new List<VCube>();
+            var vCube = new VCube(startPoint, true);
+            vCube.Scale(direction, radius);
+            var directionPasses = 0;
+            var currentDirection = (direction + 2) % 6;
+            while (directionPasses < 6)
+            {
+                for (int i = 0; i < radius; i++)
+                {
+                    if (vCube == null) break;
+                    result.Add(vCube);
+                    vCube = vCube.Dirs[currentDirection];
+                    vCube.GenerateDirs();
+                }
+                currentDirection++;
+                if (currentDirection == 6)
+                    currentDirection = currentDirection % 6;
+                directionPasses++;
             }
             return result;
         }

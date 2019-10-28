@@ -51,10 +51,13 @@ namespace TBS
             _currentUnit = currentUnit.Unit;
             if (_currentUnit == null) return;
             _currentCell = _map.Cell(_currentUnit.CurPos);
-            _cellsAvailableToMove = _map.GetCellsToMove(_currentCell, _currentUnit.Chars.MoveRad, _currentUnit.Chars.MoveType);
-            if (currentUnit.ActionId == -1)return;
+            _cellsAvailableForMove = _map.GetAvailableForMove(_currentCell, _currentUnit.Chars.MoveRad, _currentUnit.Chars.MoveType);
+            if (currentUnit.ActionId == -1) return;
             _selectedAction = _repWkr.GetAction(currentUnit.ActionId);
-            _cellsAvailableToAction = _map.GetCellsAvailableToAction(_currentUnit, _currentCell, _selectedAction);
+            _cellsAvailableForAction = _map.GetAvailableForAction(_currentUnit, _currentCell, _selectedAction);
+            _cellsAvailableForApply = _map.GetAvailableForApply(_currentUnit, _currentCell, _selectedAction.AppliesOn);
+            _cellsOfActionRange = _map.GetCellsInRange(_currentCell.Axial, _selectedAction.Range);
+            DrawDebug();
         }
 
         private void TurnControl_WaitClicked(object sender, EventArgs e)
@@ -73,40 +76,48 @@ namespace TBS
 
         private void b_editArmies_Click(object sender, EventArgs e) { ArmyEditor armyEditor = new ArmyEditor(_pls); armyEditor.ShowDialog(); }
 
-
         Brush _targetingBrush = new SolidBrush(Color.FromArgb(60, Color.Red));
         Brush _movePtBrush = new SolidBrush(Color.FromArgb(60, Color.Orange));
-        Brush _shemeBrush = new SolidBrush(Color.FromArgb(60, Color.Red));
+        Brush _shemeBrush = new SolidBrush(Color.FromArgb(60, Color.Blue));
+        Brush _linePathBrush = new SolidBrush(Color.FromArgb(60, Color.Green));
         private void DrawMap()
         {
             if (_map == null) return;
             Bitmap b = new Bitmap(_map.GridLayout); Graphics g = Graphics.FromImage(b);
 
 
-            // Available for move + path
-            for (int i = 0; i < _cellsAvailableToMove.Count; i++)
-                g.DrawImage(_stepsD, _cellsAvailableToMove[i].StepsSize, _step_srec, GraphicsUnit.Pixel);
-            for (int i = 0; i < _pathCells.Count; i++)
-                g.DrawImage(_steps, _pathCells[i].StepsSize, _step_srec, GraphicsUnit.Pixel);
+            // Available for move + movement path
+            for (int i = 0; i < _cellsAvailableForMove.Count; i++)
+                g.DrawImage(_stepsD, _cellsAvailableForMove[i].StepsSize, _step_srec, GraphicsUnit.Pixel);
+            for (int i = 0; i < _movementPath.Count; i++)
+                g.DrawImage(_steps, _movementPath[i].StepsSize, _step_srec, GraphicsUnit.Pixel);
 
             // Available for action
-            for (int i = 0; i < _cellsAvailableToAction.Count; i++)
-                g.FillPolygon(_targetingBrush, _cellsAvailableToAction[i].Hex.K10);
+            for (int i = 0; i < _cellsAvailableForAction.Count; i++)
+                g.FillPolygon(_targetingBrush, _cellsAvailableForAction[i].Hex.K10);
+
+            // Available for apply
+            for (int i = 0; i < _cellsAvailableForApply.Count; i++)
+                g.FillPolygon(_targetingBrush, _cellsAvailableForApply[i].Hex.K40);
+
+            // ActionRange
+            for (int i = 0; i < _cellsOfActionRange.Count; i++)
+                g.DrawPolygon(Pens.Green, _cellsOfActionRange[i].Hex.K);
 
             // LinePath
             if (_actionLinePath.Count > 0)
             {
                 for (int i = 0; i < _actionLinePath.Count; i++)
                 {
-                    g.DrawPolygon(Pens.Blue, _actionLinePath[i].Hex.K30);
+                    g.FillPolygon(_linePathBrush, _actionLinePath[i].Hex.K30);
                 }
                 if (_currentCell != null && _hoveredCell != null)
                     g.DrawLine(Pens.Blue, _currentCell.Hex.Center, _hoveredCell.Hex.Center);
             }
 
-            // ActionStartPt
+            // ActionStartPoint
             if (_actionStartPoint != null)
-                g.DrawPolygon(Pens.Aqua, _actionStartPoint.Hex.K20);
+                g.DrawPolygon(Pens.Blue, _actionStartPoint.Hex.K20);
 
             // MoveDestination
             if (_moveDestination != null)
@@ -139,27 +150,34 @@ namespace TBS
         }
 
         Font _fnt = new Font("Calibri Light", 10, FontStyle.Regular); Brush _brush = Brushes.Black; StringFormat _drawFormat = new StringFormat();
-        private void DebugDraw(List<VUnit> vus, List<Unit> us)
+        private void DrawDebug()
         {
             const int vs = 15; int k = 0; var b = new Bitmap(pb_debug.Width, pb_debug.Height); var g = Graphics.FromImage(b);
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
-            if (vus != null)
-                for (int i = 0; i < vus.Count; i++)
-                {
-                    var vu = vus[i];
-                    g.DrawString(String.Format("{0} {1} {2}", vu.Unit.Name, vu.Unit.TeamId, vu.Lane), _fnt, _brush, 0, k * vs, _drawFormat);
-                    g.FillRectangle(Brushes.Red, 100, k * vs, vu.Lane, 10);
-                    k++;
-                }
-
+            // Common.
+            g.DrawString(String.Format("Текущая: {0}", _currentCell == null ? "" : _currentCell.Axial + ""), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+            g.DrawString(String.Format("Цель: {0}", _hoveredCell == null ? "" : _hoveredCell.Axial + ""), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+            g.DrawString(String.Format("Расстояние: {0}", _distance), _fnt, _brush, 0, k * vs, _drawFormat); k++;
             k++;
-            for (int i = 0; i < us.Count; i++)
+            if (_selectedAction != null)
             {
-                var u = us[i];
-                g.DrawString(String.Format("{0} {1} {2}", u.Name, u.TeamId, u.Chars.Lane), _fnt, _brush, 0, k * vs, _drawFormat);
+                g.DrawString(String.Format("Дистанция атаки: {0}", _selectedAction.Range), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("Блокируется: {0}", _selectedAction.BlockIfEnemyClose), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("Откат всего: {0}", _selectedAction.CoolTimeMax), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("Откат текущий: {0}", _selectedAction.CoolTime), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("Из: {0}", _goesFrom), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("В: {0}", _goesTo), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("Распространение: {0}", _selectedAction.ShemeType), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("Отсчёт от цели: {0}", _selectedAction.CalcFromTarget), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("Включать точку отсчёта: {0}", _selectedAction.IncludeStartPoint), _fnt, _brush, 0, k * vs, _drawFormat); k++;
                 k++;
+                g.DrawString(String.Format("Доступно для прицеливания: {0}", _cellsAvailableForAction.Count), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("Доступно для урона/эффекта: {0}", _cellsAvailableForApply.Count), _fnt, _brush, 0, k * vs, _drawFormat); k++;
             }
+
+            
+
             pb_debug.Image = b; g = null; b = null;
         }
 
@@ -264,24 +282,24 @@ namespace TBS
         BMapCell _hoveredCell, _currentCell;
         Unit _currentUnit;
 
-        List<BMapCell> _cellsAvailableToMove = new List<BMapCell>();
-        List<BMapCell> _cellsAvailableToAction = new List<BMapCell>();
-        List<BMapCell> _pathCells = new List<BMapCell>();
+        List<BMapCell> _cellsAvailableForMove = new List<BMapCell>();
+        List<BMapCell> _cellsAvailableForAction = new List<BMapCell>();
+        List<BMapCell> _cellsAvailableForApply = new List<BMapCell>();
+        List<BMapCell> _cellsOfActionRange = new List<BMapCell>();
+        List<BMapCell> _movementPath = new List<BMapCell>();
         List<BMapCell> _actionLinePath = new List<BMapCell>();
         List<BMapCell> _actionSheme = new List<BMapCell>();
         List<Unit> _targetsOnLine = new List<Unit>();
 
         BMapCell _actionStartPoint;
         BMapCell _moveDestination;
-        int _direction;
+        int _goesFrom, _distance, _goesTo;
         
-
-
         private void pb_field_MouseMove(object sender, MouseEventArgs e)
         {
             // Clears
             _actionLinePath.Clear();
-            _pathCells.Clear();
+            _movementPath.Clear();
             _actionSheme.Clear();
             _actionStartPoint = null;
             _moveDestination = null;
@@ -290,68 +308,80 @@ namespace TBS
             if (_map == null) goto end;
             _hoveredCell = _map.GetCellByXY(e.X, e.Y);
             if (_hoveredCell == null) goto end;
+            _distance = _hoveredCell.Cube.DistanceToI(_currentCell.Cube);
 
-            var actionCell = _cellsAvailableToAction.WitchIs(_hoveredCell);
-            if (actionCell != null)
+            var actionCell = _cellsAvailableForAction.WitchIs(_hoveredCell);
+            if (actionCell != null) // Навели на клетку прицеливания.
             {
                 
-                if (_selectedAction.Rad > 1)
+                if (_selectedAction.Range > 1) // Дистанционное дествие.
                 {
-                    // dist attack
-                    _actionLinePath = _map.GetCellsOnLine(_currentCell.Cube, actionCell.Cube, false, false);
-                    if (_actionLinePath.Count == 0)
+                    switch (_distance)
                     {
-                        if (_hoveredCell.Axial == _currentCell.Axial) _direction = _map.GetDirection(_hoveredCell, e.X, e.Y);
-                        else _direction = _map.GetDirection(_hoveredCell, _currentCell);
+                        case 0: // На себя.
+                            _goesFrom = _map.GetDirection(_hoveredCell, e.X, e.Y);
+                            break;
+                        case 1: // Соседняя клетка.
+                            _goesFrom = _map.GetDirection(_hoveredCell, _currentCell);
+                            break;
+                        default: // Дистанционная клетка.
+                            _actionLinePath = _map.GetCellsOnLine(_currentCell.Cube, actionCell.Cube, false, false);
+                            _goesFrom = _map.GetDirection(_hoveredCell, _actionLinePath[_actionLinePath.Count - 1]);
+                            break;
                     }
-                    else _direction = _map.GetDirection(_hoveredCell, _actionLinePath[_actionLinePath.Count - 1]);
-                    if (_direction == -1) goto end;
-                    _actionStartPoint = _selectedAction.CalcFromTarget ? _hoveredCell : _hoveredCell.GetDir(_direction);
+                    if (_goesFrom == -1) { _goesTo = -1; goto end; }
+                    _goesTo = (_goesFrom + 3) % 6;
+                    // Точка отсчёта действия.
+                    _actionStartPoint = _selectedAction.CalcFromTarget ? _hoveredCell : _hoveredCell.GetDir(_goesFrom);
                 }
-                else
+                else // Ближнее действие.
                 {
-                    // close attack
-                    _direction = _map.GetDirection(_hoveredCell, e.X, e.Y);
-                    _actionStartPoint = _selectedAction.CalcFromTarget ? _hoveredCell : _hoveredCell.GetDir(_direction);
-                    if (_actionStartPoint == null)
+                    _goesFrom = _map.GetDirection(_hoveredCell, e.X, e.Y);
+                    _goesTo = (_goesFrom + 3) % 6;
+                    _actionStartPoint = _selectedAction.CalcFromTarget ? _hoveredCell : _hoveredCell.GetDir(_goesFrom);
+                    switch (_distance)
                     {
-                        _direction = -1;
-                        _actionStartPoint = null;
-                        goto end;
-                    }
-                    else
-                    {
-                        if (_cellsAvailableToMove.WitchIs(_actionStartPoint) != null)
-                        {
-                            _moveDestination = _actionStartPoint;
-                            _pathCells.AddRange(_map.GetPath((Unit)_currentUnit, _currentCell, _moveDestination, _cellsAvailableToMove));
-                        }
-                        else
-                        {
-                            if (_actionStartPoint.Axial != _currentCell.Axial)
+                        case 0: // На себя.
+                            break;
+                        case 1: // Соседняя клетка.
+                        default: // Дистанционная клетка.
+                            _moveDestination = _hoveredCell.GetDir(_goesFrom);
+                            if (_moveDestination == null)// Некуда идти.
                             {
-                                _direction = -1;
                                 _actionStartPoint = null;
                                 goto end;
                             }
-                        }
+                            if (
+                                _cellsAvailableForMove.WitchIs(_moveDestination) == null &&
+                                _moveDestination.Axial != _currentCell.Axial
+                                )// Нельзя переместиться или остаться на месте.
+                            {
+                                _actionStartPoint = null;
+                                _moveDestination = null;
+                                goto end;
+                            }
+                            _movementPath.AddRange(_map.GetPath(_currentUnit, _currentCell, _moveDestination, _cellsAvailableForMove));
+                            break;
                     }
                 }
                 
-                _actionSheme = _map.GetSheme(_actionStartPoint, _selectedAction, (_direction + 3) % 6, _direction, _cellsAvailableToAction);
+                _actionSheme = _map.GetSheme(_actionStartPoint, _selectedAction, _goesTo, _cellsAvailableForAction);
             }
-            else // Action miss
+            else
             {
-                _direction = -1;
-                var movementCell = _cellsAvailableToMove.WitchIs(_hoveredCell);
+                // Навели на что-то другое.
+                _goesFrom = -1;
+                _goesTo = -1;
+                var movementCell = _cellsAvailableForMove.WitchIs(_hoveredCell);
                 if (movementCell != null)
                 {
                     _moveDestination = _hoveredCell;
-                    _pathCells.AddRange(_map.GetPath((Unit)_currentUnit, _currentCell, _moveDestination, _cellsAvailableToMove));
+                    _movementPath.AddRange(_map.GetPath(_currentUnit, _currentCell, _moveDestination, _cellsAvailableForMove));
                 }
             }
             end:
             DrawMap();
+            DrawDebug();
         }
 
         private void pb_field_Click(object sender, EventArgs e)
