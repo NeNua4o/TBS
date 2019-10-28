@@ -421,7 +421,7 @@ namespace TBS
                                 }
                                 else // Моментального действия.
                                 {
-                                    unit.ApplyEffect(effect);
+                                    unit.ApplyActiveEffect(effect);
                                 }
                             }
                         }

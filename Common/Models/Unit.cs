@@ -51,17 +51,13 @@ namespace Common.Models
             if (unit.PassivesIds != null) { PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length); }
         }
 
-        public void ApplyEffect(Effect effect)
+        public void ApplyActiveEffect(Effect effect)
         {
-            Chars.Add(effect);
+            // HP
+
         }
 
-        private void ApplyEffectNow(Effect effect)
-        {
-            
-        }
-
-        private void AddEffectToList(Effect effect)
+        public void ApplyPassiveEffects()
         {
 
         }
