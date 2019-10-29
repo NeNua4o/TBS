@@ -24,7 +24,7 @@ namespace Common.Models
         [DefaultValue(null)]
         [Editor(typeof(ImagePropertyEditor), typeof(UITypeEditor))]
         [XmlIgnore]
-        public Image Icon { get { return _icon; } set { _icon = value; IconPath = (string)_icon.Tag; } }
+        public Image Icon { get { return _icon; } set { _icon = value; IconPath = _icon==null?"":(string)_icon.Tag; } }
 
         [DisplayName("Путь до иконки")]
         [DefaultValue("")]
@@ -60,6 +60,17 @@ namespace Common.Models
         {
             Name = "New Effect";
             Affects = new Characteristics();
+        }
+
+        public Effect(Effect s)
+        {
+            Id = s.Id;
+            Name = s.Name;
+            Icon = s.Icon;
+            EffectType = s.EffectType;
+            Chance = s.Chance;
+            Turns = s.Turns;
+            Affects = new Characteristics(s.Affects);
         }
 
         public override string ToString()

@@ -26,14 +26,13 @@ namespace Common.Repositories
         private RepositoryWorker()
         {
             _teamRepository = new TeamRepository();
-            _baseUnitRepository = new BaseUnitsRepository("BaseUnits.xml");
-            _actionRepository = new ActionsRepository("Actions.xml");
             _effectRepository = new EffectsRepository("Effects.xml");
+            _actionRepository = new ActionsRepository("Actions.xml");
+            _baseUnitRepository = new BaseUnitsRepository("BaseUnits.xml");
             _plRepository = new PlsRepository("Pls.xml");
-            
         }
 
-        public static RepositoryWorker GetInstance()
+        public static RepositoryWorker Instance()
         {
             if (_instance == null)
             {
@@ -49,6 +48,7 @@ namespace Common.Repositories
         {
             _effectRepository.LoadItems();
             _actionRepository.LoadItems();
+            _actionRepository.UpdateEffects(_effectRepository.GetItems());
             _baseUnitRepository.LoadItems();
             _plRepository.LoadItems();
             _plRepository.UpdateUnits(_baseUnitRepository.GetItems());

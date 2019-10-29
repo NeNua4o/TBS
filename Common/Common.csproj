@@ -59,12 +59,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\CharacteristicType.cs" />
+    <Compile Include="Enums\MoveTypes.cs" />
+    <Compile Include="Enums\Races.cs" />
     <Compile Include="Enums\ShemeTypes.cs" />
     <Compile Include="Extensions\AxialExtensions.cs" />
     <Compile Include="Extensions\CubeExtensions.cs" />
     <Compile Include="Extensions\PointFExtensions.cs" />
     <Compile Include="Models\Act.cs" />
     <Compile Include="Models\Axial.cs" />
+    <Compile Include="Models\BaseUnit.cs" />
     <Compile Include="Models\BMap.cs" />
     <Compile Include="Controls\ActionEditor.cs">
       <SubType>UserControl</SubType>
@@ -133,6 +137,7 @@
       <DependentUpon>UnitEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\BMapCell.cs" />
+    <Compile Include="Models\Characteristics.cs" />
     <Compile Include="Models\Cube.cs" />
     <Compile Include="Models\ECube.cs" />
     <Compile Include="Models\Effect.cs" />
@@ -175,8 +180,9 @@
     <Compile Include="Repositories\PlsRepositories.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
     <Compile Include="Utils\AxialUtils.cs" />
+    <Compile Include="Utils\BattleUtils.cs" />
     <Compile Include="Utils\CubeUtils.cs" />
-    <Compile Include="Utils\RUtils.cs" />
+    <Compile Include="Utils\RandomUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="TBSEventArgs\SelectedActionChangedEventArgs.cs" />
     <Compile Include="TBSEventArgs\SelectedEffectChangedEventArgs.cs" />

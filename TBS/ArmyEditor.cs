@@ -17,7 +17,7 @@ namespace TBS
             InitializeComponent();
             _icons.ImageSize = new Size(50, 50);
             lv_units.LargeImageList = _icons;
-            _repWorker = RepositoryWorker.GetInstance();
+            _repWorker = RepositoryWorker.Instance();
             var units = _repWorker.BaseUnits;
             for (int unitCounter = 0; unitCounter < units.Count; unitCounter++)
             {

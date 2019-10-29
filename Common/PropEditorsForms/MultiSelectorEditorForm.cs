@@ -17,7 +17,7 @@ namespace Common.PropEditorsForms
         public MultiSelectorEditorForm(SelectorTypes selectorType, object value)
         {
             InitializeComponent();
-            _repWkr = RepositoryWorker.GetInstance();
+            _repWkr = RepositoryWorker.Instance();
 
             if (value != null)
             {

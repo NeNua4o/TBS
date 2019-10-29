@@ -1,20 +1,20 @@
 ﻿using System;
 namespace Common.Utils
 {
-    public class RUtils
+    public class RandomUtils
     {
-        private static RUtils _randomUtils;
+        private static RandomUtils _instance;
 
-        public static RUtils Inst()
+        public static RandomUtils Instance()
         {
-            if (_randomUtils == null)
-                _randomUtils = new RUtils();
-            return _randomUtils;
+            if (_instance == null)
+                _instance = new RandomUtils();
+            return _instance;
         }
 
         private Random _random;
 
-        private RUtils()
+        private RandomUtils()
         {
             _random = new Random();
         }

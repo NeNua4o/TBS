@@ -27,7 +27,7 @@ namespace Common.Controls
             p_1_5.Tag = "15"; pans.Add(p_1_5);
             p_1_6.Tag = "16"; pans.Add(p_1_6);
 
-            _repWkr = RepositoryWorker.GetInstance();
+            _repWkr = RepositoryWorker.Instance();
             for (int i = 0; i < _repWkr.Teams.Count; i++)
                 cb_team.Items.Add(_repWkr.Teams[i].Id);
         }

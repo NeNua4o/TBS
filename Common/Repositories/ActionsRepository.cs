@@ -75,6 +75,22 @@ namespace Common.Repositories
             }
         }
 
+        internal void UpdateEffects(List<Effect> effects)
+        {
+            for (int i = 0; i < _actions.Count; i++)
+            {
+                var action = _actions[i];
+                action.UserEffect = effects.FirstOrDefault(effect => effect.Id == action.UserEffectId);
+                action.PathEffect = effects.FirstOrDefault(effect => effect.Id == action.PathEffectId);
+                if (action.EffectsIds != null)
+                {
+                    action.Effects = new Effect[action.EffectsIds.Length];
+                    for (int j = 0; j < action.EffectsIds.Length; j++)
+                        action.Effects[j] = effects.FirstOrDefault(effect => effect.Id == action.EffectsIds[j]);
+                }
+            }
+        }
+
         public void SaveItems()
         {
             FileStream fs = null;

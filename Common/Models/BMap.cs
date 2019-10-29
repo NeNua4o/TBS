@@ -86,8 +86,8 @@ namespace Common.Models
                     {
                         var hex = new Hex(
                             new PointF(
-                                HexWidth + (col - (ArraySize - sideCellCount - 1)) * (WidthSpacing+5) + row * (HexInRadius+5), 
-                                HexOutRadius + row * (HeightSpacing + 5)
+                                HexWidth + (col - (ArraySize - sideCellCount - 1)) * (WidthSpacing) + row * (HexInRadius), 
+                                HexOutRadius + row * (HeightSpacing)
                                 ), 
                                 HexOutRadius);
                         Cells[col, row].Hex = hex;

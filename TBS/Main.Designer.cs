@@ -35,6 +35,7 @@
             this.turnQueue = new Common.Controls.TurnQueue();
             this.turnControl = new Common.Controls.TurnControl();
             this.pb_debug = new System.Windows.Forms.PictureBox();
+            this.b_log = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pb_field)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_debug)).BeginInit();
             this.SuspendLayout();
@@ -102,12 +103,23 @@
             this.pb_debug.TabIndex = 6;
             this.pb_debug.TabStop = false;
             // 
+            // b_log
+            // 
+            this.b_log.Location = new System.Drawing.Point(12, 41);
+            this.b_log.Name = "b_log";
+            this.b_log.Size = new System.Drawing.Size(75, 23);
+            this.b_log.TabIndex = 7;
+            this.b_log.Text = "log";
+            this.b_log.UseVisualStyleBackColor = true;
+            this.b_log.Click += new System.EventHandler(this.b_log_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(757, 468);
+            this.Controls.Add(this.b_log);
             this.Controls.Add(this.pb_debug);
             this.Controls.Add(this.turnControl);
             this.Controls.Add(this.currentUnit);
@@ -135,6 +147,7 @@
         private Common.Controls.CurrentUnit currentUnit;
         private Common.Controls.TurnControl turnControl;
         private System.Windows.Forms.PictureBox pb_debug;
+        private System.Windows.Forms.Button b_log;
     }
 }
 

@@ -22,7 +22,7 @@ namespace Common.Controls
         public CurrentUnit()
         {
             InitializeComponent();
-            _repWkr = RepositoryWorker.GetInstance();
+            _repWkr = RepositoryWorker.Instance();
             actionSelectorMain.ActionChanged += ActionSelector_ActionChanged;
             actionSelectorSec.ActionChanged += ActionSelector_ActionChanged;
         }

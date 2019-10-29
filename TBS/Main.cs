@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using BS;
+using Common;
 using Common.Extensions;
 using Common.Models;
 using Common.Repositories;
@@ -9,7 +10,7 @@ using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Forms;
-
+using System.ComponentModel;
 
 namespace TBS
 {
@@ -17,9 +18,10 @@ namespace TBS
     {
         BMap _map;
         List<Pl> _pls = new List<Pl>();
-        RepositoryWorker _repWkr = RepositoryWorker.GetInstance();
+        RepositoryWorker _repWkr = RepositoryWorker.Instance();
+        BattleUtils _battle = BattleUtils.Instance();
 
-        RUtils _rng = RUtils.Inst();
+        RandomUtils _rng = RandomUtils.Instance();
         RectangleF _srcModelSize = new RectangleF(0, 0, 60, 60);
         RectangleF _step_srec = new RectangleF(0, 0, 40, 40);
         Bitmap _steps, _stepsD;
@@ -39,6 +41,22 @@ namespace TBS
 
             _steps = new Bitmap("icons/step.png");
             _stepsD = new Bitmap("icons/z_step.png");
+        }
+
+        LogForm _lf = new LogForm();
+        bool _lfopened = false;
+        private void b_log_Click(object sender, EventArgs e)
+        {
+            _lf.AddS(_log);
+            _lf.Show();
+            _lfopened = true;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (_lfopened)
+                _lf.Close();
+            base.OnClosing(e);
         }
 
         private void CurrentUnit_ActionChanged(object sender, EventArgs e)
@@ -184,6 +202,8 @@ namespace TBS
 
         private void b_reset_Click(object sender, EventArgs e)
         {
+            _log.Clear();
+            _lf.Reset();
             GenerateMap();
             PlaceAllUnits();
             InitTurnOrder();
@@ -251,6 +271,13 @@ namespace TBS
                 }
             }
             currentUnit.Set(turnQueueUnits[0]);
+            var log = _battle.ApplyPassives(turnQueueUnits[0]);
+            _lf.AddS(log);
+            _log.AddRange(log);
+
+            if (WinCondition())
+                return;
+
             ReSetCurrentParams();
 
             turnQueueUnits.Clear();
@@ -291,11 +318,14 @@ namespace TBS
         List<BMapCell> _actionLinePath = new List<BMapCell>();
         List<BMapCell> _actionSheme = new List<BMapCell>();
         List<Unit> _targetsOnLine = new List<Unit>();
+        List<string> _log = new List<string>();
 
         BMapCell _actionStartPoint;
         BMapCell _moveDestination;
         int _goesFrom, _distance, _goesTo;
+
         
+
         private void pb_field_MouseMove(object sender, MouseEventArgs e)
         {
             // Clears
@@ -352,14 +382,14 @@ namespace TBS
                                 _actionStartPoint = null;
                                 goto end;
                             }
-                            if (
-                                _cellsAvailableForMove.WitchIs(_moveDestination) == null &&
-                                _moveDestination.Axial != _currentCell.Axial
-                                )// Нельзя переместиться или остаться на месте.
+                            if (_cellsAvailableForMove.WitchIs(_moveDestination) == null)// Нельзя переместиться.
                             {
-                                _actionStartPoint = null;
-                                _moveDestination = null;
-                                goto end;
+                                if(_moveDestination.Axial != _currentCell.Axial)// Точка атаки не совпадает с позицией атакующего
+                                {
+                                    _actionStartPoint = null;
+                                    _moveDestination = null;
+                                    goto end;
+                                }
                             }
                             _movementPath.AddRange(_map.GetPath(_currentUnit, _currentCell, _moveDestination, _cellsAvailableForMove));
                             break;
@@ -410,20 +440,9 @@ namespace TBS
                         var unit = directAttacked[i].Unit;
                         for (int j = 0; j < _selectedAction.Effects.Length; j++) // Применим эффект.
                         {
-                            
-                            var effect = _repWkr.GetEffect(_selectedAction.Effects[j]);
-                            var chance = RUtils.Inst().Get100();
-                            if (chance <= effect.Chance) // Попадание.
-                            {
-                                if (effect.Turns > 0) // Длительного действия.
-                                {
-                                    unit.Effects.Add(effect);
-                                }
-                                else // Моментального действия.
-                                {
-                                    unit.ApplyActiveEffect(effect);
-                                }
-                            }
+                            var log = _battle.ApplyEffect(_currentUnit, unit, _selectedAction.Effects[j]);
+                            _lf.AddS(log);
+                            _log.AddRange(log);
                         }
                     }
                     doAtack = true;
@@ -433,14 +452,27 @@ namespace TBS
                 {
                     // Снимем полоску хода.
                     currentUnit.Unit.Chars.Lane -= _baseLane;
+                    if (WinCondition())
+                        return;
                     // Пересчитаем ходы.
                     CalcTurns();
                 }
             }
         }// click.
 
-
-
+        private bool WinCondition()
+        {
+            var pl1 = _pls[0].Units.Any(unit => unit.Chars.Alive == 1);
+            var pl2 = _pls[1].Units.Any(unit => unit.Chars.Alive == 1);
+            if (pl1 && pl2)
+                return false;
+            else
+            {
+                if (!pl1) MessageBox.Show("Победил игрок справа");
+                if (!pl2) MessageBox.Show("Победил игрок слева");
+                return true;
+            }
+        }
     }// class end.
 
     

@@ -12,7 +12,7 @@ namespace UnitEditor
         public UnitEditoMn()
         {
             InitializeComponent();
-            _repWkr = RepositoryWorker.GetInstance();
+            _repWkr = RepositoryWorker.Instance();
             _repWkr.LoadAll();
             propertyGrid.PropertyValueChanged += PropertyGrid_PropertyValueChanged;
             unitEditor.SelectedUnitChanged += UnitEditor_SelectedUnitChanged;

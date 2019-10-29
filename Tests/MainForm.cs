@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Common.Utils;
 using System.Threading;
 using System.Drawing.Text;
+using System.Diagnostics;
 
 namespace Tests
 {
@@ -24,7 +25,7 @@ namespace Tests
 
         private void b_rtest_Click(object sender, EventArgs e)
         {
-            var inst = RUtils.Inst();
+            var inst = RandomUtils.Instance();
             _rngs = new int[101];
             while (true)
             {
@@ -49,6 +50,16 @@ namespace Tests
         }
 
         Font _fnt = new Font("Calibri Light", 8, FontStyle.Regular); Brush _brush = Brushes.Black; StringFormat _drawFormat = new StringFormat();
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                Debug.Write(i*4 / 100 + " ");
+                Debug.WriteLine(i*4 / 100f);
+            }
+        }
+
         private void DrawR()
         {
             Bitmap b = new Bitmap(210, 420); Graphics g = Graphics.FromImage(b);

@@ -14,7 +14,7 @@ namespace Common.PropEditorsForms
         public SingleSelectorEditorForm(SelectorTypes selectorType)
         {
             InitializeComponent();
-            _repWkr = RepositoryWorker.GetInstance();
+            _repWkr = RepositoryWorker.Instance();
             ItemSelector item;
             flp_items.Controls.Clear();
             switch (selectorType)
@@ -46,7 +46,7 @@ namespace Common.PropEditorsForms
             InitializeComponent();
             if (ids == null || ids.Length == 0)
                 return;
-            _repWkr = RepositoryWorker.GetInstance();
+            _repWkr = RepositoryWorker.Instance();
             ItemSelector item;
             flp_items.Controls.Clear();
             switch (selectorType)

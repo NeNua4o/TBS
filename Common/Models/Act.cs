@@ -85,6 +85,9 @@ namespace Common.Models
         [XmlAttribute]
         public int UserEffectId { get; set; }
 
+        [XmlIgnore]
+        public Effect UserEffect;
+
         [DisplayName("Откат")]
         [Description("Количество ходов до повторного использования")]
         [DefaultValue(0)]
@@ -100,7 +103,10 @@ namespace Common.Models
         [DefaultValue(-1)]
         [Editor(typeof(EffectSelector), typeof(UITypeEditor))]
         [XmlAttribute]
-        public int PathEffect { get; set; }
+        public int PathEffectId { get; set; }
+
+        [XmlIgnore]
+        public Effect PathEffect;
 
         [DisplayName("Тип распространения действия")]
         [Description("Схема распространения эффектов под целью")]
@@ -142,7 +148,10 @@ namespace Common.Models
         [Description("Эффекты которые применятся к конечным целям")]
         [Editor(typeof(EffectMSelector), typeof(UITypeEditor))]
         [TypeConverter(typeof(CollectionTypeConverter))]
-        public int[] Effects { get; set; }
+        public int[] EffectsIds { get; set; }
+
+        [XmlIgnore]
+        public Effect[] Effects;
 
         public Act()
         {
@@ -152,7 +161,7 @@ namespace Common.Models
             UserEffectId = -1;
             Targetting = new Targets();
             AppliesOn = new Targets();
-            PathEffect = -1;
+            PathEffectId = -1;
         }
 
         public override string ToString()

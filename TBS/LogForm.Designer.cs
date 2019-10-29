@@ -1,13 +1,13 @@
-﻿namespace Common.Controls
+﻿namespace BS
 {
-    partial class TurnQueue
+    partial class LogForm
     {
-        /// <summary> 
+        /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
+        /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -20,41 +20,42 @@
             base.Dispose(disposing);
         }
 
-        #region Component Designer generated code
+        #region Windows Form Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
+        /// <summary>
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            this.pb = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
+            this.lb = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
-            // pb
+            // lb
             // 
-            this.pb.Location = new System.Drawing.Point(0, 0);
-            this.pb.Name = "pb";
-            this.pb.Size = new System.Drawing.Size(100, 50);
-            this.pb.TabIndex = 0;
-            this.pb.TabStop = false;
+            this.lb.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lb.FormattingEnabled = true;
+            this.lb.Location = new System.Drawing.Point(0, 0);
+            this.lb.Name = "lb";
+            this.lb.Size = new System.Drawing.Size(284, 261);
+            this.lb.TabIndex = 0;
             // 
-            // TurnQueue
+            // LogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.Controls.Add(this.pb);
-            this.Name = "TurnQueue";
-            this.Size = new System.Drawing.Size(1005, 85);
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.lb);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "LogForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pb;
+        private System.Windows.Forms.ListBox lb;
     }
 }
