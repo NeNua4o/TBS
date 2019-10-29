@@ -88,8 +88,9 @@ namespace Common.Utils
                 {
                     unit.Chars.HP += effect.Affects.HP;
                     result.Add(String.Format(
-                    "[DOT ] {0} -> {1} : {2} ({3})",
-                    effect.Name, unit.Name, effect.Name, effect.Affects.HP));
+                    "[DOT ] {0} -> {1} : {2} ({3}) turns {4}",
+                    effect.Name, unit.Name, effect.Name, effect.Affects.HP, effect.Turns - 1
+                    ));
                     if (unit.Chars.HP < 0)
                     {
                         unit.Chars.HP = 0;
@@ -98,7 +99,21 @@ namespace Common.Utils
                         break;
                     }
                 }
+
+                effect.Turns--;
+                if (effect.Turns == 0)
+                    unit.Effects[i] = null;
             }
+
+            // Reapply
+            var tempArray = new List<Effect>();
+            for (int i = 0; i < unit.Effects.Count; i++)
+            {
+                if (unit.Effects[i] != null)
+                    tempArray.Add(unit.Effects[i]);
+            }
+            unit.Effects = tempArray;
+            tempArray = null;
             return result;
         }
     }
