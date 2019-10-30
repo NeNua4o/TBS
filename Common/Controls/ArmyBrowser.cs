@@ -50,7 +50,7 @@ namespace Common.Controls
 
         private void p_unit_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(BaseUnit))) { e.Effect = e.AllowedEffect; }
+            if (e.Data.GetDataPresent(typeof(Unit))) { e.Effect = e.AllowedEffect; }
             if (e.Data.GetDataPresent(typeof(Unit))) { e.Effect = e.AllowedEffect; }
         }
 
@@ -60,14 +60,14 @@ namespace Common.Controls
             if (e.Effect == DragDropEffects.Copy)
             {
                 var snd = (Panel)sender;
-                var dragableUnit = (BaseUnit)e.Data.GetData(typeof(BaseUnit));
+                var dragableUnit = (Unit)e.Data.GetData(typeof(Unit));
                 var oldUnit = GetUnitByTag(snd.Tag);
                 if (oldUnit == null)
                 {
                     if (Pl.Units.Count < 7)
                     {
                         var newUnit = new Unit(dragableUnit, GetFromPan(snd), Pl.TeamId);
-                        newUnit.Id = GetNewGlobalId();
+                        newUnit.BaseId = GetNewGlobalId();
                         newUnit.TeamId = Pl.TeamId;
                         Pl.Units.Add(newUnit);
                         snd.BackgroundImage = new Bitmap(newUnit.Icon, snd.Size);
@@ -76,7 +76,7 @@ namespace Common.Controls
                 else
                 {
                     var newUnit = new Unit(dragableUnit, GetFromPan(snd), Pl.TeamId);
-                    newUnit.Id = oldUnit.Id;
+                    newUnit.BaseId = oldUnit.BaseId;
                     newUnit.TeamId = Pl.TeamId;
                     var ind = Pl.Units.IndexOf(oldUnit);
                     Pl.Units.Insert(ind, newUnit);
@@ -144,7 +144,7 @@ namespace Common.Controls
         private int GetNewGlobalId()
         {
             int k = 1;
-            while (Pl.Units.Any(unit=>unit.Id==k))
+            while (Pl.Units.Any(unit=>unit.BaseId==k))
             {
                 k++;
             }

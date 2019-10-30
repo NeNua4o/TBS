@@ -1,10 +1,12 @@
-﻿namespace Common.Models
+﻿using Common.Enums;
+
+namespace Common.Models
 {
     public class VUnit
     {
         public Unit Unit;
         public float Lane;
-        public int Initiative;
+        public float Initiative;
         public float LaneUp;
         public VUnit(Unit unit)
         {

@@ -1,4 +1,5 @@
-﻿using Common.Models;
+﻿using Common.Enums;
+using Common.Models;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -32,7 +33,7 @@ namespace Common.Controls
 
                 g.DrawImage(unit.Icon, new RectangleF((i * _Iw) + ((_Iw - _Uw) / 2f), initSize.Height, _Uw, _Uh));
 
-                s = unit.Chars.HP + " / " + unit.Bu.Chars.HP;
+                s = unit.Chars.C_Hp + " / " + unit.Chars.B_Hp;
                 var hpSize = g.MeasureString(s, _font);
                 g.DrawString(s, _font, _brush, (i * _Iw) + ((_Iw - hpSize.Width) / 2f), initSize.Height + _Uh);
 

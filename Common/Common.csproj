@@ -59,16 +59,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\CharacteristicType.cs" />
+    <Compile Include="Enums\CharType.cs" />
     <Compile Include="Enums\MoveTypes.cs" />
     <Compile Include="Enums\Races.cs" />
     <Compile Include="Enums\ShemeTypes.cs" />
+    <Compile Include="Enums\CharMod.cs" />
     <Compile Include="Extensions\AxialExtensions.cs" />
     <Compile Include="Extensions\CubeExtensions.cs" />
     <Compile Include="Extensions\PointFExtensions.cs" />
     <Compile Include="Models\Act.cs" />
     <Compile Include="Models\Axial.cs" />
-    <Compile Include="Models\BaseUnit.cs" />
+    <Compile Include="Models\CharacteristicsItem.cs" />
+    <Compile Include="Models\Unit.cs" />
     <Compile Include="Models\BMap.cs" />
     <Compile Include="Controls\ActionEditor.cs">
       <SubType>UserControl</SubType>
@@ -124,12 +126,6 @@
     <Compile Include="Controls\TurnQueue.Designer.cs">
       <DependentUpon>TurnQueue.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TurnQueueItem.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\TurnQueueItem.Designer.cs">
-      <DependentUpon>TurnQueueItem.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\UnitEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -182,6 +178,7 @@
     <Compile Include="Utils\AxialUtils.cs" />
     <Compile Include="Utils\BattleUtils.cs" />
     <Compile Include="Utils\CubeUtils.cs" />
+    <Compile Include="Utils\TMath.cs" />
     <Compile Include="Utils\RandomUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="TBSEventArgs\SelectedActionChangedEventArgs.cs" />
@@ -192,7 +189,6 @@
     <Compile Include="TemplarGide.cs" />
     <Compile Include="TypeConverters\CollectionTypeConverter.cs" />
     <Compile Include="TypeConverters\EnumTypeConverter.cs" />
-    <Compile Include="Models\Unit.cs" />
     <Compile Include="Repositories\RepositoryWorker.cs" />
     <EmbeddedResource Include="Controls\ActionEditor.resx">
       <DependentUpon>ActionEditor.cs</DependentUpon>
@@ -220,9 +216,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TurnQueue.resx">
       <DependentUpon>TurnQueue.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\TurnQueueItem.resx">
-      <DependentUpon>TurnQueueItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UnitEditor.resx">
       <DependentUpon>UnitEditor.cs</DependentUpon>

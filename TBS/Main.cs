@@ -158,10 +158,10 @@ namespace TBS
 
                 g.DrawImage(c.Unit.Icon, c.ModelSize, _srcModelSize, GraphicsUnit.Pixel);
                 g.DrawRectangle(Pens.Red, c.ModelSize.X, c.ModelSize.Y - 10, c.ModelSize.Width, 4);
-                var wd = c.Unit.Chars.HP / (float)c.Unit.Bu.Chars.HP * c.ModelSize.Width;
+                var wd = c.Unit.Chars.HP / (float)c.Unit.BaseChars.Chars.HP * c.ModelSize.Width;
                 g.FillRectangle(Brushes.Red, c.ModelSize.X, c.ModelSize.Y - 10, wd, 4);
                 g.DrawRectangle(Pens.Blue, c.ModelSize.X, c.ModelSize.Y - 5, c.ModelSize.Width, 4);
-                wd = c.Unit.Chars.MP / (float)c.Unit.Bu.Chars.MP * c.ModelSize.Width;
+                wd = c.Unit.Chars.MP / (float)c.Unit.BaseChars.Chars.MP * c.ModelSize.Width;
                 g.FillRectangle(Brushes.Blue, c.ModelSize.X, c.ModelSize.Y - 5, wd, 4);
             }
 
@@ -231,7 +231,7 @@ namespace TBS
             for (int i = 0; i < pl.Units.Count; i++)
             {
                 var u = pl.Units[i];
-                u.Bu = _repWkr.GetBaseUnit(u.BId);
+                u.BaseChars = _repWkr.GetBaseUnit(u.BId);
                 int q = toRight ? _map.ArraySize - u.StartPos.Q - 1 : u.StartPos.Q, r = toRight ? _map.ArraySize - u.StartPos.R - 1 : u.StartPos.R;
                 _map.Cells[q, r].Unit = u;
                 u.CurPos = new Axial(q, r);

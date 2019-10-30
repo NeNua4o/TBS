@@ -10,10 +10,10 @@ using System.Xml.Serialization;
 
 namespace Common.Repositories
 {
-    class BaseUnitsRepository : IRepository<BaseUnit>
+    class BaseUnitsRepository : IRepository<Unit>
     {
         string _dataPath;
-        List<BaseUnit> _baseUnits = new List<BaseUnit>();
+        List<Unit> _baseUnits = new List<Unit>();
 
         Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -27,7 +27,7 @@ namespace Common.Repositories
             _baseUnits = null;
         }
 
-        public List<BaseUnit> GetItems()
+        public List<Unit> GetItems()
         {
             return _baseUnits;
         }
@@ -41,8 +41,8 @@ namespace Common.Repositories
             try
             {
                 fs = new FileStream(_dataPath, FileMode.Open);
-                s = new XmlSerializer(typeof(List<BaseUnit>));
-                _baseUnits = (List<BaseUnit>)s.Deserialize(fs);
+                s = new XmlSerializer(typeof(List<Unit>));
+                _baseUnits = (List<Unit>)s.Deserialize(fs);
 
                 for (int i = 0; i < _baseUnits.Count; i++)
                 {
@@ -98,7 +98,7 @@ namespace Common.Repositories
             try
             {
                 fs = new FileStream(_dataPath, FileMode.Create);
-                s = new XmlSerializer(typeof(List<BaseUnit>));
+                s = new XmlSerializer(typeof(List<Unit>));
                 s.Serialize(fs, _baseUnits);
             }
             catch (Exception ex)
@@ -114,15 +114,15 @@ namespace Common.Repositories
             }
         }
 
-        public BaseUnit CreateItem()
+        public Unit CreateItem()
         {
-            var newUnit = new BaseUnit();
-            newUnit.Id = GenerateUnitId();
+            var newUnit = new Unit();
+            newUnit.BaseId = GenerateUnitId();
             _baseUnits.Add(newUnit);
             return newUnit;
         }
 
-        public void RemoveItem(BaseUnit item)
+        public void RemoveItem(Unit item)
         {
             _baseUnits.Remove(item);
         }
@@ -130,7 +130,7 @@ namespace Common.Repositories
         private int GenerateUnitId()
         {
             int id = 0;
-            int[] existedIds = _baseUnits.Select(x => x.Id).ToArray();
+            int[] existedIds = _baseUnits.Select(x => x.BaseId).ToArray();
             while (existedIds.Contains(id)) { id++; }
             existedIds = null;
             return id;

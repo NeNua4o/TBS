@@ -5,6 +5,6 @@ namespace Common.TBSEventArgs
 {
     public class SelectedUnitChangedEventArgs : EventArgs
     {
-        public BaseUnit BaseUnit { get; set; }
+        public Unit BaseUnit { get; set; }
     }
 }

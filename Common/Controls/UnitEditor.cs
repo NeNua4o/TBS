@@ -12,7 +12,7 @@ namespace Common.Controls
 
         public event EventHandler SelectedUnitChanged;
 
-        public BaseUnit BaseUnit;
+        public Unit BaseUnit;
 
         public UnitEditor()
         {
@@ -35,7 +35,7 @@ namespace Common.Controls
         private void b_add_Click(object sender, EventArgs e)
         {
             if (_worker == null) return;
-            BaseUnit unit = _worker.CreateBaseUnit();
+            Unit unit = _worker.CreateBaseUnit();
             lb_units.Items.Add(unit);
         }
 
@@ -43,13 +43,13 @@ namespace Common.Controls
         {
             if (_worker == null) return;
             if (lb_units.SelectedIndex < 0) return;
-            _worker.DeleteBaseUnit((BaseUnit)lb_units.SelectedItem);
+            _worker.DeleteBaseUnit((Unit)lb_units.SelectedItem);
             lb_units.Items.RemoveAt(lb_units.SelectedIndex);
         }
 
         private void lb_units_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BaseUnit = lb_units.SelectedIndex == -1 ? null : (BaseUnit)lb_units.SelectedItem;
+            BaseUnit = lb_units.SelectedIndex == -1 ? null : (Unit)lb_units.SelectedItem;
             SelectedUnitChanged?.Invoke(this, new SelectedUnitChangedEventArgs()
             {
                 BaseUnit = this.BaseUnit,

@@ -107,8 +107,8 @@ namespace Common.Models
             neighs = null;
 
             // Prepare layout
-            Width = (int)Math.Round(HexWidth * ArraySize + 1 + (ArraySize*5), MidpointRounding.AwayFromZero);
-            Height = (int)Math.Round(HexHeight + HeightSpacing * (ArraySize - 1) + 1 + (ArraySize*5), MidpointRounding.AwayFromZero);
+            Width = TMath.Round(HexWidth * ArraySize + 1 + (ArraySize*5));
+            Height = TMath.Round(HexHeight + HeightSpacing * (ArraySize - 1) + 1 + (ArraySize*5));
 
             Bitmap b = new Bitmap(Width, Height);
             Graphics g = Graphics.FromImage(b);
@@ -330,7 +330,7 @@ namespace Common.Models
                 for (int i = 0; i < 6; i++)
                     if (ownerCell.Neighbors[i] != null && ownerCell.Neighbors[i].Unit != null && ownerCell.Unit.TeamId != ownerCell.Neighbors[i].Unit.TeamId)
                         return res;
-            res.AddRange(GetByTargetFilter(owner, ownerCell, action.Targetting, action.Range == 1 ? owner.Chars.MoveRad + 1 : action.Range));
+            res.AddRange(GetByTargetFilter(owner, ownerCell, action.Targetting, action.Range == 1 ? owner.Chars.MoveRange + 1 : action.Range));
             return res;
         }
 
@@ -345,18 +345,19 @@ namespace Common.Models
             var all = GetCellsInRange(ownerCell.Axial, range);
             if (appliesOn.Allies)
             {
+
                 res.AddRange(all.Where(cell =>
-                cell.Unit != null &&
-                cell.Unit.TeamId == owner.TeamId &&
-                (appliesOn.Dead ? cell.Unit.Chars.Alive == 1 : cell.Unit.Chars.Alive == 1)
+                    cell.Unit != null &&
+                    cell.Unit.TeamId == owner.TeamId &&
+                    (appliesOn.Dead && cell.Unit.Chars.Alive == 0)
                 ));
             }
             if (appliesOn.Enemies)
             {
                 res.AddRange(all.Where(cell =>
-                cell.Unit != null &&
-                cell.Unit.TeamId != owner.TeamId &&
-                (appliesOn.Dead ? cell.Unit.Chars.Alive == 1 : cell.Unit.Chars.Alive == 1)
+                    cell.Unit != null &&
+                    cell.Unit.TeamId != owner.TeamId &&
+                    (appliesOn.Dead && cell.Unit.Chars.Alive == 0)
                 ));
             }
             if (appliesOn.MapCells)

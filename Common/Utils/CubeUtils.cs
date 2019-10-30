@@ -17,7 +17,7 @@ namespace Common.Utils
         {
             var result = new List<Cube>();
             var distanceF = start.DistanceToF(end);
-            var distance = Math.Round(distanceF, MidpointRounding.AwayFromZero);
+            var distance = TMath.Round(distanceF);
             for (int i = 0; i <= distance; i++)
                 result.Add(Interpolate(start, end, 1f / distanceF * i));
             if (!includeStart && result.Count > 0) result.RemoveAt(0);

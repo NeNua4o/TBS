@@ -1,4 +1,5 @@
-﻿using Common.PropertyEditors;
+﻿using Common.Enums;
+using Common.PropertyEditors;
 using Common.TypeConverters;
 using System.ComponentModel;
 using System.Drawing;
@@ -51,15 +52,14 @@ namespace Common.Models
         public int Turns { get; set; }
 
         [DisplayName("Влияние на характеристики")]
-        [Description("Какие характеристики и на сколько будут уменьшены/увеличены")]
-        [DefaultValue(typeof(Characteristics))]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public Characteristics Affects { get; set; }
+        public Characteristics Chars { get; set; }
+
 
         public Effect()
         {
             Name = "New Effect";
-            Affects = new Characteristics();
+            Chars = new Characteristics();
         }
 
         public Effect(Effect s)
@@ -70,7 +70,7 @@ namespace Common.Models
             EffectType = s.EffectType;
             Chance = s.Chance;
             Turns = s.Turns;
-            Affects = new Characteristics(s.Affects);
+            Chars = new Characteristics(s.Chars);
         }
 
         public override string ToString()

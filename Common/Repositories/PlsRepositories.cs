@@ -77,14 +77,14 @@ namespace Common.Repositories
             }
         }
 
-        public void UpdateUnits(List<BaseUnit> bUnits)
+        public void UpdateUnits(List<Unit> bUnits)
         {
             for (int plc = 0; plc < _pls.Count; plc++)
             {
                 for (int uc = 0; uc < _pls[plc].Units.Count; uc++)
                 {
                     var u = _pls[plc].Units[uc];
-                    var bu = bUnits.FirstOrDefault(unit => unit.Id == u.BId);
+                    var bu = bUnits.FirstOrDefault(unit => unit.BaseId == u.BId);
                     u.UpdateStats(bu);
                 }
             }

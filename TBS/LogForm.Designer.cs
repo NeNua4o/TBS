@@ -37,16 +37,17 @@
             this.lb.FormattingEnabled = true;
             this.lb.Location = new System.Drawing.Point(0, 0);
             this.lb.Name = "lb";
-            this.lb.Size = new System.Drawing.Size(284, 261);
+            this.lb.Size = new System.Drawing.Size(284, 252);
             this.lb.TabIndex = 0;
             // 
             // LogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(284, 252);
             this.Controls.Add(this.lb);
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(700, 1000);
             this.MinimizeBox = false;
             this.Name = "LogForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;

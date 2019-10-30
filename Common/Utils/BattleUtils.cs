@@ -22,7 +22,7 @@ namespace Common.Utils
 
         public List<string> ApplyEffect(Unit attacker, Unit defender, Effect effect)
         {
-            var result = new List<string>();
+            var result = new List<string>() { "" };
             var chance = _rng.Get100();
             if (chance > effect.Chance)
             {
@@ -42,11 +42,15 @@ namespace Common.Utils
             else // Applies
             {
                 // HP
-                if (effect.Affects.HP != 0)
+                if (effect.Chars.B_Hp != null)
                 {
-                    var totalDef = effect.EffectType == EffectTypes.Physical ? defender.GetTotalPDefence() : defender.GetTotalMDefence();
-                    var totalAtk = effect.EffectType == EffectTypes.Physical ? attacker.GetTotalPAttack() : attacker.GetTotalMAttack();
-                    int diff = totalAtk - totalDef;
+                    CharType type;
+                    type = effect.EffectType == EffectTypes.Physical ? CharType.PDefence : CharType.MDefence;
+                    var totalDef = defender.Chars.PDefence + defender.GetTotalEffect(type);
+                    type = effect.EffectType == EffectTypes.Physical ? CharType.PAttack : CharType.MAttack;
+                    var totalAtk = attacker.Chars.GetF(type) + attacker.GetTotalEffect(type);
+
+                    var diff = totalAtk - totalDef;
                     float diffM;
                     if (diff > 0)
                     {
@@ -60,16 +64,16 @@ namespace Common.Utils
                         if (diffM < -0.7)
                             diffM = -0.7f;
                     }
-                    int dmgHp = (int)Math.Round((1 + diffM) * effect.Affects.HP, MidpointRounding.AwayFromZero);
-                    defender.Chars.HP += dmgHp;
+                    int dmgHp = TMath.Round((1 + diffM) * chars.Value);
+                    defender.Chars.Add(chars.Key, dmgHp);
                     result.Add(String.Format(
                         "[DMG ] {0} ( {2} ) -> {1} ( {3} ) : {4} BDMG {5} TDMG", 
-                        attacker.Name, defender.Name, totalAtk, totalDef, effect.Affects.HP, dmgHp));
+                        attacker.Name, defender.Name, totalAtk, totalDef, effect.Affects.GetI(CharType.HP), dmgHp));
 
-                    if (defender.Chars.HP < 0)
+                    if (defender.GetChar(CharType.HP) < 0)
                     {
-                        defender.Chars.HP = 0;
-                        defender.Chars.Alive -= 1;
+                        defender.Chars.Rep(CharType.HP, 0);
+                        defender.Chars.Rep(CharType.Alive, 0);
                         defender.Effects.Clear();
                     }
                 }
@@ -79,24 +83,24 @@ namespace Common.Utils
 
         public List<string> ApplyPassives(Unit unit)
         {
-            var result = new List<string>();
+            var result = new List<string>() { "" };
             for (int i = 0; i < unit.Effects.Count; i++)
             {
                 var effect = unit.Effects[i];
                 // HP
-                if (effect.Affects.HP != 0)
+                var chars = effect.Affects.GetItem(CharType.HP);
+                if (chars != null)
                 {
-                    unit.Chars.HP += effect.Affects.HP;
+                    unit.Chars.Add(CharType.HP, chars.Value);
                     result.Add(String.Format(
                     "[DOT ] {0} -> {1} : {2} ({3}) turns {4}",
-                    effect.Name, unit.Name, effect.Name, effect.Affects.HP, effect.Turns - 1
+                    effect.Name, unit.Name, effect.Name, chars.Value, effect.Turns - 1
                     ));
-                    if (unit.Chars.HP < 0)
+                    if (unit.GetChar(CharType.HP) < 0)
                     {
-                        unit.Chars.HP = 0;
-                        unit.Chars.Alive -= 1;
+                        unit.Chars.Rep(CharType.HP, 0);
+                        unit.Chars.Rep(CharType.Alive, 0);
                         unit.Effects.Clear();
-                        break;
                     }
                 }
 

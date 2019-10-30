@@ -1,4 +1,5 @@
 ﻿using Common.Models;
+using Common.Utils;
 using System;
 
 namespace Common.Extensions
@@ -12,12 +13,12 @@ namespace Common.Extensions
 
         public static int DistanceToI(this Cube a, Cube b)
         {
-            return (int)Math.Round(Math.Max(Math.Max(Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y)), Math.Abs(a.Z - b.Z)), MidpointRounding.AwayFromZero);
+            return TMath.Round(Math.Max(Math.Max(Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y)), Math.Abs(a.Z - b.Z)));
         }
 
         public static Axial ToAxial(this Cube a)
         {
-            return new Axial((int)Math.Round(a.X, MidpointRounding.AwayFromZero), (int)Math.Round(a.Z, MidpointRounding.AwayFromZero));
+            return new Axial(TMath.Round(a.X), TMath.Round(a.Z));
         }
 
         public static Cube Add(this Cube a, float x, float y, float z)

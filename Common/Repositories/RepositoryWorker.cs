@@ -7,7 +7,7 @@ namespace Common.Repositories
 {
     public class RepositoryWorker
     {
-        public List<BaseUnit> BaseUnits { get { return _baseUnitRepository.GetItems(); } }
+        public List<Unit> BaseUnits { get { return _baseUnitRepository.GetItems(); } }
         public List<Act> Actions { get { return _actionRepository.GetItems(); } }
         public List<Effect> Effects { get { return _effectRepository.GetItems(); } }
         public List<Pl> Pls { get { return _plRepository.GetItems(); } }
@@ -62,8 +62,8 @@ namespace Common.Repositories
             _plRepository.SaveItems();
         }
 
-        public BaseUnit CreateBaseUnit() { return _baseUnitRepository.CreateItem(); }
-        public void DeleteBaseUnit(BaseUnit unit) { _baseUnitRepository.RemoveItem(unit); }
+        public Unit CreateBaseUnit() { return _baseUnitRepository.CreateItem(); }
+        public void DeleteBaseUnit(Unit unit) { _baseUnitRepository.RemoveItem(unit); }
 
         public Act CreateAction() { return _actionRepository.CreateItem(); }
         public void DeleteAction(Act action) { _actionRepository.RemoveItem(action); }
@@ -78,12 +78,12 @@ namespace Common.Repositories
 
 
 
-        public BaseUnit GetBaseUnit(int id)
+        public Unit GetBaseUnit(int id)
         {
             var bUnits = _baseUnitRepository.GetItems();
             for (int i = 0; i < bUnits.Count; i++)
             {
-                if (bUnits[i].Id == id)
+                if (bUnits[i].BaseId == id)
                     return bUnits[i];
             }
             return null;
