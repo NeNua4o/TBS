@@ -1,5 +1,7 @@
 ﻿using Common.Enums;
 using System.Collections.Generic;
+using System;
+using Common.Utils;
 
 namespace Common.Models
 {
@@ -24,6 +26,16 @@ namespace Common.Models
                 if (items[i].Type == type)
                     return items[i];
             return null;
+        }
+
+        public int GetBaseI(CharType type)
+        {
+            for (int i = 0; i < _base.Count; i++)
+            {
+                if (_base[i].Type == type)
+                    return TMath.Round(_base[i].Value);
+            }
+            return 0;
         }
     }
 }

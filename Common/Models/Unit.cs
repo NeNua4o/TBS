@@ -65,6 +65,8 @@ namespace Common.Models
         [XmlIgnore]
         public Image Model { get { return _model; } set { _model = value; ModelPath = (string)_model.Tag; } }
 
+        
+
         [DisplayName("Путь до модели")]
         [DefaultValue("")]
         [ReadOnly(true)]
@@ -144,6 +146,11 @@ namespace Common.Models
             if (unit.SkillsIds != null) { SkillsIds = new int[unit.SkillsIds.Length]; Array.Copy(unit.SkillsIds, SkillsIds, SkillsIds.Length); }
             if (unit.SpellsIds != null) { SpellsIds = new int[unit.SpellsIds.Length]; Array.Copy(unit.SpellsIds, SpellsIds, SpellsIds.Length); }
             if (unit.PassivesIds != null) { PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length); }
+        }
+
+        public int CharBase(CharType type)
+        {
+            return Chars.GetBaseI(type);
         }
 
 

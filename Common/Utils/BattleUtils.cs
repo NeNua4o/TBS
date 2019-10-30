@@ -41,12 +41,14 @@ namespace Common.Utils
             }
             else // Applies
             {
+                CharacteristicsItem item;
                 // HP
-                if (effect.Chars.B_Hp != null)
+                item = effect.Chars.GetItem(CharType.Hp);
+                if (item != null)
                 {
                     CharType type;
                     type = effect.EffectType == EffectTypes.Physical ? CharType.PDefence : CharType.MDefence;
-                    var totalDef = defender.Chars.PDefence + defender.GetTotalEffect(type);
+                    float totalDef = defender.CharBase(type) + defender.GetTotalEffect(type);
                     type = effect.EffectType == EffectTypes.Physical ? CharType.PAttack : CharType.MAttack;
                     var totalAtk = attacker.Chars.GetF(type) + attacker.GetTotalEffect(type);
 
