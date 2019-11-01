@@ -223,7 +223,7 @@ namespace Common.Models
 
         public List<BMapCell> GetPath(Unit unit, BMapCell start, BMapCell goal, List<BMapCell> moveAllowed)
         {
-            if (unit.Chars.MoveType == MoveTypes.Walk)
+            if (unit.CharCursI(CharType.MoveType) == (int)MoveTypes.Walk)
             {
                 var frontier = new Queue<BMapCell>(); //frontier = Queue()
                 frontier.Enqueue(start); //frontier.put(start )
@@ -280,7 +280,7 @@ namespace Common.Models
             return result;
         }
 
-        public List<BMapCell> GetAvailableForMove(BMapCell start, int range, MoveTypes moveType)
+        public List<BMapCell> GetAFormMove(BMapCell start, int range, MoveTypes moveType)
         {
             if (moveType == MoveTypes.Walk)
             {
@@ -321,7 +321,7 @@ namespace Common.Models
             }
         }
 
-        public List<BMapCell> GetAvailableForAction(Unit owner, BMapCell ownerCell, Act action, bool forHero = false)
+        public List<BMapCell> GetAForAction(Unit owner, BMapCell ownerCell, Act action, bool forHero = false)
         {
             var res = new List<BMapCell>();
             if (action == null || ownerCell == null || ownerCell.Unit == null)
@@ -330,11 +330,11 @@ namespace Common.Models
                 for (int i = 0; i < 6; i++)
                     if (ownerCell.Neighbors[i] != null && ownerCell.Neighbors[i].Unit != null && ownerCell.Unit.TeamId != ownerCell.Neighbors[i].Unit.TeamId)
                         return res;
-            res.AddRange(GetByTargetFilter(owner, ownerCell, action.Targetting, action.Range == 1 ? owner.Chars.MoveRange + 1 : action.Range));
+            res.AddRange(GetByTargetFilter(owner, ownerCell, action.Targetting, action.Range == 1 ? owner.CharCursI(CharType.MoveRange) + 1 : action.Range));
             return res;
         }
 
-        public List<BMapCell> GetAvailableForApply(Unit owner, BMapCell ownerCell, Targets appliesOn)
+        public List<BMapCell> GetAForApply(Unit owner, BMapCell ownerCell, Targets appliesOn)
         {
             return GetByTargetFilter(owner, ownerCell, appliesOn, 7);
         }
@@ -345,20 +345,17 @@ namespace Common.Models
             var all = GetCellsInRange(ownerCell.Axial, range);
             if (appliesOn.Allies)
             {
-
-                res.AddRange(all.Where(cell =>
-                    cell.Unit != null &&
-                    cell.Unit.TeamId == owner.TeamId &&
-                    (appliesOn.Dead && cell.Unit.Chars.Alive == 0)
-                ));
+                for (int i = 0; i < all.Count; i++)
+                    if (all[i].Unit != null && all[i].Unit.TeamId == owner.TeamId)
+                        if (appliesOn.Dead ? all[i].Unit.CharCursI(CharType.Alive) == 0 : all[i].Unit.CharCursI(CharType.Alive) == 1)
+                            res.Add(all[i]);
             }
             if (appliesOn.Enemies)
             {
-                res.AddRange(all.Where(cell =>
-                    cell.Unit != null &&
-                    cell.Unit.TeamId != owner.TeamId &&
-                    (appliesOn.Dead && cell.Unit.Chars.Alive == 0)
-                ));
+                for (int i = 0; i < all.Count; i++)
+                    if (all[i].Unit != null && all[i].Unit.TeamId != owner.TeamId)
+                        if (appliesOn.Dead ? all[i].Unit.CharCursI(CharType.Alive) == 0 : all[i].Unit.CharCursI(CharType.Alive) == 1)
+                            res.Add(all[i]);
             }
             if (appliesOn.MapCells)
             {

@@ -11,6 +11,7 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Forms;
 using System.ComponentModel;
+using Common.Enums;
 
 namespace TBS
 {
@@ -70,26 +71,26 @@ namespace TBS
             _currentUnit = currentUnit.Unit;
             if (_currentUnit == null) return;
             _currentCell = _map.Cell(_currentUnit.CurPos);
-            _cellsAvailableForMove = _map.GetAvailableForMove(_currentCell, _currentUnit.Chars.MoveRad, _currentUnit.Chars.MoveType);
+            _aForMove = _map.GetAFormMove(_currentCell, _currentUnit.CharCursI(CharType.MoveRange), (MoveTypes)_currentUnit.CharCursI(CharType.MoveType));
             if (currentUnit.ActionId == -1) return;
             _selectedAction = _repWkr.GetAction(currentUnit.ActionId);
-            _cellsAvailableForAction = _map.GetAvailableForAction(_currentUnit, _currentCell, _selectedAction);
-            _cellsAvailableForApply = _map.GetAvailableForApply(_currentUnit, _currentCell, _selectedAction.AppliesOn);
-            _cellsOfActionRange = _map.GetCellsInRange(_currentCell.Axial, _selectedAction.Range);
+            _aForAction = _map.GetAForAction(_currentUnit, _currentCell, _selectedAction);
+            _aForApply = _map.GetAForApply(_currentUnit, _currentCell, _selectedAction.AppliesOn);
+            _actionRange = _map.GetCellsInRange(_currentCell.Axial, _selectedAction.Range);
             DrawDebug();
         }
 
         private void TurnControl_WaitClicked(object sender, EventArgs e)
         {
             if (currentUnit.Unit == null) return;
-            currentUnit.Unit.Chars.Lane -= (_baseLane / 2);
+            currentUnit.Unit.Chars.SummCurrent(CharType.Lane, -_baseLane / 2);
             CalcTurns();
         }
 
         private void TurnControl_SkipClicked(object sender, EventArgs e)
         {
             if (currentUnit.Unit == null) return;
-            currentUnit.Unit.Chars.Lane -= _baseLane;
+            currentUnit.Unit.Chars.SummCurrent(CharType.Lane, -_baseLane / 2);
             CalcTurns();
         }
 
@@ -106,22 +107,22 @@ namespace TBS
 
 
             // Available for move + movement path
-            for (int i = 0; i < _cellsAvailableForMove.Count; i++)
-                g.DrawImage(_stepsD, _cellsAvailableForMove[i].StepsSize, _step_srec, GraphicsUnit.Pixel);
+            for (int i = 0; i < _aForMove.Count; i++)
+                g.DrawImage(_stepsD, _aForMove[i].StepsSize, _step_srec, GraphicsUnit.Pixel);
             for (int i = 0; i < _movementPath.Count; i++)
                 g.DrawImage(_steps, _movementPath[i].StepsSize, _step_srec, GraphicsUnit.Pixel);
 
             // Available for action
-            for (int i = 0; i < _cellsAvailableForAction.Count; i++)
-                g.FillPolygon(_targetingBrush, _cellsAvailableForAction[i].Hex.K10);
+            for (int i = 0; i < _aForAction.Count; i++)
+                g.FillPolygon(_targetingBrush, _aForAction[i].Hex.K10);
 
             // Available for apply
-            for (int i = 0; i < _cellsAvailableForApply.Count; i++)
-                g.FillPolygon(_targetingBrush, _cellsAvailableForApply[i].Hex.K40);
+            for (int i = 0; i < _aForApply.Count; i++)
+                g.FillPolygon(_targetingBrush, _aForApply[i].Hex.K40);
 
             // ActionRange
-            for (int i = 0; i < _cellsOfActionRange.Count; i++)
-                g.DrawPolygon(Pens.Green, _cellsOfActionRange[i].Hex.K);
+            for (int i = 0; i < _actionRange.Count; i++)
+                g.DrawPolygon(Pens.Green, _actionRange[i].Hex.K);
 
             // LinePath
             if (_actionLinePath.Count > 0)
@@ -158,11 +159,11 @@ namespace TBS
 
                 g.DrawImage(c.Unit.Icon, c.ModelSize, _srcModelSize, GraphicsUnit.Pixel);
                 g.DrawRectangle(Pens.Red, c.ModelSize.X, c.ModelSize.Y - 10, c.ModelSize.Width, 4);
-                var wd = c.Unit.Chars.HP / (float)c.Unit.BaseChars.Chars.HP * c.ModelSize.Width;
-                g.FillRectangle(Brushes.Red, c.ModelSize.X, c.ModelSize.Y - 10, wd, 4);
+                var width = c.Unit.CharCursI(CharType.Hp) / c.Unit.CharBaseI(CharType.Hp) * c.ModelSize.Width;
+                g.FillRectangle(Brushes.Red, c.ModelSize.X, c.ModelSize.Y - 10, width, 4);
                 g.DrawRectangle(Pens.Blue, c.ModelSize.X, c.ModelSize.Y - 5, c.ModelSize.Width, 4);
-                wd = c.Unit.Chars.MP / (float)c.Unit.BaseChars.Chars.MP * c.ModelSize.Width;
-                g.FillRectangle(Brushes.Blue, c.ModelSize.X, c.ModelSize.Y - 5, wd, 4);
+                width = c.Unit.CharCursI(CharType.Mp) / c.Unit.CharBaseI(CharType.Mp) * c.ModelSize.Width;
+                g.FillRectangle(Brushes.Blue, c.ModelSize.X, c.ModelSize.Y - 5, width, 4);
             }
 
             pb_field.Image = b; g = null; b = null;
@@ -191,8 +192,8 @@ namespace TBS
                 g.DrawString(String.Format("Отсчёт от цели: {0}", _selectedAction.CalcFromTarget), _fnt, _brush, 0, k * vs, _drawFormat); k++;
                 g.DrawString(String.Format("Включать точку отсчёта: {0}", _selectedAction.IncludeStartPoint), _fnt, _brush, 0, k * vs, _drawFormat); k++;
                 k++;
-                g.DrawString(String.Format("Доступно для прицеливания: {0}", _cellsAvailableForAction.Count), _fnt, _brush, 0, k * vs, _drawFormat); k++;
-                g.DrawString(String.Format("Доступно для урона/эффекта: {0}", _cellsAvailableForApply.Count), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("Доступно для прицеливания: {0}", _aForAction.Count), _fnt, _brush, 0, k * vs, _drawFormat); k++;
+                g.DrawString(String.Format("Доступно для урона/эффекта: {0}", _aForApply.Count), _fnt, _brush, 0, k * vs, _drawFormat); k++;
             }
 
             
@@ -231,7 +232,6 @@ namespace TBS
             for (int i = 0; i < pl.Units.Count; i++)
             {
                 var u = pl.Units[i];
-                u.BaseChars = _repWkr.GetBaseUnit(u.BId);
                 int q = toRight ? _map.ArraySize - u.StartPos.Q - 1 : u.StartPos.Q, r = toRight ? _map.ArraySize - u.StartPos.R - 1 : u.StartPos.R;
                 _map.Cells[q, r].Unit = u;
                 u.CurPos = new Axial(q, r);
@@ -242,32 +242,33 @@ namespace TBS
         {
             currentUnit.Set(null);
             var units = new List<Unit>(); units.AddRange(_pls[0].Units); units.AddRange(_pls[1].Units);
-            for (int i = 0; i < units.Count; i++) units[i].Chars.Lane = _rng.Next(1, (int)(units[i].Chars.Initiative / 4f)) / 100f;
+            for (int i = 0; i < units.Count; i++)
+                units[i].RepMods(CharType.Lane, _rng.Next(1, (int)(units[i].CharCursF(CharType.Initiative) / 4f)) / 100f);
             units = null;
         }
 
         private void CalcTurns()
         {
             var units = new List<Unit>();
-            units.AddRange(_pls[0].Units.Where(unit => unit.Chars.Alive == 1));
-            units.AddRange(_pls[1].Units.Where(unit => unit.Chars.Alive == 1));
+            units.AddRange(_pls[0].Units.Where(unit => unit.CharCursI(CharType.Alive) == 1));
+            units.AddRange(_pls[1].Units.Where(unit => unit.CharCursI(CharType.Alive) == 1));
             
             for (int i = 0; i < units.Count; i++)
             {
                 // TODO Учитывать эффекты.
-                units[i].Chars.LaneUp = units[i].Chars.Initiative / _baseLane;
+                units[i].RepMods(CharType.LaneUp, units[i].CharCursF(CharType.Initiative) / _baseLane);
             }
 
             var turnQueueUnits = new List<Unit>();
             // Заполним полосу хода для первого/первых юнитов.
             while (turnQueueUnits.Count == 0)
             {
-                units = units.OrderByDescending(x => x.Chars.Lane).ThenByDescending(x => x.Chars.Initiative).ToList();
+                units = units.OrderByDescending(x => x.CharCursF(CharType.Lane)).ThenByDescending(x => x.CharCursF(CharType.Initiative)).ToList();
                 for (int i = 0; i < units.Count; i++)
                 {
-                    if (units[i].Chars.Lane >= _baseLane)
+                    if (units[i].CharCursF(CharType.Lane) >= _baseLane)
                         turnQueueUnits.Add(units[i]);
-                    units[i].Chars.Lane += units[i].Chars.LaneUp;
+                    units[i].AddMods(CharType.Lane, units[i].CharCursF(CharType.LaneUp));
                 }
             }
             currentUnit.Set(turnQueueUnits[0]);
@@ -310,10 +311,10 @@ namespace TBS
         BMapCell _hoveredCell, _currentCell;
         Unit _currentUnit;
 
-        List<BMapCell> _cellsAvailableForMove = new List<BMapCell>();
-        List<BMapCell> _cellsAvailableForAction = new List<BMapCell>();
-        List<BMapCell> _cellsAvailableForApply = new List<BMapCell>();
-        List<BMapCell> _cellsOfActionRange = new List<BMapCell>();
+        List<BMapCell> _aForMove = new List<BMapCell>();
+        List<BMapCell> _aForAction = new List<BMapCell>();
+        List<BMapCell> _aForApply = new List<BMapCell>();
+        List<BMapCell> _actionRange = new List<BMapCell>();
         List<BMapCell> _movementPath = new List<BMapCell>();
         List<BMapCell> _actionLinePath = new List<BMapCell>();
         List<BMapCell> _actionSheme = new List<BMapCell>();
@@ -341,7 +342,7 @@ namespace TBS
             if (_hoveredCell == null) goto end;
             _distance = _hoveredCell.Cube.DistanceToI(_currentCell.Cube);
 
-            var actionCell = _cellsAvailableForAction.WitchIs(_hoveredCell);
+            var actionCell = _aForAction.WitchIs(_hoveredCell);
             if (actionCell != null) // Навели на клетку прицеливания.
             {
                 
@@ -382,7 +383,7 @@ namespace TBS
                                 _actionStartPoint = null;
                                 goto end;
                             }
-                            if (_cellsAvailableForMove.WitchIs(_moveDestination) == null)// Нельзя переместиться.
+                            if (_aForMove.WitchIs(_moveDestination) == null)// Нельзя переместиться.
                             {
                                 if(_moveDestination.Axial != _currentCell.Axial)// Точка атаки не совпадает с позицией атакующего
                                 {
@@ -391,23 +392,23 @@ namespace TBS
                                     goto end;
                                 }
                             }
-                            _movementPath.AddRange(_map.GetPath(_currentUnit, _currentCell, _moveDestination, _cellsAvailableForMove));
+                            _movementPath.AddRange(_map.GetPath(_currentUnit, _currentCell, _moveDestination, _aForMove));
                             break;
                     }
                 }
                 
-                _actionSheme = _map.GetSheme(_actionStartPoint, _selectedAction, _goesTo, _cellsAvailableForAction);
+                _actionSheme = _map.GetSheme(_actionStartPoint, _selectedAction, _goesTo, _aForAction);
             }
             else
             {
                 // Навели на что-то другое.
                 _goesFrom = -1;
                 _goesTo = -1;
-                var movementCell = _cellsAvailableForMove.WitchIs(_hoveredCell);
+                var movementCell = _aForMove.WitchIs(_hoveredCell);
                 if (movementCell != null)
                 {
                     _moveDestination = _hoveredCell;
-                    _movementPath.AddRange(_map.GetPath(_currentUnit, _currentCell, _moveDestination, _cellsAvailableForMove));
+                    _movementPath.AddRange(_map.GetPath(_currentUnit, _currentCell, _moveDestination, _aForMove));
                 }
             }
             end:
@@ -434,7 +435,7 @@ namespace TBS
 
                 if (_selectedAction != null && _actionSheme.Count > 0) // Выбрано действие и есть по кому ударить.
                 {
-                    var directAttacked = _actionSheme.Intersection(_cellsAvailableForApply);
+                    var directAttacked = _actionSheme.Intersection(_aForApply);
                     for (int i = 0; i < directAttacked.Count; i++) // Для каждого юнита.
                     {
                         var unit = directAttacked[i].Unit;
@@ -451,7 +452,7 @@ namespace TBS
                 if (doMove || doAtack) // Двигались или применяли действие. 
                 {
                     // Снимем полоску хода.
-                    currentUnit.Unit.Chars.Lane -= _baseLane;
+                    currentUnit.Unit.AddMods(CharType.Lane, -_baseLane);
                     if (WinCondition())
                         return;
                     // Пересчитаем ходы.
@@ -462,8 +463,8 @@ namespace TBS
 
         private bool WinCondition()
         {
-            var pl1 = _pls[0].Units.Any(unit => unit.Chars.Alive == 1);
-            var pl2 = _pls[1].Units.Any(unit => unit.Chars.Alive == 1);
+            var pl1 = _pls[0].Units.Any(unit => unit.CharCursI(CharType.Alive) == 1);
+            var pl2 = _pls[1].Units.Any(unit => unit.CharCursI(CharType.Alive) == 1);
             if (pl1 && pl2)
                 return false;
             else

@@ -67,7 +67,7 @@ namespace Common.Controls
                     if (Pl.Units.Count < 7)
                     {
                         var newUnit = new Unit(dragableUnit, GetFromPan(snd), Pl.TeamId);
-                        newUnit.BaseId = GetNewGlobalId();
+                        newUnit.Id = GetNewGlobalId();
                         newUnit.TeamId = Pl.TeamId;
                         Pl.Units.Add(newUnit);
                         snd.BackgroundImage = new Bitmap(newUnit.Icon, snd.Size);
@@ -76,7 +76,7 @@ namespace Common.Controls
                 else
                 {
                     var newUnit = new Unit(dragableUnit, GetFromPan(snd), Pl.TeamId);
-                    newUnit.BaseId = oldUnit.BaseId;
+                    newUnit.Id = oldUnit.Id;
                     newUnit.TeamId = Pl.TeamId;
                     var ind = Pl.Units.IndexOf(oldUnit);
                     Pl.Units.Insert(ind, newUnit);
@@ -166,6 +166,9 @@ namespace Common.Controls
         {
             if (cb_team.SelectedIndex < 0) return;
             Pl.TeamId = (int)cb_team.SelectedItem;
+            //Pl.Hero
+            for (int i = 0; i < Pl.Units.Count; i++)
+                Pl.Units[i].TeamId = Pl.TeamId;
         }
     }
 }

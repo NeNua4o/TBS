@@ -4,11 +4,11 @@ namespace Common.Enums
 {
     public enum CharType
     {
-        [Description("Не выбрана")]
+        [Description("Не выбрано")]
         None,
-        [Description("Живой")]
+        [Description("Живой/Мёртвый")]
         Alive,
-        [Description("Жизнь")]
+        [Description("Здоровье")]
         Hp,
         [Description("Мана")]
         Mp,

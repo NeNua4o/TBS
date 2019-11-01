@@ -41,16 +41,14 @@ namespace Common.Utils
             }
             else // Applies
             {
-                CharacteristicsItem item;
                 // HP
-                item = effect.Chars.GetItem(CharType.Hp);
-                if (item != null)
+                if (effect.Chars.BaseHas(CharType.Hp))
                 {
-                    CharType type;
-                    type = effect.EffectType == EffectTypes.Physical ? CharType.PDefence : CharType.MDefence;
-                    float totalDef = defender.CharBase(type) + defender.GetTotalEffect(type);
-                    type = effect.EffectType == EffectTypes.Physical ? CharType.PAttack : CharType.MAttack;
-                    var totalAtk = attacker.Chars.GetF(type) + attacker.GetTotalEffect(type);
+                    CharType tempType;
+                    tempType = effect.EffectType == EffectTypes.Physical ? CharType.PDefence : CharType.MDefence;
+                    float totalDef = defender.CharBaseF(tempType) + defender.GetTotalEffect(tempType);
+                    tempType = effect.EffectType == EffectTypes.Physical ? CharType.PAttack : CharType.MAttack;
+                    float totalAtk = attacker.CharBaseF(tempType) + attacker.GetTotalEffect(tempType);
 
                     var diff = totalAtk - totalDef;
                     float diffM;
@@ -66,16 +64,16 @@ namespace Common.Utils
                         if (diffM < -0.7)
                             diffM = -0.7f;
                     }
-                    int dmgHp = TMath.Round((1 + diffM) * chars.Value);
-                    defender.Chars.Add(chars.Key, dmgHp);
+                    int dmgHp = TMath.Round((1 + diffM) * effect.Chars.GetBaseFloat(CharType.Hp));
+                    defender.Chars.SummCurrent(CharType.Hp, dmgHp);
                     result.Add(String.Format(
                         "[DMG ] {0} ( {2} ) -> {1} ( {3} ) : {4} BDMG {5} TDMG", 
-                        attacker.Name, defender.Name, totalAtk, totalDef, effect.Affects.GetI(CharType.HP), dmgHp));
+                        attacker.Name, defender.Name, totalAtk, totalDef, effect.Chars.GetBaseInt(CharType.Hp), dmgHp));
 
-                    if (defender.GetChar(CharType.HP) < 0)
+                    if (defender.CharBaseI(CharType.Hp) < 0)
                     {
-                        defender.Chars.Rep(CharType.HP, 0);
-                        defender.Chars.Rep(CharType.Alive, 0);
+                        defender.Chars.ReplaceCurrent(CharType.Hp, 0);
+                        defender.Chars.ReplaceCurrent(CharType.Alive, 0);
                         defender.Effects.Clear();
                     }
                 }
@@ -90,18 +88,18 @@ namespace Common.Utils
             {
                 var effect = unit.Effects[i];
                 // HP
-                var chars = effect.Affects.GetItem(CharType.HP);
-                if (chars != null)
+                if (effect.Chars.BaseHas(CharType.Hp))
                 {
-                    unit.Chars.Add(CharType.HP, chars.Value);
+                    float value = effect.Chars.GetBaseFloat(CharType.Hp);
+                    unit.Chars.SummCurrent(CharType.Hp, value);
                     result.Add(String.Format(
                     "[DOT ] {0} -> {1} : {2} ({3}) turns {4}",
-                    effect.Name, unit.Name, effect.Name, chars.Value, effect.Turns - 1
+                    effect.Name, unit.Name, effect.Name, value, effect.Turns - 1
                     ));
-                    if (unit.GetChar(CharType.HP) < 0)
+                    if (unit.CharCursI(CharType.Hp) < 0)
                     {
-                        unit.Chars.Rep(CharType.HP, 0);
-                        unit.Chars.Rep(CharType.Alive, 0);
+                        unit.Chars.ReplaceCurrent(CharType.Hp, 0);
+                        unit.Chars.ReplaceCurrent(CharType.Alive, 0);
                         unit.Effects.Clear();
                     }
                 }

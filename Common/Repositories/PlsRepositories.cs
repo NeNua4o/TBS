@@ -84,8 +84,8 @@ namespace Common.Repositories
                 for (int uc = 0; uc < _pls[plc].Units.Count; uc++)
                 {
                     var u = _pls[plc].Units[uc];
-                    var bu = bUnits.FirstOrDefault(unit => unit.BaseId == u.BId);
-                    u.UpdateStats(bu);
+                    var bu = bUnits.FirstOrDefault(unit => unit.BaseId == u.BaseId);
+                    u.UpdateActions(bu);
                 }
             }
         }

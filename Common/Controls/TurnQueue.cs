@@ -27,13 +27,13 @@ namespace Common.Controls
             for (int i = 0; i < end; i++)
             {
                 var unit = units[i];
-                s = unit.Chars.Initiative + "";
+                s = unit.CharCursI(CharType.Initiative) + "";
                 var initSize = g.MeasureString(s, _font);
                 g.DrawString(s, _font, _brush, (i * _Iw) + ((_Iw - initSize.Width) / 2f), 0);
 
                 g.DrawImage(unit.Icon, new RectangleF((i * _Iw) + ((_Iw - _Uw) / 2f), initSize.Height, _Uw, _Uh));
 
-                s = unit.Chars.C_Hp + " / " + unit.Chars.B_Hp;
+                s = unit.CharCursI(CharType.Initiative) + " / " + unit.CharBaseI(CharType.Initiative);
                 var hpSize = g.MeasureString(s, _font);
                 g.DrawString(s, _font, _brush, (i * _Iw) + ((_Iw - hpSize.Width) / 2f), initSize.Height + _Uh);
 

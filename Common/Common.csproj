@@ -69,7 +69,8 @@
     <Compile Include="Extensions\PointFExtensions.cs" />
     <Compile Include="Models\Act.cs" />
     <Compile Include="Models\Axial.cs" />
-    <Compile Include="Models\CharacteristicsItem.cs" />
+    <Compile Include="Models\CharItem.cs" />
+    <Compile Include="Models\SerializeableDictionary.cs" />
     <Compile Include="Models\Unit.cs" />
     <Compile Include="Models\BMap.cs" />
     <Compile Include="Controls\ActionEditor.cs">
@@ -152,6 +153,12 @@
     <Compile Include="PropEditorsForms\ActionSelector.Designer.cs">
       <DependentUpon>ActionSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="PropEditorsForms\DictionaryEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropEditorsForms\DictionaryEditorForm.Designer.cs">
+      <DependentUpon>DictionaryEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PropEditorsForms\MultiSelectorEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +173,7 @@
     </Compile>
     <Compile Include="PropertyEditors\ActionMSelector.cs" />
     <Compile Include="PropertyEditors\ActionSelector.cs" />
+    <Compile Include="PropertyEditors\DictionaryEditor.cs" />
     <Compile Include="PropertyEditors\EffectMSelector.cs" />
     <Compile Include="PropertyEditors\EffectSelector.cs" />
     <Compile Include="PropertyEditors\ImagePropertyEditor.cs" />
@@ -219,6 +227,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UnitEditor.resx">
       <DependentUpon>UnitEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropEditorsForms\DictionaryEditorForm.resx">
+      <DependentUpon>DictionaryEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PropEditorsForms\MultiSelectorEditorForm.resx">
       <DependentUpon>MultiSelectorEditorForm.cs</DependentUpon>

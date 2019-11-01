@@ -11,9 +11,9 @@ namespace Common.Models
         public VUnit(Unit unit)
         {
             Unit = unit;
-            Initiative = unit.Chars.Initiative;
-            Lane = unit.Chars.Lane;
-            LaneUp = unit.Chars.LaneUp;
+            Initiative = unit.CharBaseF(CharType.Initiative);
+            Lane = unit.CharCursF(CharType.Lane);
+            LaneUp = unit.CharCursF(CharType.LaneUp);
         }
     }
 }

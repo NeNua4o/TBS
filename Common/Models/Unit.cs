@@ -6,11 +6,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace Common.Models
 {
-    public class Unit
+    public class Unit: ISerializable
     {
         [XmlAttribute]
         [DefaultValue(-1)]
@@ -107,26 +108,37 @@ namespace Common.Models
         public Unit()
         {
             Name = "New BaseUnit";
+            Chars = new Characteristics(true);
+            MainActId = -1;
+            SecondActId = -1;
         }
 
-        public Unit(Unit baseUnit)
+        public Unit(Unit unit)
         {
-            if (baseUnit == null) return;
-            BaseId = baseUnit.BaseId;
-            Id = baseUnit.Id;
-            HeroId = baseUnit.HeroId;
-            TeamId = baseUnit.TeamId;
+            if (unit == null) return;
+            BaseId = unit.BaseId;
+            Id = unit.Id;
+            HeroId = unit.HeroId;
+            TeamId = unit.TeamId;
 
-            Race = baseUnit.Race;
-            Name = baseUnit.Name;
-            Icon = baseUnit.Icon;
-            Model = baseUnit.Model;
+            Race = unit.Race;
+            Name = unit.Name;
+            Icon = unit.Icon;
+            Model = unit.Model;
 
-            MainActId = baseUnit.MainActId;
-            SecondActId = baseUnit.SecondActId;
-            if (baseUnit.SkillsIds != null) { SkillsIds = new int[baseUnit.SkillsIds.Length]; Array.Copy(baseUnit.SkillsIds, SkillsIds, SkillsIds.Length); }
-            if (baseUnit.SpellsIds != null) { SpellsIds = new int[baseUnit.SpellsIds.Length]; Array.Copy(baseUnit.SpellsIds, SpellsIds, SpellsIds.Length); }
-            if (baseUnit.PassivesIds != null) { PassivesIds = new int[baseUnit.PassivesIds.Length]; Array.Copy(baseUnit.PassivesIds, PassivesIds, PassivesIds.Length); }
+            Chars = new Characteristics(unit.Chars);
+
+            MainActId = unit.MainActId;
+            SecondActId = unit.SecondActId;
+            if (unit.SkillsIds != null) { SkillsIds = new int[unit.SkillsIds.Length]; Array.Copy(unit.SkillsIds, SkillsIds, SkillsIds.Length); }
+            if (unit.SpellsIds != null) { SpellsIds = new int[unit.SpellsIds.Length]; Array.Copy(unit.SpellsIds, SpellsIds, SpellsIds.Length); }
+            if (unit.PassivesIds != null) { PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length); }
+        }
+
+        public Unit(Unit unit, Axial startPos, int teamId) : this(unit)
+        {
+            StartPos = startPos;
+            TeamId = teamId;
         }
 
         public override string ToString()
@@ -148,12 +160,58 @@ namespace Common.Models
             if (unit.PassivesIds != null) { PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length); }
         }
 
-        public int CharBase(CharType type)
+        public int CharBaseI(CharType type)
         {
-            return Chars.GetBaseI(type);
+            return Chars.GetBaseInt(type);
         }
 
+        public float CharBaseF(CharType type)
+        {
+            return Chars.GetBaseFloat(type);
+        }
 
+        public int CharCursI(CharType type)
+        {
+            return Chars.GetCurrentInt(type);
+        }
+
+        public float CharCursF(CharType type)
+        {
+            return Chars.GetCurrentFloat(type);
+        }
+
+        public void RepMods(CharType type, float value)
+        {
+            Chars.ReplaceCurrent(type, value);
+        }
+
+        public void AddMods(CharType type, float value)
+        {
+            Chars.SummCurrent(type, value);
+        }
+
+        public float GetTotalEffect(CharType type)
+        {
+            float result = 0;
+            for (int i = 0; i < Effects.Count; i++)
+            {
+                if (Effects[i].Chars.BaseHas(type))
+                    switch (Effects[i].Mod)
+                    {
+                        case CharMod.None: break;
+                        case CharMod.Flat: result += Effects[i].Chars.GetBaseFloat(type); break;
+                        case CharMod.Mult: result += (Chars.GetBaseFloat(type) * Effects[i].Chars.GetBaseFloat(type)); break;
+                        case CharMod.Repl: result = Effects[i].Chars.GetBaseFloat(type); break; // Надо обработать по человечески.
+                        default: break;
+                    }
+            }
+            return result;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
+        }
     } //CLASS
 
 

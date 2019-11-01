@@ -55,6 +55,11 @@ namespace Common.Models
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public Characteristics Chars { get; set; }
 
+        [DisplayName("Тип влияния")]
+        [DefaultValue(CharMod.None)]
+        [TypeConverter(typeof(EnumTypeConverter))]
+        [XmlAttribute]
+        public CharMod Mod { get; set; }
 
         public Effect()
         {
