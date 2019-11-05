@@ -22,7 +22,7 @@ namespace Common.Utils
 
         public List<string> ApplyEffect(Unit attacker, Unit defender, Effect effect)
         {
-            var result = new List<string>() { "" };
+            var result = new List<string>();
             var chance = _rng.Get100();
             if (chance > effect.Chance)
             {
@@ -70,7 +70,7 @@ namespace Common.Utils
                         "[DMG ] {0} ( {2} ) -> {1} ( {3} ) : {4} BDMG {5} TDMG", 
                         attacker.Name, defender.Name, totalAtk, totalDef, effect.Chars.GetBaseInt(CharType.Hp), dmgHp));
 
-                    if (defender.CharBaseI(CharType.Hp) < 0)
+                    if (defender.CharCursI(CharType.Hp) < 0)
                     {
                         defender.Chars.ReplaceCurrent(CharType.Hp, 0);
                         defender.Chars.ReplaceCurrent(CharType.Alive, 0);

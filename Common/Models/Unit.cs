@@ -208,6 +208,11 @@ namespace Common.Models
             return result;
         }
 
+        public void ResetCurrent()
+        {
+            Chars.ResetCurrent();
+        }
+
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             throw new NotImplementedException();

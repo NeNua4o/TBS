@@ -159,11 +159,20 @@ namespace TBS
 
                 g.DrawImage(c.Unit.Icon, c.ModelSize, _srcModelSize, GraphicsUnit.Pixel);
                 g.DrawRectangle(Pens.Red, c.ModelSize.X, c.ModelSize.Y - 10, c.ModelSize.Width, 4);
-                var width = c.Unit.CharCursI(CharType.Hp) / c.Unit.CharBaseI(CharType.Hp) * c.ModelSize.Width;
+
+                var curHP = c.Unit.CharCursF(CharType.Hp);
+                var basHp = c.Unit.CharBaseF(CharType.Hp);
+
+                var width = curHP / basHp * c.ModelSize.Width;
                 g.FillRectangle(Brushes.Red, c.ModelSize.X, c.ModelSize.Y - 10, width, 4);
-                g.DrawRectangle(Pens.Blue, c.ModelSize.X, c.ModelSize.Y - 5, c.ModelSize.Width, 4);
-                width = c.Unit.CharCursI(CharType.Mp) / c.Unit.CharBaseI(CharType.Mp) * c.ModelSize.Width;
-                g.FillRectangle(Brushes.Blue, c.ModelSize.X, c.ModelSize.Y - 5, width, 4);
+
+                var mp = c.Unit.CharBaseI(CharType.Mp);
+                if (mp != 0)
+                {
+                    g.DrawRectangle(Pens.Blue, c.ModelSize.X, c.ModelSize.Y - 5, c.ModelSize.Width, 4);
+                    width = c.Unit.CharCursF(CharType.Mp) / mp * c.ModelSize.Width;
+                    g.FillRectangle(Brushes.Blue, c.ModelSize.X, c.ModelSize.Y - 5, width, 4);
+                }
             }
 
             pb_field.Image = b; g = null; b = null;
@@ -235,6 +244,7 @@ namespace TBS
                 int q = toRight ? _map.ArraySize - u.StartPos.Q - 1 : u.StartPos.Q, r = toRight ? _map.ArraySize - u.StartPos.R - 1 : u.StartPos.R;
                 _map.Cells[q, r].Unit = u;
                 u.CurPos = new Axial(q, r);
+                u.ResetCurrent();
             }
         }
 
@@ -252,7 +262,10 @@ namespace TBS
             var units = new List<Unit>();
             units.AddRange(_pls[0].Units.Where(unit => unit.CharCursI(CharType.Alive) == 1));
             units.AddRange(_pls[1].Units.Where(unit => unit.CharCursI(CharType.Alive) == 1));
-            
+
+            if (units.Count == 0)
+                return;
+
             for (int i = 0; i < units.Count; i++)
             {
                 // TODO Учитывать эффекты.

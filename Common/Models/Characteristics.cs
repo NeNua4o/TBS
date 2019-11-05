@@ -39,16 +39,18 @@ namespace Common.Models
             }
         }
 
-        public Characteristics(Characteristics chars)
+        public Characteristics(Characteristics chars) : this()
         {
             foreach (var item in chars.Base)
             {
                 Base.Add(item.Key, item.Value);
             }
+            /**/
             foreach (var item in chars.Current)
             {
                 Current.Add(item.Key, item.Value);
             }
+            
         }
 
         public bool BaseHas(CharType type)
@@ -103,6 +105,15 @@ namespace Common.Models
         public override string ToString()
         {
             return "<Характеристики...>";
+        }
+
+        public void ResetCurrent()
+        {
+            Current.Clear();
+            foreach (var item in Base)
+            {
+                Current.Add(item.Key, item.Value);
+            }
         }
     }
 }
