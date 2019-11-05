@@ -36,6 +36,7 @@
             this.turnControl = new Common.Controls.TurnControl();
             this.pb_debug = new System.Windows.Forms.PictureBox();
             this.b_log = new System.Windows.Forms.Button();
+            this.lb_log = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pb_field)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_debug)).BeginInit();
             this.SuspendLayout();
@@ -80,6 +81,7 @@
             // 
             // turnQueue
             // 
+            this.turnQueue.AutoSize = true;
             this.turnQueue.BackColor = System.Drawing.Color.Gainsboro;
             this.turnQueue.Location = new System.Drawing.Point(0, 359);
             this.turnQueue.Name = "turnQueue";
@@ -113,12 +115,21 @@
             this.b_log.UseVisualStyleBackColor = true;
             this.b_log.Click += new System.EventHandler(this.b_log_Click);
             // 
+            // lb_log
+            // 
+            this.lb_log.FormattingEnabled = true;
+            this.lb_log.Location = new System.Drawing.Point(405, 12);
+            this.lb_log.Name = "lb_log";
+            this.lb_log.Size = new System.Drawing.Size(1, 394);
+            this.lb_log.TabIndex = 8;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(757, 468);
+            this.Controls.Add(this.lb_log);
             this.Controls.Add(this.b_log);
             this.Controls.Add(this.pb_debug);
             this.Controls.Add(this.turnControl);
@@ -135,6 +146,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_field)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_debug)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -148,6 +160,7 @@
         private Common.Controls.TurnControl turnControl;
         private System.Windows.Forms.PictureBox pb_debug;
         private System.Windows.Forms.Button b_log;
+        private System.Windows.Forms.ListBox lb_log;
     }
 }
 

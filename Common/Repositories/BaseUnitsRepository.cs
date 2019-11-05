@@ -91,6 +91,18 @@ namespace Common.Repositories
             }
         }
 
+        internal void UpdateActions(List<Act> actions)
+        {
+            if (actions == null) return;
+            for (int i = 0; i < _baseUnits.Count; i++)
+            {
+                if (_baseUnits[i].MainActId != -1)
+                    _baseUnits[i].MainAct = actions.FirstOrDefault(action => action.Id == _baseUnits[i].MainActId);
+                if (_baseUnits[i].SecondActId != -1)
+                    _baseUnits[i].SecondAct = actions.FirstOrDefault(action => action.Id == _baseUnits[i].SecondActId);
+            }
+        }
+
         public void SaveItems()
         {
             FileStream fs = null;

@@ -50,6 +50,7 @@ namespace Common.Repositories
             _actionRepository.LoadItems();
             _actionRepository.UpdateEffects(_effectRepository.GetItems());
             _baseUnitRepository.LoadItems();
+            _baseUnitRepository.UpdateActions(_actionRepository.GetItems());
             _plRepository.LoadItems();
             _plRepository.UpdateUnits(_baseUnitRepository.GetItems());
         }

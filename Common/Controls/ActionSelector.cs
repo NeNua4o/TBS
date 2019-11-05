@@ -12,14 +12,13 @@ namespace Common.Controls
 
         static Font _ctFont;
         static Brush _pillar;
-        static RectangleF _bArea;
+        static PointF _pillarPt = new PointF(0, 0);
 
         public ActionSelector()
         {
             InitializeComponent();
             if (_ctFont == null) _ctFont = new Font("Calibri", 18, FontStyle.Bold, GraphicsUnit.Pixel);
-            if (_pillar == null) _pillar = new SolidBrush(Color.FromArgb(100, Color.Black));
-            if (_bArea == null) _bArea = new RectangleF(0, 0, b_action.Width, b_action.Height);
+            if (_pillar == null) _pillar = new SolidBrush(Color.FromArgb(200, Color.Black));
         }
 
         public void Init(string fileName)
@@ -41,7 +40,7 @@ namespace Common.Controls
             Graphics g = Graphics.FromImage(b);
             if (action.CoolTime > 0)
             {
-                g.FillRectangle(_pillar, _bArea);
+                g.FillRectangle(_pillar, 0, 0, b_action.Size.Width, b_action.Size.Height);
                 var size = g.MeasureString(action.CoolTime + "", _ctFont);
                 g.DrawString(action.CoolTime + "", _ctFont, Brushes.White, (b_action.Width - size.Width) / 2f, 0);
             }

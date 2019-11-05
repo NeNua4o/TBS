@@ -1,6 +1,6 @@
-﻿namespace BS
+﻿namespace AionHlp
 {
-    partial class LogForm
+    partial class AionMain
     {
         /// <summary>
         /// Required designer variable.
@@ -28,35 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lb = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
-            // lb
-            // 
-            this.lb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lb.FormattingEnabled = true;
-            this.lb.Location = new System.Drawing.Point(0, 0);
-            this.lb.Name = "lb";
-            this.lb.Size = new System.Drawing.Size(284, 252);
-            this.lb.TabIndex = 0;
-            // 
-            // LogForm
+            // AionMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 252);
-            this.Controls.Add(this.lb);
-            this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(700, 1000);
-            this.MinimizeBox = false;
-            this.Name = "LogForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
+            this.ClientSize = new System.Drawing.Size(616, 375);
+            this.Name = "AionMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Aion";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox lb;
     }
 }
+

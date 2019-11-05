@@ -53,6 +53,8 @@ namespace Common.Models
         [XmlIgnore]
         public Image Icon { get { return _icon; } set { _icon = value; IconPath = (string)_icon.Tag; } }
 
+        
+
         [DisplayName("Путь до иконки")]
         [DefaultValue("")]
         [ReadOnly(true)]
@@ -84,11 +86,15 @@ namespace Common.Models
         [XmlAttribute]
         public int MainActId { get; set; }
 
+        public Act MainAct;
+
         [DisplayName("Id альтернативного действия")]
         [DefaultValue(-1)]
         [Editor(typeof(ActionSelector), typeof(UITypeEditor))]
         [XmlAttribute]
         public int SecondActId { get; set; }
+
+        public Act SecondAct;
 
         [DisplayName("Id навыков")]
         [Editor(typeof(ActionMSelector), typeof(UITypeEditor))]
@@ -154,7 +160,9 @@ namespace Common.Models
             Icon = unit.Icon;
             Model = unit.Model;
             MainActId = unit.MainActId;
+            MainAct = unit.MainAct;
             SecondActId = unit.SecondActId;
+            SecondAct = unit.SecondAct;
             if (unit.SkillsIds != null) { SkillsIds = new int[unit.SkillsIds.Length]; Array.Copy(unit.SkillsIds, SkillsIds, SkillsIds.Length); }
             if (unit.SpellsIds != null) { SpellsIds = new int[unit.SpellsIds.Length]; Array.Copy(unit.SpellsIds, SpellsIds, SpellsIds.Length); }
             if (unit.PassivesIds != null) { PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length); }
@@ -217,6 +225,18 @@ namespace Common.Models
         {
             throw new NotImplementedException();
         }
+
+        internal void CoolTime()
+        {
+            if (MainAct != null && MainAct.CoolTimeMax != 0 && MainAct.CoolTime > 0)
+                MainAct.CoolTime--;
+            if (SecondAct != null && SecondAct.CoolTimeMax != 0 && SecondAct.CoolTime > 0)
+                SecondAct.CoolTime--;
+        }
+
+
+
+
     } //CLASS
 
 

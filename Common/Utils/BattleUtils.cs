@@ -83,7 +83,7 @@ namespace Common.Utils
 
         public List<string> ApplyPassives(Unit unit)
         {
-            var result = new List<string>() { "" };
+            var result = new List<string>() {};
             for (int i = 0; i < unit.Effects.Count; i++)
             {
                 var effect = unit.Effects[i];
@@ -120,5 +120,7 @@ namespace Common.Utils
             tempArray = null;
             return result;
         }
+
+        
     }
 }

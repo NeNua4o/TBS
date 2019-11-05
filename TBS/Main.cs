@@ -44,20 +44,19 @@ namespace TBS
             _stepsD = new Bitmap("icons/z_step.png");
         }
 
-        LogForm _lf = new LogForm();
         bool _lfopened = false;
         private void b_log_Click(object sender, EventArgs e)
         {
-            _lf.AddS(_log);
-            _lf.Show();
-            _lfopened = true;
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
             if (_lfopened)
-                _lf.Close();
-            base.OnClosing(e);
+            {
+                lb_log.Width = 1;
+                _lfopened = false;
+            }
+            else
+            {
+                lb_log.Width = 300;
+                _lfopened = true;
+            }
         }
 
         private void CurrentUnit_ActionChanged(object sender, EventArgs e)
@@ -212,8 +211,7 @@ namespace TBS
 
         private void b_reset_Click(object sender, EventArgs e)
         {
-            _log.Clear();
-            _lf.Reset();
+            lb_log.Items.Clear();
             GenerateMap();
             PlaceAllUnits();
             InitTurnOrder();
@@ -230,6 +228,9 @@ namespace TBS
             turnQueue.Top = pb_field.Bottom + 5;
 
             pb_debug.Left = pb_field.Right + 10;
+
+            lb_log.Left = pb_debug.Right + 10;
+            lb_log.Top = pb_field.Top;
         }
 
         private void GenerateMap() { _map = new BMap(4, 50); pb_field.Width = _map.Width; pb_field.Height = _map.Height; }
@@ -286,8 +287,10 @@ namespace TBS
             }
             currentUnit.Set(turnQueueUnits[0]);
             var log = _battle.ApplyPassives(turnQueueUnits[0]);
-            _lf.AddS(log);
-            _log.AddRange(log);
+            for (int i = 0; i < log.Count; i++)
+                lb_log.Items.Add(log[i]);
+            
+            
 
             if (WinCondition())
                 return;
@@ -455,8 +458,10 @@ namespace TBS
                         for (int j = 0; j < _selectedAction.Effects.Length; j++) // Применим эффект.
                         {
                             var log = _battle.ApplyEffect(_currentUnit, unit, _selectedAction.Effects[j]);
-                            _lf.AddS(log);
-                            _log.AddRange(log);
+                            if (_selectedAction.CoolTimeMax != 0)
+                                _selectedAction.CoolTime = _selectedAction.CoolTimeMax;
+                            for (int k = 0; k < log.Count; k++)
+                                lb_log.Items.Add(log[k]);
                         }
                     }
                     doAtack = true;

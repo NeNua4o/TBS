@@ -16,6 +16,7 @@ namespace Common.Controls
         public Unit Unit;
 
         public int ActionId = -1;
+        public Act CAction = null;
         public event EventHandler ActionChanged;
         
 
@@ -41,12 +42,14 @@ namespace Common.Controls
 
             pb_icon.Image = new Bitmap(unit.Icon, pb_icon.Size);
 
-            Act act = _repWkr.GetAction(unit.MainActId);
+            unit.CoolTime();
+
+            Act act = unit.MainAct;
             actionSelectorMain.Set(act);
 
             SetCurrentAction(act);
 
-            act = _repWkr.GetAction(unit.SecondActId);
+            act = unit.SecondAct;
             actionSelectorSec.Set(act);
 
             if (unit.SkillsIds == null || unit.SkillsIds.Length == 0)
@@ -66,11 +69,13 @@ namespace Common.Controls
             {
                 pb_curAct.Image = new Bitmap(act.Icon, pb_curAct.Size);
                 ActionId = act.Id;
+                CAction = act;
                 ActionChanged?.Invoke(this, null);
             }
             else
             {
                 ActionId = -1;
+                CAction = null;
                 ActionChanged?.Invoke(this, null);
             }
         }
