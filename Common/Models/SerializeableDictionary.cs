@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Common.Models
@@ -20,42 +21,24 @@ namespace Common.Models
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
-            XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
-            XmlSerializer valueSerializer = new XmlSerializer(typeof(TValue));
-
-            bool wasEmpty = reader.IsEmptyElement;
-            reader.Read();
-
-            if (wasEmpty)
-                return;//ddddd
-
-            while (reader.NodeType != System.Xml.XmlNodeType.EndElement)
+            if (reader.IsEmptyElement)
+                return;
+            reader.ReadStartElement();
+            while (true)
             {
-                reader.ReadStartElement("item");
-
-                for (int i = 0; i < reader.AttributeCount; i++)
+                try
                 {
-                    var rawKey = reader.GetAttribute("key");
+                    if (reader.NodeType == System.Xml.XmlNodeType.EndElement)
+                        break;
+                    reader.MoveToAttribute(0);
+                    var key = (TKey)Enum.Parse(typeof(TKey), reader.Value, true);
+                    reader.MoveToAttribute(1);
+                    var val = (TValue)Convert.ChangeType(reader.Value, typeof(TValue));
+                    this.Add(key, val);
+                    if (!reader.Read())
+                        break;
                 }
-
-                
-                
-
-                
-                /*
-                reader.ReadStartElement("key");
-                TKey key = (TKey)keySerializer.Deserialize(reader);
-                reader.ReadEndElement();
-
-                reader.ReadStartElement("value");
-                TValue value = (TValue)valueSerializer.Deserialize(reader);
-                reader.ReadEndElement();
-
-                this.Add(key, value);
-                */
-
-                reader.ReadEndElement();
-                reader.MoveToContent();
+                catch (Exception ex) { throw ex; }
             }
             reader.ReadEndElement();
         }

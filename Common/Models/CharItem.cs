@@ -1,12 +1,10 @@
-﻿using System.Xml.Serialization;
+﻿using Common.Enums;
 
 namespace Common.Models
 {
     public class CharItem
     {
-        [XmlAttribute]
-        public int id;
-        [XmlAttribute]
-        public string value;
+        public CharType Key;
+        public float Value;
     }
 }

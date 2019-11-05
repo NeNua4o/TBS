@@ -19,7 +19,7 @@ namespace Common.PropertyEditors
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            using (DictionaryEditorForm actionSelectorForm = new DictionaryEditorForm(value))
+            using (CharacteristicsEditorForm actionSelectorForm = new CharacteristicsEditorForm(value))
             {
                 actionSelectorForm.Text = "Характеристики";
                 if (actionSelectorForm.ShowDialog() == DialogResult.OK)

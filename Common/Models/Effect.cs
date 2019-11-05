@@ -76,11 +76,12 @@ namespace Common.Models
             Chance = s.Chance;
             Turns = s.Turns;
             Chars = new Characteristics(s.Chars);
+            Mod = s.Mod;
         }
 
         public override string ToString()
         {
-            return Name + " | " + Chance + " | " + Turns;
+            return Name + " | " + Chance + " | " + Turns + " | " + Mod;
         }
     }
 

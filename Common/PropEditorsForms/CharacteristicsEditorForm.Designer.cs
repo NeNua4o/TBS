@@ -1,6 +1,6 @@
 ﻿namespace Common.PropEditorsForms
 {
-    partial class DictionaryEditorForm
+    partial class CharacteristicsEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,11 +30,11 @@
         {
             this.tlp = new System.Windows.Forms.TableLayoutPanel();
             this.dataGrid = new System.Windows.Forms.DataGridView();
+            this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.b_del = new System.Windows.Forms.Button();
             this.b_add = new System.Windows.Forms.Button();
             this.b_apply = new System.Windows.Forms.Button();
-            this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tlp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
@@ -65,7 +65,6 @@
             this.dataGrid.AllowUserToDeleteRows = false;
             this.dataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedHeaders;
             this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGrid.ColumnHeadersVisible = false;
             this.dataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Key,
             this.Value});
@@ -77,6 +76,18 @@
             this.dataGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.dataGrid.Size = new System.Drawing.Size(296, 348);
             this.dataGrid.TabIndex = 0;
+            this.dataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGrid_CellValueChanged);
+            // 
+            // Key
+            // 
+            this.Key.HeaderText = "Характеристика";
+            this.Key.Name = "Key";
+            this.Key.ReadOnly = true;
+            // 
+            // Value
+            // 
+            this.Value.HeaderText = "Значение";
+            this.Value.Name = "Value";
             // 
             // b_del
             // 
@@ -95,6 +106,7 @@
             this.b_add.TabIndex = 2;
             this.b_add.Text = "Добавить";
             this.b_add.UseVisualStyleBackColor = true;
+            this.b_add.Click += new System.EventHandler(this.b_add_Click);
             // 
             // b_apply
             // 
@@ -104,19 +116,9 @@
             this.b_apply.TabIndex = 3;
             this.b_apply.Text = "Применить";
             this.b_apply.UseVisualStyleBackColor = true;
+            this.b_apply.Click += new System.EventHandler(this.b_apply_Click);
             // 
-            // Key
-            // 
-            this.Key.HeaderText = "Характеристика";
-            this.Key.Name = "Key";
-            this.Key.ReadOnly = true;
-            // 
-            // Value
-            // 
-            this.Value.HeaderText = "Значение";
-            this.Value.Name = "Value";
-            // 
-            // DictionaryEditorForm
+            // CharacteristicsEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -124,7 +126,7 @@
             this.Controls.Add(this.tlp);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "DictionaryEditorForm";
+            this.Name = "CharacteristicsEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Характеристики";
             this.tlp.ResumeLayout(false);

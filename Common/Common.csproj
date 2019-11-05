@@ -70,6 +70,7 @@
     <Compile Include="Models\Act.cs" />
     <Compile Include="Models\Axial.cs" />
     <Compile Include="Models\CharItem.cs" />
+    <Compile Include="Models\CharItemXml.cs" />
     <Compile Include="Models\SerializeableDictionary.cs" />
     <Compile Include="Models\Unit.cs" />
     <Compile Include="Models\BMap.cs" />
@@ -153,11 +154,17 @@
     <Compile Include="PropEditorsForms\ActionSelector.Designer.cs">
       <DependentUpon>ActionSelector.cs</DependentUpon>
     </Compile>
-    <Compile Include="PropEditorsForms\DictionaryEditorForm.cs">
+    <Compile Include="PropEditorsForms\CharacteristicsEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PropEditorsForms\DictionaryEditorForm.Designer.cs">
-      <DependentUpon>DictionaryEditorForm.cs</DependentUpon>
+    <Compile Include="PropEditorsForms\CharacteristicsEditorForm.Designer.cs">
+      <DependentUpon>CharacteristicsEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PropEditorsForms\CharacteristicsEditorItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropEditorsForms\CharacteristicsEditorItem.Designer.cs">
+      <DependentUpon>CharacteristicsEditorItem.cs</DependentUpon>
     </Compile>
     <Compile Include="PropEditorsForms\MultiSelectorEditorForm.cs">
       <SubType>Form</SubType>
@@ -198,6 +205,7 @@
     <Compile Include="TypeConverters\CollectionTypeConverter.cs" />
     <Compile Include="TypeConverters\EnumTypeConverter.cs" />
     <Compile Include="Repositories\RepositoryWorker.cs" />
+    <Compile Include="Utils\TypeConverter.cs" />
     <EmbeddedResource Include="Controls\ActionEditor.resx">
       <DependentUpon>ActionEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -228,8 +236,11 @@
     <EmbeddedResource Include="Controls\UnitEditor.resx">
       <DependentUpon>UnitEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PropEditorsForms\DictionaryEditorForm.resx">
-      <DependentUpon>DictionaryEditorForm.cs</DependentUpon>
+    <EmbeddedResource Include="PropEditorsForms\CharacteristicsEditorForm.resx">
+      <DependentUpon>CharacteristicsEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropEditorsForms\CharacteristicsEditorItem.resx">
+      <DependentUpon>CharacteristicsEditorItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PropEditorsForms\MultiSelectorEditorForm.resx">
       <DependentUpon>MultiSelectorEditorForm.cs</DependentUpon>

@@ -34,7 +34,12 @@ namespace Common.PropEditorsForms
                 case SelectorTypes.Actions:
                     for (int i = 0; i < _repWkr.Actions.Count; i++)
                     {
-                        item = new ItemMultiSelector(_repWkr.Actions[i].Id, _repWkr.Actions[i].Icon, _repWkr.Actions[i].Name, Ids.Any(x => x == _repWkr.Actions[i].Id));
+                        item = new ItemMultiSelector(
+                            _repWkr.Actions[i].Id, 
+                            _repWkr.Actions[i].Icon, 
+                            _repWkr.Actions[i].Name, 
+                            Ids.Any(x => x == _repWkr.Actions[i].Id)
+                            );
                         item.ItemMultiSelectorCBChanged += Item_ItemMultiSelectorCBChanged;
                         flp_items.Controls.Add(item);
                     }
@@ -42,7 +47,12 @@ namespace Common.PropEditorsForms
                 case SelectorTypes.Effects:
                     for (int i = 0; i < _repWkr.Effects.Count; i++)
                     {
-                        item = new ItemMultiSelector(_repWkr.Effects[i].Id, _repWkr.Effects[i].Icon, _repWkr.Effects[i].Name, Ids.Any(x => x == _repWkr.Effects[i].Id));
+                        item = new ItemMultiSelector(
+                            _repWkr.Effects[i].Id,
+                            _repWkr.Effects[i].Icon,
+                            _repWkr.Effects[i].Name + " | " + _repWkr.Effects[i].Chance + " | " + _repWkr.Effects[i].Turns + " | " + _repWkr.Effects[i].Mod,
+                            Ids.Any(x => x == _repWkr.Effects[i].Id)
+                            );
                         item.ItemMultiSelectorCBChanged += Item_ItemMultiSelectorCBChanged;
                         flp_items.Controls.Add(item);
                     }
