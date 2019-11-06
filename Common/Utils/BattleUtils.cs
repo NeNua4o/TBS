@@ -36,7 +36,7 @@ namespace Common.Utils
             {
                 defender.Effects.Add(new Effect(effect));
                 result.Add(String.Format(
-                    "[Дот] {0} -> {1} : {2}. Нужно <{3} выпало {4}.", 
+                    "[Наложен Дот] {0} -> {1} : {2}. Нужно <{3} выпало {4}.", 
                     attacker.Name, defender.Name, effect.Name, effect.Chance, chance));
             }
             else // Applies
@@ -106,7 +106,7 @@ namespace Common.Utils
                     float value = effect.Chars.GetBaseFloat(CharType.Hp);
                     unit.Chars.SummCurrent(CharType.Hp, value);
                     result.Add(String.Format(
-                    "[Дот] {0}->{1} : {2}. {3} ещё ходов {4}",
+                    "[Дот] {0}->{1} : {2}. Урон {3} ещё ходов {4}",
                     effect.Name, unit.Name, effect.Name, value, effect.Turns - 1
                     ));
                     if (unit.CharCursI(CharType.Hp) < 0)
@@ -115,6 +115,11 @@ namespace Common.Utils
                         unit.Chars.ReplaceCurrent(CharType.Alive, 0);
                         unit.Effects.Clear();
                     }
+                    if (unit.CharCursI(CharType.Hp) < 0)
+                    {
+                        unit.Chars.ReplaceCurrent(CharType.Hp, unit.CharBaseI(CharType.Hp));
+                    }
+
                 }
 
                 effect.Turns--;

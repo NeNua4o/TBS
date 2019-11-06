@@ -33,7 +33,7 @@ namespace Common.Controls
 
                 g.DrawImage(unit.Icon, new RectangleF((i * _Iw) + ((_Iw - _Uw) / 2f), initSize.Height, _Uw, _Uh));
 
-                s = unit.CharCursI(CharType.Initiative) + " / " + unit.CharBaseI(CharType.Initiative);
+                s = unit.CharCursI(CharType.Hp) + " / " + unit.CharBaseI(CharType.Hp);
                 var hpSize = g.MeasureString(s, _font);
                 g.DrawString(s, _font, _brush, (i * _Iw) + ((_Iw - hpSize.Width) / 2f), initSize.Height + _Uh);
 
