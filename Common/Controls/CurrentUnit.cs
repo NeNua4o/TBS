@@ -47,7 +47,7 @@ namespace Common.Controls
             Act act = unit.MainAct;
             actionSelectorMain.Set(act);
 
-            SetCurrentAction(act);
+            SetCurrentAction(act.CoolTime == 0 ? act : null);
 
             act = unit.SecondAct;
             actionSelectorSec.Set(act);
@@ -60,7 +60,26 @@ namespace Common.Controls
 
         private void SetCurrentAction(int id)
         {
-            SetCurrentAction(_repWkr.GetAction(id));
+            // CRUTCH
+            if (Unit == null)
+            {
+                SetCurrentAction(null);
+                return;
+            }
+            Act action = null;
+            if (Unit.MainActId == id)
+                action = Unit.MainAct;
+            if (Unit.SecondActId == id)
+                action = Unit.SecondAct;
+            if (Unit.SkillsIds != null && Unit.SkillsIds.Contains(id))
+                action = Unit.Skills.WitchId(id);
+            if (Unit.SpellsIds != null && Unit.SpellsIds.Contains(id))
+                action = Unit.Spells.WitchId(id);
+
+            if (action != null && action.CoolTime == 0)
+                SetCurrentAction(action);
+            else
+                SetCurrentAction(null);
         }
 
         private void SetCurrentAction(Act act)
@@ -74,6 +93,7 @@ namespace Common.Controls
             }
             else
             {
+                pb_curAct.Image = new Bitmap(1, 1);
                 ActionId = -1;
                 CAction = null;
                 ActionChanged?.Invoke(this, null);

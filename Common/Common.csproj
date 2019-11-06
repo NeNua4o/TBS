@@ -64,6 +64,8 @@
     <Compile Include="Enums\Races.cs" />
     <Compile Include="Enums\ShemeTypes.cs" />
     <Compile Include="Enums\CharMod.cs" />
+    <Compile Include="Extensions\ActionExtensions.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\AxialExtensions.cs" />
     <Compile Include="Extensions\CubeExtensions.cs" />
     <Compile Include="Extensions\PointFExtensions.cs" />
@@ -187,7 +189,7 @@
     <Compile Include="Repositories\ActionsRepository.cs" />
     <Compile Include="Repositories\EffectsRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="Repositories\BaseUnitsRepository.cs" />
+    <Compile Include="Repositories\UnitsRepository.cs" />
     <Compile Include="Repositories\PlsRepositories.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
     <Compile Include="Utils\AxialUtils.cs" />

@@ -61,10 +61,17 @@ namespace Common.Models
         [XmlAttribute]
         public CharMod Mod { get; set; }
 
+        [DisplayName("Учитывает защиту")]
+        [Description("При расчёте величины эффекта учитывает параметры атаки и защиты")]
+        [DefaultValue(true)]
+        [XmlAttribute]
+        public bool ConsiderDefence { get; set; }
+
         public Effect()
         {
             Name = "New Effect";
             Chars = new Characteristics();
+            ConsiderDefence = true;
         }
 
         public Effect(Effect s)
@@ -77,6 +84,7 @@ namespace Common.Models
             Turns = s.Turns;
             Chars = new Characteristics(s.Chars);
             Mod = s.Mod;
+            ConsiderDefence = s.ConsiderDefence;
         }
 
         public override string ToString()

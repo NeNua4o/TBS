@@ -101,15 +101,21 @@ namespace Common.Models
         [TypeConverter(typeof(CollectionTypeConverter))]
         public int[] SkillsIds { get; set; }
 
+        public Act[] Skills;
+
         [DisplayName("Id заклинаний")]
         [Editor(typeof(ActionMSelector), typeof(UITypeEditor))]
         [TypeConverter(typeof(CollectionTypeConverter))]
         public int[] SpellsIds { get; set; }
 
+        public Act[] Spells;
+
         [DisplayName("Id пассивных навыков")]
         [Editor(typeof(ActionMSelector), typeof(UITypeEditor))]
         [TypeConverter(typeof(CollectionTypeConverter))]
         public int[] PassivesIds { get; set; }
+
+        public Act[] Passives;
 
         public Unit()
         {
@@ -136,9 +142,21 @@ namespace Common.Models
 
             MainActId = unit.MainActId;
             SecondActId = unit.SecondActId;
-            if (unit.SkillsIds != null) { SkillsIds = new int[unit.SkillsIds.Length]; Array.Copy(unit.SkillsIds, SkillsIds, SkillsIds.Length); }
-            if (unit.SpellsIds != null) { SpellsIds = new int[unit.SpellsIds.Length]; Array.Copy(unit.SpellsIds, SpellsIds, SpellsIds.Length); }
-            if (unit.PassivesIds != null) { PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length); }
+            if (unit.SkillsIds != null)
+            {
+                SkillsIds = new int[unit.SkillsIds.Length]; Array.Copy(unit.SkillsIds, SkillsIds, SkillsIds.Length);
+                Skills = new Act[unit.SkillsIds.Length];
+            }
+            if (unit.SpellsIds != null)
+            {
+                SpellsIds = new int[unit.SpellsIds.Length]; Array.Copy(unit.SpellsIds, SpellsIds, SpellsIds.Length);
+                Spells = new Act[unit.SpellsIds.Length];
+            }
+            if (unit.PassivesIds != null)
+            {
+                PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length);
+                Passives = new Act[unit.PassivesIds.Length];
+            }
         }
 
         public Unit(Unit unit, Axial startPos, int teamId) : this(unit)
@@ -163,9 +181,21 @@ namespace Common.Models
             MainAct = unit.MainAct;
             SecondActId = unit.SecondActId;
             SecondAct = unit.SecondAct;
-            if (unit.SkillsIds != null) { SkillsIds = new int[unit.SkillsIds.Length]; Array.Copy(unit.SkillsIds, SkillsIds, SkillsIds.Length); }
-            if (unit.SpellsIds != null) { SpellsIds = new int[unit.SpellsIds.Length]; Array.Copy(unit.SpellsIds, SpellsIds, SpellsIds.Length); }
-            if (unit.PassivesIds != null) { PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length); }
+            if (unit.SkillsIds != null)
+            {
+                SkillsIds = new int[unit.SkillsIds.Length]; Array.Copy(unit.SkillsIds, SkillsIds, SkillsIds.Length);
+                Skills = new Act[unit.SkillsIds.Length]; Array.Copy(unit.Skills, Skills, SkillsIds.Length);
+            }
+            if (unit.SpellsIds != null)
+            {
+                SpellsIds = new int[unit.SpellsIds.Length]; Array.Copy(unit.SpellsIds, SpellsIds, SpellsIds.Length);
+                Spells = new Act[unit.SpellsIds.Length]; Array.Copy(unit.Spells, Spells, SpellsIds.Length);
+            }
+            if (unit.PassivesIds != null)
+            {
+                PassivesIds = new int[unit.PassivesIds.Length]; Array.Copy(unit.PassivesIds, PassivesIds, PassivesIds.Length);
+                Passives = new Act[unit.PassivesIds.Length]; Array.Copy(unit.Passives, Passives, PassivesIds.Length);
+            }
         }
 
         public int CharBaseI(CharType type)
@@ -232,6 +262,14 @@ namespace Common.Models
                 MainAct.CoolTime--;
             if (SecondAct != null && SecondAct.CoolTimeMax != 0 && SecondAct.CoolTime > 0)
                 SecondAct.CoolTime--;
+            if (Skills != null)
+                for (int i = 0; i < Skills.Length; i++)
+                    if (Skills[i].CoolTimeMax != 0 && Skills[i].CoolTime > 0)
+                        Skills[i].CoolTime--;
+            if (Spells != null)
+                for (int i = 0; i < Spells.Length; i++)
+                    if (Spells[i].CoolTimeMax != 0 && Spells[i].CoolTime > 0)
+                        Spells[i].CoolTime--;
         }
 
 

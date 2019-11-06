@@ -47,16 +47,15 @@ namespace TBS
         bool _lfopened = false;
         private void b_log_Click(object sender, EventArgs e)
         {
-            if (_lfopened)
-            {
-                lb_log.Width = 1;
-                _lfopened = false;
-            }
-            else
-            {
-                lb_log.Width = 300;
-                _lfopened = true;
-            }
+            if (_lfopened) { lb_log.Width = 1; _lfopened = false; lb_log.Left = pb_debug.Right; }
+            else { lb_log.Width = 600; _lfopened = true; lb_log.Left = pb_debug.Right; }
+        }
+
+        bool _dfopened = false;
+        private void b_debugDraw_Click(object sender, EventArgs e)
+        {
+            if (_dfopened) { pb_debug.Width = 1;_dfopened = false; lb_log.Left = pb_debug.Right; }
+            else { pb_debug.Width = 300;_dfopened = true; lb_log.Left = pb_debug.Right; }
         }
 
         private void CurrentUnit_ActionChanged(object sender, EventArgs e)
@@ -71,11 +70,11 @@ namespace TBS
             if (_currentUnit == null) return;
             _currentCell = _map.Cell(_currentUnit.CurPos);
             _aForMove = _map.GetAFormMove(_currentCell, _currentUnit.CharCursI(CharType.MoveRange), (MoveTypes)_currentUnit.CharCursI(CharType.MoveType));
-            if (currentUnit.ActionId == -1) return;
-            _selectedAction = _repWkr.GetAction(currentUnit.ActionId);
+            //if (currentUnit.ActionId == -1) return;
+            _selectedAction = currentUnit.CAction;
             _aForAction = _map.GetAForAction(_currentUnit, _currentCell, _selectedAction);
-            _aForApply = _map.GetAForApply(_currentUnit, _currentCell, _selectedAction.AppliesOn);
-            _actionRange = _map.GetCellsInRange(_currentCell.Axial, _selectedAction.Range);
+            _aForApply = _map.GetAForApply(_currentUnit, _currentCell, _selectedAction == null ? null : _selectedAction.AppliesOn);
+            _actionRange = _map.GetCellsInRange(_currentCell.Axial, _selectedAction == null ? 0 : _selectedAction.Range);
             DrawDebug();
         }
 
@@ -89,7 +88,7 @@ namespace TBS
         private void TurnControl_SkipClicked(object sender, EventArgs e)
         {
             if (currentUnit.Unit == null) return;
-            currentUnit.Unit.Chars.SummCurrent(CharType.Lane, -_baseLane / 2);
+            currentUnit.Unit.Chars.SummCurrent(CharType.Lane, -_baseLane);
             CalcTurns();
         }
 
@@ -229,8 +228,8 @@ namespace TBS
 
             pb_debug.Left = pb_field.Right + 10;
 
-            lb_log.Left = pb_debug.Right + 10;
-            lb_log.Top = pb_field.Top;
+            lb_log.Left = pb_debug.Right;
+            lb_log.Top = pb_debug.Top;
         }
 
         private void GenerateMap() { _map = new BMap(4, 50); pb_field.Width = _map.Width; pb_field.Height = _map.Height; }
@@ -254,7 +253,10 @@ namespace TBS
             currentUnit.Set(null);
             var units = new List<Unit>(); units.AddRange(_pls[0].Units); units.AddRange(_pls[1].Units);
             for (int i = 0; i < units.Count; i++)
+            {
                 units[i].RepMods(CharType.Lane, _rng.Next(1, (int)(units[i].CharCursF(CharType.Initiative) / 4f)) / 100f);
+                units[i].ResetCurrent();
+            }
             units = null;
         }
 
@@ -340,8 +342,6 @@ namespace TBS
         BMapCell _actionStartPoint;
         BMapCell _moveDestination;
         int _goesFrom, _distance, _goesTo;
-
-        
 
         private void pb_field_MouseMove(object sender, MouseEventArgs e)
         {

@@ -15,7 +15,7 @@ namespace Common.Repositories
 
         
         private static RepositoryWorker _instance;
-        private BaseUnitsRepository _baseUnitRepository;
+        private UnitsRepository _baseUnitRepository;
         private ActionsRepository _actionRepository;
         private EffectsRepository _effectRepository;
         private PlsRepository _plRepository;
@@ -28,7 +28,7 @@ namespace Common.Repositories
             _teamRepository = new TeamRepository();
             _effectRepository = new EffectsRepository("Effects.xml");
             _actionRepository = new ActionsRepository("Actions.xml");
-            _baseUnitRepository = new BaseUnitsRepository("BaseUnits.xml");
+            _baseUnitRepository = new UnitsRepository("BaseUnits.xml");
             _plRepository = new PlsRepository("Pls.xml");
         }
 

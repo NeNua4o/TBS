@@ -342,6 +342,8 @@ namespace Common.Models
         public List<BMapCell> GetByTargetFilter(Unit owner, BMapCell ownerCell, Targets appliesOn, int range)
         {
             var res = new List<BMapCell>();
+            if (appliesOn == null)
+                return res;
             var all = GetCellsInRange(ownerCell.Axial, range);
             if (appliesOn.Allies)
             {
