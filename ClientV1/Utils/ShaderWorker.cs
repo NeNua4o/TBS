@@ -30,7 +30,7 @@ namespace ClientV1.Utils
             // Загружаем код Фрагментного шейдера из файла
             using (StreamReader sr = new StreamReader(fragmentShaderFilename))
                 GL.ShaderSource(fragShaderId, sr.ReadToEnd());
-
+            
             ErrorCode errCode;
             string InfoLog;
 
@@ -48,7 +48,7 @@ namespace ClientV1.Utils
             Debug.WriteLine(String.Format("Компиляция шейдера: {0}", fragmentShaderFilename));
             GL.CompileShader(fragShaderId);
 
-            // Проверяем вершинный шейдер
+            // Проверяем Фрагментный шейдер
             errCode = GL.GetError();
             GL.GetShaderInfoLog(fragShaderId, out InfoLog);
             if (InfoLog.Length > 0)
@@ -73,5 +73,7 @@ namespace ClientV1.Utils
             
             return progId;
         }
+
+
     }
 }

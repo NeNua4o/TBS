@@ -27,64 +27,123 @@ namespace ClientV1
             Title = "Test";
         }
 
-        int _vertsArrObj;
+        int _vertsArrObjHnd;
 
-        int _vertBufferId;
-        int _fragBufferId;
-        int _texId;
+        int _texHnd;
 
-        int[] _vertBuffs;
-        int[] _fragBuffs;
+        int[] _vBuffsHnds, _fBuffsHnds;
 
-        int _shadersProgrammId;
+        int _vBuffAxHnd, _fBuffAxHnd;
+        float[] _vBuffAxDt = new float[]
+        {
+            -5.0f, 0.0f, 0.0f,
+            5.0f, 0.0f, 0.0f,
+            5.0f, 0.0f,  0.0f,
+            4.7f, 0.0f,  0.1f,
+            5.0f, 0.0f,  0.0f,
+            4.7f, 0.0f, -0.1f,
 
-        int _mvpMatrixId;
+            0.0f, -5.0f, 0.0f,
+            0.0f, 4.0f, 0.0f,
+            0.0f, 4.0f, 0.0f,
+            0.1f, 3.7f, 0.0f,
+            0.0f, 4.0f, 0.0f,
+            -0.1f, 3.7f, 0.0f,
 
-        float[] _allVerts;
-        float[] _allFrags;
+            0.0f, 0.0f, -5.0f,
+            0.0f, 0.0f, 5.0f,
+             0.0f, 0.0f, 5.0f,
+             0.1f, 0.0f, 4.7f,
+             0.0f, 0.0f, 5.0f,
+            -0.1f, 0.0f, 4.7f,
+        };
+        float[] _fBuffAxDt = new float[]
+        {
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+        };
+
+        int _prog1Hnd, _prog2Hnd;
+
+        int _mvpMx1Hnd, _mvpMx2Hnd;
+
 
         List<Volume> _objs = new List<Volume>();
 
-        const int _RPos = 10, _RPosD = 5;
+        const int _RPos = 5, _RPosD = 1;
 
 
         private void InitProgram()
         {
-            GL.GenVertexArrays(1, out _vertsArrObj);
-            GL.BindVertexArray(_vertsArrObj);
+            GL.GenVertexArrays(1, out _vertsArrObjHnd);
+            GL.BindVertexArray(_vertsArrObjHnd);
 
             GL.ClearColor(Color.Beige);
 
-            _shadersProgrammId = ShaderWorker.GetInstance().LoadShaders("Shaders/vs.glsl", "Shaders/fs.glsl");
-            _mvpMatrixId = GL.GetUniformLocation(_shadersProgrammId, "MVP");
+            //_shadersProgrammId = ShaderWorker.GetInstance().LoadShaders("Shaders/vs.glsl", "Shaders/fs.glsl");
+            _prog1Hnd = ShaderWorker.GetInstance().LoadShaders("Shaders/vs2.glsl", "Shaders/fs2.glsl");
+            _mvpMx1Hnd = GL.GetUniformLocation(_prog1Hnd, "MVP");
 
-            for (int i = 0; i < 10; i++)
+            _prog2Hnd = ShaderWorker.GetInstance().LoadShaders("Shaders/vs.glsl", "Shaders/fs.glsl");
+            _mvpMx2Hnd = GL.GetUniformLocation(_prog2Hnd, "MVP");
+
+            GL.GenBuffers(1, out _vBuffAxHnd);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vBuffAxHnd);
+            GL.BufferData(BufferTarget.ArrayBuffer, _vBuffAxDt.Length * 4, _vBuffAxDt, BufferUsageHint.StaticDraw);
+
+            GL.GenBuffers(1, out _fBuffAxHnd);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _fBuffAxHnd);
+            GL.BufferData(BufferTarget.ArrayBuffer, _fBuffAxDt.Length * 4, _fBuffAxDt, BufferUsageHint.StaticDraw);
+
+            
+            for (int i = 0; i < 20; i++)
             {
                 _objs.Add(new Cube());
-                _objs.Add(new Pyramid());
+                //_objs.Add(new Pyramid());
             }
             
-            _vertBuffs = new int[_objs.Count];
-            _fragBuffs = new int[_objs.Count];
+            //_objs.Add(new Cube());
+
+            _vBuffsHnds = new int[_objs.Count];
+            _fBuffsHnds = new int[_objs.Count];
 
             for (int i = 0; i < _objs.Count; i++)
             {
                 var obj = _objs[i];
-                obj.Position = new Vector3(rng.Next(-_RPos, _RPos) / (float)_RPosD, 0, rng.Next(-_RPos, _RPos) / (float)_RPosD);
+                obj.Position = new Vector3(rng.Next(-_RPos, _RPos), rng.Next(-_RPos, _RPos), rng.Next(-_RPos, _RPos));
                 obj.sx = rng.Next(0, _RPos) / (float)_RPos;
                 obj.sy = rng.Next(0, _RPos) / (float)_RPos;
                 obj.Scale = new Vector3(0.3f, 0.3f, 0.3f);
-                GL.GenBuffers(1, out _vertBuffs[i]);
-                GL.GenBuffers(1, out _fragBuffs[i]);
+                GL.GenBuffers(1, out _vBuffsHnds[i]);
+                GL.GenBuffers(1, out _fBuffsHnds[i]);
 
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _vertBuffs[i]);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, _vBuffsHnds[i]);
                 GL.BufferData(BufferTarget.ArrayBuffer, obj.VertCount * 4, obj.GetVerts(), BufferUsageHint.StaticDraw);
 
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _fragBuffs[i]);
-                GL.BufferData(BufferTarget.ArrayBuffer, obj.FragCount * 4, obj.GetFrags(), BufferUsageHint.StaticDraw);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, _fBuffsHnds[i]);
+                //GL.BufferData(BufferTarget.ArrayBuffer, obj.FragCount * 4, obj.GetFrags(), BufferUsageHint.StaticDraw);
+                GL.BufferData(BufferTarget.ArrayBuffer, obj.TextCount * 4, obj.GetTexts(), BufferUsageHint.StaticDraw);
             }
 
-            _texId = TextureWorker.LoadTexture("1.bmp");
+            _texHnd = TextureWorker.GetInstance().LoadTexture("1.bmp");
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
@@ -93,7 +152,7 @@ namespace ClientV1
         {
             GL.Viewport(0, 0, ClientSize.Width, ClientSize.Height);
             _projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathE.ToRad(45), ClientSize.Width / (float)ClientSize.Height, 0.1f, 100);
-            _viewMatrix = Matrix4.LookAt(new Vector3(4, 3, -3), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+            _viewMatrix = Matrix4.LookAt(new Vector3(6, 6, -5), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
         }
 
         float time;
@@ -104,12 +163,16 @@ namespace ClientV1
         private void MainWindow_UpdateFrame(object sender, FrameEventArgs e)
         {
             time += (float)e.Time;
+            
             for (int i = 0; i < _objs.Count; i++)
             {
                 var obj = _objs[i];
                 //obj.Rotation = new Vector3(0.55f * time, 0.25f * time, 0);
                 obj.Rotation = new Vector3(obj.sx * time, obj.sy * time, 0);
-
+                obj.Position.Y -= 0.05f;
+                if (obj.Position.Y < -5)
+                    obj.Position.Y = 4;
+                //obj.Rotation = new Vector3(0, 0, -1.5f);
                 obj.CalculateModelMatrix();
                 obj.MVP = obj.Model * _viewMatrix * _projectionMatrix;
             }
@@ -124,35 +187,40 @@ namespace ClientV1
             GL.Enable(EnableCap.DepthTest);
             GL.DepthFunc(DepthFunction.Less);
 
-            // Direct draw.
-            var wm = _viewMatrix * _projectionMatrix;
-            GL.UniformMatrix4(_mvpMatrixId, false, ref wm);
-            GL.Begin(PrimitiveType.Lines);
-            GL.Vertex3(-_axisLim, 0, 0);
-            GL.Vertex3(_axisLim, 0, 0);
-            GL.Vertex3(0, -_axisLim, 0);
-            GL.Vertex3(0, _axisLim, 0);
-            GL.Vertex3(0, 0, -_axisLim);
-            GL.Vertex3(0, 0, _axisLim);
-            GL.End();
-
             GL.EnableVertexAttribArray(0);
             GL.EnableVertexAttribArray(1);
 
-            GL.UseProgram(_shadersProgrammId);
+            // Draw colored axes.
+            GL.UseProgram(_prog2Hnd);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vBuffAxHnd);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _fBuffAxHnd);
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
+            var vp = _viewMatrix * _projectionMatrix;
+            GL.UniformMatrix4(_mvpMx2Hnd, false, ref vp);
+            GL.DrawArrays(PrimitiveType.Lines, 0, _vBuffAxDt.Length);
 
+
+            // Draw objects.
+            GL.UseProgram(_prog1Hnd);
+            GL.Enable(EnableCap.Texture2D);
             for (int i = 0; i < _objs.Count; i++)
             {
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _vertBuffs[i]);
+                var obj = _objs[i];
+
+                GL.BindBuffer(BufferTarget.ArrayBuffer, _vBuffsHnds[i]);
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
 
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _fragBuffs[i]);
-                GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, _fBuffsHnds[i]);
+                //GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
+                GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
 
-                var obj = _objs[i];
-                GL.UniformMatrix4(_mvpMatrixId, false, ref obj.MVP);
+                GL.BindTexture(TextureTarget.Texture2D, _texHnd);
+                
+                GL.UniformMatrix4(_mvpMx1Hnd, false, ref obj.MVP);
                 GL.DrawArrays(PrimitiveType.Triangles, 0, obj.VertCount);
             }
+            GL.Disable(EnableCap.Texture2D);
 
             GL.Disable(EnableCap.CullFace);
             GL.Disable(EnableCap.DepthTest);

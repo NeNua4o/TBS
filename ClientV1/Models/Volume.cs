@@ -6,6 +6,7 @@ namespace ClientV1.Models
     {
         protected float[] _verts;
         protected float[] _frags;
+        protected float[] _texts;
 
         public float sx, sy;
 
@@ -15,6 +16,7 @@ namespace ClientV1.Models
 
         public int VertCount;
         public int FragCount;
+        public int TextCount;
         public Matrix4 Model = Matrix4.Identity;
         public Matrix4 MVP;
 
@@ -26,6 +28,11 @@ namespace ClientV1.Models
         public virtual float[] GetFrags()
         {
             return _frags;
+        }
+
+        public virtual float[] GetTexts()
+        {
+            return _texts;
         }
 
         public virtual void CalculateModelMatrix()
