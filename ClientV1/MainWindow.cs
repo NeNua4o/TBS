@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System;
 using System.Drawing;
+using OpenTK.Input;
 
 namespace ClientV1
 {
@@ -36,49 +37,15 @@ namespace ClientV1
         int _vBuffAxHnd, _fBuffAxHnd;
         float[] _vBuffAxDt = new float[]
         {
-            -5.0f, 0.0f, 0.0f,
-            5.0f, 0.0f, 0.0f,
-            5.0f, 0.0f,  0.0f,
-            4.7f, 0.0f,  0.1f,
-            5.0f, 0.0f,  0.0f,
-            4.7f, 0.0f, -0.1f,
-
-            0.0f, -5.0f, 0.0f,
-            0.0f, 4.0f, 0.0f,
-            0.0f, 4.0f, 0.0f,
-            0.1f, 3.7f, 0.0f,
-            0.0f, 4.0f, 0.0f,
-            -0.1f, 3.7f, 0.0f,
-
-            0.0f, 0.0f, -5.0f,
-            0.0f, 0.0f, 5.0f,
-             0.0f, 0.0f, 5.0f,
-             0.1f, 0.0f, 4.7f,
-             0.0f, 0.0f, 5.0f,
-            -0.1f, 0.0f, 4.7f,
+            -5.0f, 0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 5.0f, 0.0f,  0.0f, 4.7f, 0.0f,  0.1f, 5.0f, 0.0f,  0.0f, 4.7f, 0.0f, -0.1f,
+            0.0f, -5.0f, 0.0f, 0.0f, 4.0f, 0.0f, 0.0f, 4.0f, 0.0f, 0.1f, 3.7f, 0.0f, 0.0f, 4.0f, 0.0f, -0.1f, 3.7f, 0.0f,
+            0.0f, 0.0f, -5.0f, 0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 5.0f, 0.1f, 0.0f, 4.7f, 0.0f, 0.0f, 5.0f, -0.1f, 0.0f, 4.7f,
         };
         float[] _fBuffAxDt = new float[]
         {
-            0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f,
-
-            0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-
-            1.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
         };
 
         int _prog1Hnd, _prog2Hnd;
@@ -113,14 +80,14 @@ namespace ClientV1
             GL.BindBuffer(BufferTarget.ArrayBuffer, _fBuffAxHnd);
             GL.BufferData(BufferTarget.ArrayBuffer, _fBuffAxDt.Length * 4, _fBuffAxDt, BufferUsageHint.StaticDraw);
 
-            
+            /*
             for (int i = 0; i < 20; i++)
             {
                 _objs.Add(new Cube());
-                //_objs.Add(new Pyramid());
-            }
+                _objs.Add(new Pyramid());
+            }*/
             
-            //_objs.Add(new Cube());
+            _objs.Add(new Cube());
 
             _vBuffsHnds = new int[_objs.Count];
             _fBuffsHnds = new int[_objs.Count];
@@ -143,7 +110,8 @@ namespace ClientV1
                 GL.BufferData(BufferTarget.ArrayBuffer, obj.TextCount * 4, obj.GetTexts(), BufferUsageHint.StaticDraw);
             }
 
-            _texHnd = TextureWorker.GetInstance().LoadTexture("1.bmp");
+            //_texHnd = TextureWorker.GetInstance().LoadBMPTexture("1.bmp");
+            _texHnd = TextureWorker.GetInstance().LoadDDSTexture("1_BMP_DXT3_1.DDS");
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
@@ -155,27 +123,80 @@ namespace ClientV1
             _viewMatrix = Matrix4.LookAt(new Vector3(6, 6, -5), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
         }
 
-        float time;
         Random rng = new Random();
         Matrix4 _viewMatrix;
         Matrix4 _projectionMatrix;
 
+
+        // позиция
+        Vector3 position = new Vector3(0, 0, 5);
+        // горизонтальный угол
+        float horizontalAngle = 3.14f;
+        // вертикальный угол
+        float verticalAngle = 0.0f;
+        // поле обзора
+        float speed = 3.0f; // 3 units / second
+        float mouseSpeed = 0.005f;
+
+        float currentTime, deltaTime, lastTime;
         private void MainWindow_UpdateFrame(object sender, FrameEventArgs e)
         {
-            time += (float)e.Time;
-            
+            currentTime = (float)e.Time;
+            deltaTime = (float)(currentTime - lastTime);
+
+            MouseState ms = Mouse.GetCursorState();
+            // Вычисляем углы
+            horizontalAngle += mouseSpeed * deltaTime * (float)(ClientSize.Width / 2.0 - ms.X);
+            verticalAngle += mouseSpeed * deltaTime * (float)(ClientSize.Height / 2.0 - ms.Y);
+            Vector3 direction = new Vector3(
+                (float)(Math.Cos(verticalAngle) * Math.Sin(horizontalAngle)),
+                (float)Math.Sin(verticalAngle),
+                (float)(Math.Cos(verticalAngle) * Math.Cos(horizontalAngle))
+            );
+            Vector3 right = new Vector3(
+                (float)Math.Sin(horizontalAngle - 3.14f / 2.0f),
+                0,
+                (float)Math.Cos(horizontalAngle - 3.14f / 2.0f)
+            );
+            Vector3 up = Vector3.Cross(right, direction);
+
+            KeyboardState ks = Keyboard.GetState();
+            // Движение вперед
+            if (ks.IsKeyDown(Key.Up))
+                position += direction * deltaTime * speed;
+            // Движение назад
+            if (ks.IsKeyDown(Key.Down))
+                position -= direction * deltaTime * speed;
+            // Стрэйф вправо
+            if (ks.IsKeyDown(Key.Right))
+                position += right * deltaTime * speed;
+            // Стрэйф влево
+            if (ks.IsKeyDown(Key.Left))
+                position -= right * deltaTime * speed;
+
+            lastTime = currentTime;
+
+            _projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathE.ToRad(45), ClientSize.Width / (float)ClientSize.Height, 0.1f, 100);
+            _viewMatrix = Matrix4.LookAt(position, position + direction, up);
+
             for (int i = 0; i < _objs.Count; i++)
             {
                 var obj = _objs[i];
-                //obj.Rotation = new Vector3(0.55f * time, 0.25f * time, 0);
+/*
+                obj.Rotation = new Vector3(0.55f * time, 0.25f * time, 0);
                 obj.Rotation = new Vector3(obj.sx * time, obj.sy * time, 0);
+                */
+                /*
                 obj.Position.Y -= 0.05f;
                 if (obj.Position.Y < -5)
                     obj.Position.Y = 4;
+                */
                 //obj.Rotation = new Vector3(0, 0, -1.5f);
                 obj.CalculateModelMatrix();
                 obj.MVP = obj.Model * _viewMatrix * _projectionMatrix;
             }
+
+            //Mouse.SetPosition(ClientSize.Width / 2, ClientSize.Height / 2);
         }
 
         private const int _axisLim = 5;
