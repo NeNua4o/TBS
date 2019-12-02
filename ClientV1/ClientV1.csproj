@@ -53,6 +53,7 @@
     <Compile Include="Extensions\FloatExtensions.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="Models\Cube.cs" />
+    <Compile Include="Models\Hexagon.cs" />
     <Compile Include="Models\Pyramid.cs" />
     <Compile Include="Models\Triangle.cs" />
     <Compile Include="Models\Volume.cs" />
@@ -99,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{D7FE0729-8F78-4EBA-8F2E-D752F1E23B34}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
