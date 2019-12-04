@@ -4,11 +4,16 @@ namespace ClientV1.Models
 {
     public class Volume
     {
+        public Vector3[] Vertices;
+        public Vector2[] UVs;
+        public Vector3[] Normals;
+
         protected float[] _verts;
         protected float[] _frags;
         protected float[] _texts;
 
         public float sx, sy;
+        public float TransX;
 
         public Vector3 Position = Vector3.Zero;
         public Vector3 Rotation = Vector3.Zero;
@@ -18,6 +23,7 @@ namespace ClientV1.Models
         public int FragCount;
         public int TextCount;
         public Matrix4 Model = Matrix4.Identity;
+        public Matrix4 ModelRotate = Matrix4.Identity;
         public Matrix4 MVP;
 
         public virtual float[] GetVerts()
@@ -43,6 +49,10 @@ namespace ClientV1.Models
                 Matrix4.CreateRotationY(Rotation.Y) *
                 Matrix4.CreateRotationZ(Rotation.Z) *
                 Matrix4.CreateTranslation(Position);
+            ModelRotate =
+                Matrix4.CreateRotationX(Rotation.X) *
+                Matrix4.CreateRotationY(Rotation.Y) *
+                Matrix4.CreateRotationZ(Rotation.Z);
         }
     }
 }
