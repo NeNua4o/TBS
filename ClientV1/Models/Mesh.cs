@@ -6,7 +6,7 @@ namespace ClientV1.Models
     {
         public Mesh(string filename)
         {
-            ObjWorker.GetInstance().LoadObj(filename, out Vertices, out UVs, out Normals);
+            ObjWorker.GetInstance().LoadObj(filename, out Vertices, out UVs, out Normals, out Indices);
             VertCount = Vertices.Length;
         }
     }

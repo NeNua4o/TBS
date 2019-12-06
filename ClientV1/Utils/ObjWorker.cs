@@ -16,7 +16,7 @@ namespace ClientV1.Utils
             return _instance;
         }
 
-        public bool LoadObj(string filename, out Vector3[] vertices, out Vector2[] uvs, out Vector3[] normals)
+        public bool LoadObj(string filename, out Vector3[] vertices, out Vector2[] uvs, out Vector3[] normals, out int[] indices)
         {
             List<int> vertexIndices = new List<int>(), uvIndices = new List<int>(), normalIndices = new List<int>();
             List<Vector3> temp_vertices = new List<Vector3>();
@@ -25,6 +25,7 @@ namespace ClientV1.Utils
             vertices = temp_vertices.ToArray();
             uvs = temp_uvs.ToArray();
             normals = temp_normals.ToArray();
+            indices = new int[0];
 
             using (FileStream fs = new FileStream(filename, FileMode.Open))
             {
@@ -83,15 +84,15 @@ namespace ClientV1.Utils
                                         }
                                         if (elms.Count != 9)
                                             return false;
-                                        vertexIndices.Add(elms[0]);
-                                        vertexIndices.Add(elms[3]);
-                                        vertexIndices.Add(elms[6]);
-                                        uvIndices.Add(elms[1]);
-                                        uvIndices.Add(elms[4]);
-                                        uvIndices.Add(elms[7]);
-                                        normalIndices.Add(elms[2]);
-                                        normalIndices.Add(elms[5]);
-                                        normalIndices.Add(elms[8]);
+                                        vertexIndices.Add(elms[0] - 1);
+                                        vertexIndices.Add(elms[3] - 1);
+                                        vertexIndices.Add(elms[6] - 1);
+                                        uvIndices.Add(elms[1] - 1);
+                                        uvIndices.Add(elms[4] - 1);
+                                        uvIndices.Add(elms[7] - 1);
+                                        normalIndices.Add(elms[2] - 1);
+                                        normalIndices.Add(elms[5] - 1);
+                                        normalIndices.Add(elms[8] - 1);
                                     }// faces
                                 }// normals
                             }// uvs
@@ -103,28 +104,27 @@ namespace ClientV1.Utils
                 }// FileStream
             }
 
-            // Proccess data.
-            vertices = new Vector3[vertexIndices.Count];
-            for (int i = 0; i < vertexIndices.Count; i++)
-            {
-                int vertexIndex = vertexIndices[i];
-                vertices[i] = temp_vertices[vertexIndex - 1];
-            }
+            vertices = temp_vertices.ToArray();
+            indices = vertexIndices.ToArray();
 
+            //vertices = new Vector3[vertexIndices.Count];
             uvs = new Vector2[uvIndices.Count];
-            for (int i = 0; i < uvIndices.Count; i++)
+            normals = new Vector3[normalIndices.Count];
+            for (int i = 0; i < indices.Length; i++)
             {
+                /*
+                int vertexIndex = vertexIndices[i];
+                vertices[i] = temp_vertices[vertexIndex];
+                */
+
                 int uvIndex = uvIndices[i];
-                uvs[i] = temp_uvs[uvIndex - 1];
+                uvs[i] = temp_uvs[uvIndex];
                 uvs[i].Y = 1 - uvs[i].Y;
+
+                int normalIndex = normalIndices[i];
+                normals[i] = temp_normals[normalIndex];
             }
 
-            normals = new Vector3[normalIndices.Count];
-            for (int i = 0; i < normalIndices.Count; i++)
-            {
-                int normalIndex = normalIndices[i];
-                normals[i] = temp_normals[normalIndex - 1];
-            }
             return true;
         }
     }

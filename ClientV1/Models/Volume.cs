@@ -1,4 +1,6 @@
 ﻿using OpenTK;
+using System;
+using System.Collections.Generic;
 
 namespace ClientV1.Models
 {
@@ -7,10 +9,7 @@ namespace ClientV1.Models
         public Vector3[] Vertices;
         public Vector2[] UVs;
         public Vector3[] Normals;
-
-        protected float[] _verts;
-        protected float[] _frags;
-        protected float[] _texts;
+        public int[] Indices;
 
         public float sx, sy;
         public float TransX;
@@ -25,21 +24,6 @@ namespace ClientV1.Models
         public Matrix4 Model = Matrix4.Identity;
         public Matrix4 ModelRotate = Matrix4.Identity;
         public Matrix4 MVP;
-
-        public virtual float[] GetVerts()
-        {
-            return _verts;
-        }
-
-        public virtual float[] GetFrags()
-        {
-            return _frags;
-        }
-
-        public virtual float[] GetTexts()
-        {
-            return _texts;
-        }
 
         public virtual void CalculateModelMatrix()
         {
