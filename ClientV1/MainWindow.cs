@@ -57,6 +57,15 @@ namespace ClientV1
             _mvpMx2Hnd = GL.GetUniformLocation(_prog2Hnd, "MVP");
 
             /**/
+            _light = new Light(true)
+            {
+                Scale = new Vector3(1, 1, 1)
+            };
+            _light.PrimitiveType = PrimitiveType.Lines;
+            _objs.Add(_light);
+
+            _objs.Add(new Axes(3) { PrimitiveType = PrimitiveType.Lines, UseTextures = false });
+
             var m = new Mesh();
             m.LoadFromObj("Meshes/obj1.obj");
             m.PrimitiveType = PrimitiveType.Triangles;
@@ -69,15 +78,7 @@ namespace ClientV1
                 };
                 _objs.Add(obj);
             }
-            _light = new Light(true)
-            {
-                Scale = new Vector3(1, 1, 1)
-            };
-            _light.PrimitiveType = PrimitiveType.Lines;
-            _objs.Add(_light);
-
-            _objs.Add(new Axes(3) { PrimitiveType = PrimitiveType.Lines, UseTextures = false });
-
+            
             _vBuffsHnds = new int[_objs.Count];
             _fBuffsHnds = new int[_objs.Count];
             _nBuffsHnds = new int[_objs.Count];
@@ -166,41 +167,18 @@ namespace ClientV1
 
             GL.EnableVertexAttribArray(0);
             GL.EnableVertexAttribArray(1);
-            
-            // Draw objects.
-            GL.UseProgram(_prog1Hnd);
             GL.EnableVertexAttribArray(2);
-            for (int i = 0; i < _objs.Count; i++)
+
+            // Color draw.
+            GL.UseProgram(_prog2Hnd);
+            for (int i = 0; i < 2; i++)
             {
                 var obj = _objs[i];
 
-                if (_objs[i].UseTextures)
-                {
-                    //GL.Enable(EnableCap.Blend);
-                    //GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-                    GL.UseProgram(_prog1Hnd);
-                }
-                else
-                    GL.UseProgram(_prog2Hnd);
-
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _vBuffsHnds[i]);
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _nBuffsHnds[i]);
-                GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, 0, 0);
-
-                if (_objs[i].UseTextures)
-                {
-                    GL.Enable(EnableCap.Texture2D);
-                    GL.BindBuffer(BufferTarget.ArrayBuffer, _fBuffsHnds[i]);
-                    GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
-                    GL.BindTexture(TextureTarget.Texture2D, _texHnd);
-                }
-                else
-                {
-                    GL.BindBuffer(BufferTarget.ArrayBuffer, _cBuffsHnds[i]);
-                    GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
-                }
-
+                GL.BindBuffer(BufferTarget.ArrayBuffer, _cBuffsHnds[i]);
+                GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _nBuffsHnds[i]);
                 GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, 0, 0);
 
@@ -210,15 +188,36 @@ namespace ClientV1
                 GL.UniformMatrix4(_mrMx1Hnd, false, ref obj.ModelRotate);
                 GL.Uniform3(_lightPosVec1Hnd, ref _light.Position);
                 GL.Uniform3(_lightColVec1Hnd, ref _light.Colors[0]);
+
+                GL.DrawArrays(obj.PrimitiveType, 0, obj.Vertices.Length);
+            }
+
+            // Texture draw.
+            GL.UseProgram(_prog1Hnd);
+            GL.Enable(EnableCap.Texture2D);
+            GL.BindTexture(TextureTarget.Texture2D, _texHnd);
+            for (int i = 2; i < _objs.Count; i++)
+            {
+                var obj = _objs[i];
+
+                GL.BindBuffer(BufferTarget.ArrayBuffer, _vBuffsHnds[i]);
+                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, _fBuffsHnds[i]);
+                GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, _nBuffsHnds[i]);
+                GL.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, 0, 0);
+
+                GL.UniformMatrix4(_mvpMx1Hnd, false, ref obj.MVP);
+                GL.UniformMatrix4(_mMx1Hnd, false, ref obj.Model);
+                GL.UniformMatrix4(_vMx1Hnd, false, ref _viewMatrix);
+                GL.UniformMatrix4(_mrMx1Hnd, false, ref obj.ModelRotate);
+                GL.Uniform3(_lightPosVec1Hnd, ref _light.Position);
+                GL.Uniform3(_lightColVec1Hnd, ref _light.Colors[0]);
+
                 //GL.DrawElements(PrimitiveType.Triangles, obj.Indices.Length, DrawElementsType.UnsignedInt, 0);
                 GL.DrawArrays(obj.PrimitiveType, 0, obj.Vertices.Length);
-
-                if (_objs[i].UseTextures)
-                {
-                    GL.Disable(EnableCap.Texture2D);
-                    //GL.Disable(EnableCap.Blend);
-                }
             }
+            GL.Disable(EnableCap.Texture2D);
 
             //GL.Disable(EnableCap.CullFace);
             GL.Disable(EnableCap.DepthTest);

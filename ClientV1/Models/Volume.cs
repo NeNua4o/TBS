@@ -41,9 +41,9 @@ namespace ClientV1.Models
                 z = _rng.Next(-1, 2);
             MoveDirection = new Vector3(x, y, z);
             float
-                xf = _rng.Next(-1, 2) * 0.05f,
-                yf = _rng.Next(-1, 2) * 0.05f,
-                zf = _rng.Next(-1, 2) * 0.05f;
+                xf = _rng.Next(-1, 2) * 0.01f,
+                yf = _rng.Next(-1, 2) * 0.01f,
+                zf = _rng.Next(-1, 2) * 0.01f;
             MoveForce = new Vector3(xf, yf, zf);
 
             float scale = _rng.Next(1, 10) / 100.0f;
