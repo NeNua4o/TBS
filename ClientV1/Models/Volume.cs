@@ -1,6 +1,7 @@
-﻿using OpenTK;
+﻿using ClientV1.Utils;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using System;
-using System.Collections.Generic;
 
 namespace ClientV1.Models
 {
@@ -9,34 +10,71 @@ namespace ClientV1.Models
         public Vector3[] Vertices;
         public Vector2[] UVs;
         public Vector3[] Normals;
-        public int[] Indices;
+        public Vector3[] Colors;
+        public int[] VertexIndices;
+        public PrimitiveType PrimitiveType;
 
         public float sx, sy;
-        public float TransX;
+        public Vector3 MoveDirection;
+        public Vector3 MoveForce;
 
         public Vector3 Position = Vector3.Zero;
         public Vector3 Rotation = Vector3.Zero;
         public Vector3 Scale = Vector3.One;
 
-        public int VertCount;
-        public int FragCount;
-        public int TextCount;
         public Matrix4 Model = Matrix4.Identity;
         public Matrix4 ModelRotate = Matrix4.Identity;
         public Matrix4 MVP;
 
+        static Random _rng = new Random();
+
+        public bool UseTextures;
+        public bool WorldStatic;
+
+        public Volume(bool transform = false)
+        {
+            if (!transform)
+                return;
+            int
+                x = _rng.Next(-1, 2),
+                y = _rng.Next(-1, 2),
+                z = _rng.Next(-1, 2);
+            MoveDirection = new Vector3(x, y, z);
+            float
+                xf = _rng.Next(-1, 2) * 0.05f,
+                yf = _rng.Next(-1, 2) * 0.05f,
+                zf = _rng.Next(-1, 2) * 0.05f;
+            MoveForce = new Vector3(xf, yf, zf);
+
+            float scale = _rng.Next(1, 10) / 100.0f;
+            Scale = new Vector3(scale, scale, scale);
+
+            int lim = 5;
+            Position = new Vector3(_rng.Next(-lim, lim), _rng.Next(-lim, lim), _rng.Next(-lim, lim));
+            sx = _rng.Next(0, lim) / (float)lim;
+            sy = _rng.Next(0, lim) / (float)lim;
+        }
+
+        public Volume(Volume v, bool t = false) : this(t)
+        {
+            if (v.Vertices != null) { Vertices = new Vector3[v.Vertices.Length]; Array.Copy(v.Vertices, Vertices, v.Vertices.Length); }
+            if (v.UVs != null) { UVs = new Vector2[v.UVs.Length]; Array.Copy(v.UVs, UVs, v.UVs.Length); }
+            if (v.Normals != null) { Normals = new Vector3[v.Normals.Length]; Array.Copy(v.Normals, Normals, v.Normals.Length); }
+            if (v.Colors != null) { Colors = new Vector3[v.Colors.Length]; Array.Copy(v.Colors, Colors, v.Colors.Length); }
+            if (v.VertexIndices != null) { VertexIndices = new int[v.VertexIndices.Length]; Array.Copy(v.VertexIndices, VertexIndices, v.VertexIndices.Length); }
+            PrimitiveType = v.PrimitiveType;
+        }
+
         public virtual void CalculateModelMatrix()
         {
-            Model =
-                Matrix4.CreateScale(Scale) *
-                Matrix4.CreateRotationX(Rotation.X) *
-                Matrix4.CreateRotationY(Rotation.Y) *
-                Matrix4.CreateRotationZ(Rotation.Z) *
-                Matrix4.CreateTranslation(Position);
             ModelRotate =
                 Matrix4.CreateRotationX(Rotation.X) *
                 Matrix4.CreateRotationY(Rotation.Y) *
                 Matrix4.CreateRotationZ(Rotation.Z);
+            Model =
+                Matrix4.CreateScale(Scale) *
+                ModelRotate *
+                Matrix4.CreateTranslation(Position);
         }
     }
 }

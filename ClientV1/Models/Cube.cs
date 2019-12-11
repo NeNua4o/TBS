@@ -18,7 +18,7 @@ namespace ClientV1.Models
                 new Vector3(-0.5f, 0.5f,  0.5f),
             };
 
-            Indices = new int[] {
+            VertexIndices = new int[] {
                 0, 2, 1, 0, 3, 2,
                 1, 2, 6, 6, 5, 1,
                 4, 5, 6, 6, 7, 4,

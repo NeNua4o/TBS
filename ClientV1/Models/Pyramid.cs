@@ -2,8 +2,6 @@
 {
     class Pyramid : Volume
     {
-        public Pyramid()
-        {
-        }
+        
     }
 }

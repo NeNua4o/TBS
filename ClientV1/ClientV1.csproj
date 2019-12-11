@@ -53,8 +53,11 @@
     <Compile Include="Extensions\ByteArrayExtensions.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
     <Compile Include="MainWindow.cs" />
+    <Compile Include="Models\Axes.cs" />
     <Compile Include="Models\Cube.cs" />
     <Compile Include="Models\Hexagon.cs" />
+    <Compile Include="Models\DrawingObject.cs" />
+    <Compile Include="Models\Light.cs" />
     <Compile Include="Models\Mesh.cs" />
     <Compile Include="Models\Pyramid.cs" />
     <Compile Include="Models\Triangle.cs" />
@@ -97,10 +100,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Shaders\fs.glsl">
+    <None Include="Shaders\f_c.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Shaders\fs4.glsl">
+    <None Include="Shaders\f_t_l.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Shaders\fs3.glsl">
@@ -109,13 +112,13 @@
     <None Include="Shaders\fs2.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Shaders\vs3.glsl">
+    <None Include="Shaders\v_t_l.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Shaders\vs2.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Shaders\vs.glsl">
+    <None Include="Shaders\v_c.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -136,6 +139,9 @@
     <Content Include="Textures\2_BMP_DXT3_1.DDS" />
     <Content Include="Textures\3_BMP_DXT3_1.DDS" />
     <Content Include="Textures\cube_PNG_DXT3_1.DDS" />
+    <Content Include="Textures\Pyro_PNG_DXT3_1.DDS">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

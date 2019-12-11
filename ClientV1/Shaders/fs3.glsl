@@ -10,7 +10,6 @@ uniform vec3 lightPos;
 uniform vec3 lightColor;
 
 void main(){
-
 	vec3 norm = normalize(Normal);
 	vec3 lightDir = normalize(lightPos - FragPos);
 

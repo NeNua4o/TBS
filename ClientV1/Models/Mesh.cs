@@ -2,12 +2,11 @@
 
 namespace ClientV1.Models
 {
-    class Mesh:Volume
+    public class Mesh : Volume
     {
-        public Mesh(string filename)
+        public virtual void LoadFromObj(string filename)
         {
-            ObjWorker.GetInstance().LoadObj(filename, out Vertices, out UVs, out Normals, out Indices);
-            VertCount = Vertices.Length;
+            ObjWorker.GetInstance().LoadObj(filename, out Vertices, out UVs, out Normals, out VertexIndices);
         }
     }
 }

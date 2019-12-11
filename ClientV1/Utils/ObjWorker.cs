@@ -1,5 +1,4 @@
-﻿using ClientV1.Extensions;
-using OpenTK;
+﻿using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -104,18 +103,20 @@ namespace ClientV1.Utils
                 }// FileStream
             }
 
-            vertices = temp_vertices.ToArray();
+            /*
+            vertices = temp_vertices.ToArray();*/
             indices = vertexIndices.ToArray();
+            
 
-            //vertices = new Vector3[vertexIndices.Count];
+            vertices = new Vector3[vertexIndices.Count];
             uvs = new Vector2[uvIndices.Count];
             normals = new Vector3[normalIndices.Count];
             for (int i = 0; i < indices.Length; i++)
             {
-                /*
+                /**/
                 int vertexIndex = vertexIndices[i];
                 vertices[i] = temp_vertices[vertexIndex];
-                */
+                
 
                 int uvIndex = uvIndices[i];
                 uvs[i] = temp_uvs[uvIndex];

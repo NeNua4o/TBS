@@ -1,7 +1,7 @@
 ﻿#version 330 core
 
 in vec2 outUV;
-out vec3 color;
+out vec4 color;
 in vec3 Normal;
 in vec3 FragPos;
 
@@ -27,5 +27,5 @@ void main(){
 	vec3 objectColor = texture( myTextureSampler, outUV ).rgb;
 
 	vec3 result = (ambient + diffuse + specular) * objectColor;
-	color = result;
+	color = vec4(result, 0.5);
 }
