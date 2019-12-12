@@ -9,7 +9,7 @@ namespace ClientV1
         {
             using (MainWindow mw = new MainWindow())
             {
-                mw.Run(30, 30);
+                mw.Run(60, 60);
             }
         }
     }

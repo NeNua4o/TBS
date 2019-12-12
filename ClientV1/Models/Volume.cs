@@ -1,5 +1,4 @@
-﻿using ClientV1.Utils;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
 
@@ -12,6 +11,13 @@ namespace ClientV1.Models
         public Vector3[] Normals;
         public Vector3[] Colors;
         public int[] VertexIndices;
+
+        public int VerticesBufferHnd;
+        public int UVsBufferHnd;
+        public int NormalsBufferHnd;
+        public int ColorsBufferHnd;
+        public int VertexIndicesBufferHnd;
+
         public PrimitiveType PrimitiveType;
 
         public float sx, sy;
@@ -46,7 +52,7 @@ namespace ClientV1.Models
                 zf = _rng.Next(-1, 2) * 0.01f;
             MoveForce = new Vector3(xf, yf, zf);
 
-            float scale = _rng.Next(1, 10) / 100.0f;
+            float scale = _rng.Next(1, 11) / 20.0f;
             Scale = new Vector3(scale, scale, scale);
 
             int lim = 5;
@@ -75,6 +81,21 @@ namespace ClientV1.Models
                 Matrix4.CreateScale(Scale) *
                 ModelRotate *
                 Matrix4.CreateTranslation(Position);
+        }
+
+        public virtual void GenerateBuffers()
+        {
+        }
+
+        public virtual void GenVC()
+        {
+            GL.GenBuffers(1, out VerticesBufferHnd);
+            GL.GenBuffers(1, out ColorsBufferHnd);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VerticesBufferHnd);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * Vector3.SizeInBytes, Vertices, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, ColorsBufferHnd);
+            GL.BufferData(BufferTarget.ArrayBuffer, Colors.Length * Vector3.SizeInBytes, Colors, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
     }
 }
