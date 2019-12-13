@@ -8,6 +8,7 @@ using ClientV1.Models.Shaders;
 using ClientV1.Models.Map;
 using OpenTK.Input;
 using ClientV1.Models.Mission;
+using ClientV1.Models.LevelData;
 
 namespace ClientV1
 {
@@ -31,18 +32,18 @@ namespace ClientV1
         int _vertsArrObjHnd;
         int _texHnd;
 
-        int[] _vBuffsHnds, _fBuffsHnds, _nBuffsHnds, _iBuffsHnds, _cBuffsHnds;
-        int _vMassBuff, _fMassBuff, _nMassBuff, _cMassBuff;
-
         List<Volume> _objs = new List<Volume>();
         Light _light;
 
         ShaderVC _shaderVC;
         ShaderVTL _shaderVTL;
+        ShaderVT _shaderVT;
 
         const int _RPos = 5, _RPosD = 1;
-        HeighMap _hm;// = new HeighMap("level\\terrain\\land_map.h32");
+        HeightMap _heightMap;
         MissionLoader _miss;
+        ObjectsLoader _objectLdr;
+        LevelDataLoader _levelDataLdr;
 
         private void InitProgram()
         {
@@ -60,8 +61,10 @@ namespace ClientV1
             GL.BindVertexArray(_vertsArrObjHnd);
 
             GL.ClearColor(0.15f, 0.25f, 0.25f, 1.0f);
+            //GL.ClearColor(0, 0, 0, 1);
 
             _shaderVC = new ShaderVC("Shaders/v_c.glsl", "Shaders/f_c.glsl");
+            _shaderVT = new ShaderVT("Shaders/v_t.glsl", "Shaders/f_t.glsl");
             _shaderVTL = new ShaderVTL("Shaders/v_t_l.glsl", "Shaders/f_t_l.glsl");
 
             /**/
@@ -90,82 +93,18 @@ namespace ClientV1
                 _objs.Add(obj);
             }
             
-            _vBuffsHnds = new int[_objs.Count];
-            _fBuffsHnds = new int[_objs.Count];
-            _nBuffsHnds = new int[_objs.Count];
-            _cBuffsHnds = new int[_objs.Count];
-            _iBuffsHnds = new int[_objs.Count];
-
             for (int i = 0; i < 2; i++)
             {
                 var obj = _objs[i];
-
-                GL.GenBuffers(1, out _vBuffsHnds[i]);
-                GL.GenBuffers(1, out _fBuffsHnds[i]);
-                GL.GenBuffers(1, out _nBuffsHnds[i]);
-                GL.GenBuffers(1, out _cBuffsHnds[i]);
-                GL.GenBuffers(1, out _iBuffsHnds[i]);
-
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _vBuffsHnds[i]);
-                GL.BufferData(BufferTarget.ArrayBuffer, obj.Vertices.Length * Vector3.SizeInBytes, obj.Vertices, BufferUsageHint.StaticDraw);
-
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _cBuffsHnds[i]);
-                GL.BufferData(BufferTarget.ArrayBuffer, obj.Colors.Length * Vector3.SizeInBytes, obj.Colors, BufferUsageHint.StaticDraw);
-
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _nBuffsHnds[i]);
-                GL.BufferData(BufferTarget.ArrayBuffer, obj.Normals.Length * Vector3.SizeInBytes, obj.Normals, BufferUsageHint.StaticDraw);
+                obj.GenVC();
             }
-
-            //var _hm = new HeighMap();
-            _hm = new HeighMap("level\\terrain\\land_map.h32");
-            
-
-            List<Vector3> tmpV = new List<Vector3>();
-            List<Vector2> tmpF = new List<Vector2>();
-            List<Vector3> tmpN = new List<Vector3>();
-            List<Vector3> tmpC = new List<Vector3>();
-
-            /*
-            for (int i = 2; i < _objs.Count; i++)
-            {
-                var obj = _objs[i];
-                tmpV.AddRange(obj.Vertices);
-                tmpF.AddRange(obj.UVs);
-                tmpN.AddRange(obj.Normals);
-            }
-            */
-
-            tmpV.AddRange(_hm.Map.Vertices);
-            tmpC.AddRange(_hm.Map.Colors);
-
-            GL.GenBuffers(1, out _vMassBuff);
-            GL.GenBuffers(1, out _fMassBuff);
-            GL.GenBuffers(1, out _nMassBuff);
-            GL.GenBuffers(1, out _cMassBuff);
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vMassBuff);
-            GL.BufferData(BufferTarget.ArrayBuffer, tmpV.Count * Vector3.SizeInBytes, tmpV.ToArray(), BufferUsageHint.StaticDraw);
-            /*
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _fMassBuff);
-            GL.BufferData(BufferTarget.ArrayBuffer, tmpF.Count * Vector2.SizeInBytes, tmpF.ToArray(), BufferUsageHint.StaticDraw);
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _nMassBuff);
-            GL.BufferData(BufferTarget.ArrayBuffer, tmpN.Count * Vector3.SizeInBytes, tmpN.ToArray(), BufferUsageHint.StaticDraw);
-            */
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _cMassBuff);
-            GL.BufferData(BufferTarget.ArrayBuffer, tmpC.Count * Vector3.SizeInBytes, tmpC.ToArray(), BufferUsageHint.StaticDraw);
-
-            /*
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _iBuffsHnds[i]);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, obj.Indices.Length * sizeof(int), obj.Indices, BufferUsageHint.StaticDraw);
-            */
+            _heightMap = new HeightMap("level\\terrain\\land_map.h32");
+            //_miss = new MissionLoader("level\\mission_mission0.xml");
+            _objectLdr = new ObjectsLoader("level\\objects.lst");
+            _levelDataLdr = new LevelDataLoader("level\\leveldata.xml");
 
             //_texHnd = TextureWorker.GetInstance().LoadBMPTexture("1.bmp");
-            _texHnd = TextureWorker.GetInstance().LoadDDSTexture("Textures/2_bmp_DXT3_1.DDS");
-
-            _miss = new MissionLoader("level\\mission_mission0.xml");
-            
-
+            _texHnd = TextureWorker.GetInstance().LoadDDSTexture("Textures/Bruh_PNG_DXT3_1.DDS");
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
@@ -190,24 +129,25 @@ namespace ClientV1
         {
             time += (float)e.Time;
 
-            var t = Keyboard.GetState();
-            if (t.IsAnyKeyDown)
+            if (this.Focused)
             {
-                if (t.IsKeyDown(Key.W)) { _camera += _moveFw; _target += _moveFw; }
-                if (t.IsKeyDown(Key.S)) { _camera -= _moveFw; _target -= _moveFw; }
-                if (t.IsKeyDown(Key.A)) { _camera += _moveSd; _target += _moveSd; }
-                if (t.IsKeyDown(Key.D)) { _camera -= _moveSd; _target -= _moveSd; }
+                var t = Keyboard.GetState();
+                if (t.IsAnyKeyDown)
+                {
+                    if (t.IsKeyDown(Key.W)) { _camera += _moveFw; _target += _moveFw; }
+                    if (t.IsKeyDown(Key.S)) { _camera -= _moveFw; _target -= _moveFw; }
+                    if (t.IsKeyDown(Key.A)) { _camera += _moveSd; _target += _moveSd; }
+                    if (t.IsKeyDown(Key.D)) { _camera -= _moveSd; _target -= _moveSd; }
+                }
+
+                var t2 = Mouse.GetState();
+                _wheeldelta = _lastwheel - t2.ScrollWheelValue;
+                var delta = Math.Sign(_wheeldelta);
+                if (delta != 0) { _camera.Y += _moveUp.Y * delta; _target.Y += _moveUp.Y * delta; }
+                _lastwheel = t2.ScrollWheelValue;
+
+                _viewMatrix = Matrix4.LookAt(_camera, _target, new Vector3(0, 1, 0));
             }
-
-            var t2 = Mouse.GetState();
-            _wheeldelta = _lastwheel - t2.ScrollWheelValue;
-            var delta = Math.Sign(_wheeldelta);
-            if (delta != 0) { _camera.Y += _moveUp.Y * delta; _target.Y += _moveUp.Y * delta; }
-            _lastwheel = t2.ScrollWheelValue;
-
-            _viewMatrix = Matrix4.LookAt(_camera, _target, new Vector3(0, 1, 0));
-
-
             for (int i = 0; i < _objs.Count; i++)
             {
                 var obj = _objs[i];
@@ -226,23 +166,20 @@ namespace ClientV1
                 obj.MVP = obj.Model * _viewMatrix * _projectionMatrix;
             }
 
-            if (_hm != null)
+            //_heightMap.Map.Rotation = new Vector3(0.2f, 2.3f, 0);
+            for (int i = 0; i < _heightMap.Maps.Count; i++)
             {
-                _hm.Map.CalculateModelMatrix();
-                _hm.Map.MVP = _hm.Map.Model * _viewMatrix * _projectionMatrix;
+                var hm = _heightMap.Maps[i];
+                hm.CalculateModelMatrix();
+                hm.MVP = hm.Model * _viewMatrix * _projectionMatrix;
             }
+            
 
-            for (int i = 0; i < _miss.Subzones.Count; i++)
+            for (int i = 0; i < _objectLdr.Dots.Count; i++)
             {
-                var sz = _miss.Subzones[i];
-                sz.CalculateModelMatrix();
-                sz.MVP = sz.Model * _viewMatrix * _projectionMatrix;
-            }
-            for (int i = 0; i < _miss.Objects.Count; i++)
-            {
-                var sz = _miss.Objects[i];
-                sz.CalculateModelMatrix();
-                sz.MVP = sz.Model * _viewMatrix * _projectionMatrix;
+                var dot = _objectLdr.Dots[i];
+                dot.CalculateModelMatrix();
+                dot.MVP = dot.Model * _viewMatrix * _projectionMatrix;
             }
         }
 
@@ -258,48 +195,51 @@ namespace ClientV1
             GL.EnableVertexAttribArray(1);
             GL.EnableVertexAttribArray(2);
 
-
             // Colored draw.
             GL.UseProgram(_shaderVC.ProgId);
+
             for (int i = 0; i < 2; i++)
             {
                 var obj = _objs[i];
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _vBuffsHnds[i]);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, obj.VerticesBufferHnd);
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _cBuffsHnds[i]);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, obj.ColorsBufferHnd);
                 GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
                 GL.UniformMatrix4(_shaderVC.Mx4MVP, false, ref obj.MVP);
                 GL.DrawArrays(obj.PrimitiveType, 0, obj.Vertices.Length);
             }
 
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vMassBuff);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _cMassBuff);
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
-            GL.UniformMatrix4(_shaderVC.Mx4MVP, false, ref _hm.Map.MVP);
-            GL.DrawArrays(_hm.Map.PrimitiveType, 0, _hm.Map.Vertices.Length);
-
-            for (int i = 0; i < _miss.Subzones.Count; i++)
+            // Map
+            GL.UseProgram(_shaderVT.ProgId);
+            GL.BindTexture(TextureTarget.Texture2D, _texHnd);
+            GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.CullFace);
+            for (int i = 0; i < _heightMap.Maps.Count; i++)
             {
-                var sz = _miss.Subzones[i];
-                GL.BindBuffer(BufferTarget.ArrayBuffer, sz.VerticesBufferHnd);
+                var hm = _heightMap.Maps[i];
+                GL.BindBuffer(BufferTarget.ArrayBuffer, hm.VerticesBufferHnd);
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, sz.ColorsBufferHnd);
-                GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
-                GL.UniformMatrix4(_shaderVC.Mx4MVP, false, ref sz.MVP);
-                GL.DrawArrays(PrimitiveType.LineLoop, 0, sz.Vertices.Length);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, hm.UVsBufferHnd);
+                GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
+                GL.UniformMatrix4(_shaderVT.Mx4MVP, false, ref hm.MVP);
+                GL.DrawArrays(hm.PrimitiveType, 0, hm.Vertices.Length);
             }
+            GL.Disable(EnableCap.Texture2D);
+            GL.Disable(EnableCap.CullFace);
 
-            for (int i = 0; i < _miss.Objects.Count; i++)
+            // Objs
+            /*
+            for (int i = 0; i < _objectLdr.Dots.Count; i++)
             {
-                var sz = _miss.Objects[i];
-                GL.BindBuffer(BufferTarget.ArrayBuffer, sz.VerticesBufferHnd);
+                var obj = _objectLdr.Dots[i];
+                GL.BindBuffer(BufferTarget.ArrayBuffer, obj.VerticesBufferHnd);
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, sz.ColorsBufferHnd);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, obj.ColorsBufferHnd);
                 GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
-                GL.UniformMatrix4(_shaderVC.Mx4MVP, false, ref sz.MVP);
-                GL.DrawArrays(sz.PrimitiveType, 0, sz.Vertices.Length);
+                GL.UniformMatrix4(_shaderVC.Mx4MVP, false, ref obj.MVP);
+                GL.DrawArrays(obj.PrimitiveType, 0, obj.Vertices.Length);
             }
+            */
 
             //GL.DrawArrays(PrimitiveType.Triangles, 0, _hm.Map.Vertices.Length);
 

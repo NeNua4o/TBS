@@ -97,5 +97,17 @@ namespace ClientV1.Models
             GL.BufferData(BufferTarget.ArrayBuffer, Colors.Length * Vector3.SizeInBytes, Colors, BufferUsageHint.StaticDraw);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
+
+        public virtual void GenVT()
+        {
+            GL.GenBuffers(1, out VerticesBufferHnd);
+            GL.GenBuffers(1, out ColorsBufferHnd);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VerticesBufferHnd);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * Vector3.SizeInBytes, Vertices, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, UVsBufferHnd);
+            GL.BufferData(BufferTarget.ArrayBuffer, UVs.Length * Vector2.SizeInBytes, UVs, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        }
+
     }
 }

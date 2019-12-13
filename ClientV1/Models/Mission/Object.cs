@@ -23,5 +23,11 @@ namespace ClientV1.Models.Mission
         public string Type;
         [XmlAttribute]
         public int use_dir;
+        [XmlAttribute]
+        public string AmbientColor;
+        [XmlAttribute]
+        public string BoxMax;
+        [XmlAttribute]
+        public string BoxMin;
     }
 }

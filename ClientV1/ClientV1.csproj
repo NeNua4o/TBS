@@ -58,23 +58,28 @@
     <Compile Include="Models\Cube.cs" />
     <Compile Include="Models\Hexagon.cs" />
     <Compile Include="Models\DrawingObject.cs" />
+    <Compile Include="Models\LevelData\LevelData.cs" />
+    <Compile Include="Models\LevelData\LevelDataLoader.cs" />
     <Compile Include="Models\Light.cs" />
-    <Compile Include="Models\Map\HeighMap.cs" />
+    <Compile Include="Models\Map\HeightMap.cs" />
     <Compile Include="Models\Map\MapPos.cs" />
     <Compile Include="Models\Mesh.cs" />
     <Compile Include="Models\Mission\CommonShapeList.cs" />
     <Compile Include="Models\Mission\data.cs" />
     <Compile Include="Models\Mission\MissionLoader.cs" />
     <Compile Include="Models\Mission\Object.cs" />
+    <Compile Include="Models\Mission\ObjectsLoader.cs" />
     <Compile Include="Models\Mission\SubzoneType.cs" />
     <Compile Include="Models\Mission\Mission.cs" />
     <Compile Include="Models\Mission\points_info.cs" />
     <Compile Include="Models\Mission\subzone.cs" />
+    <Compile Include="Models\Plane.cs" />
     <Compile Include="Models\Pyramid.cs" />
     <Compile Include="Models\Shaders\IShaderL.cs" />
     <Compile Include="Models\Shaders\IShaderV.cs" />
     <Compile Include="Models\Shaders\ShaderProgram.cs" />
     <Compile Include="Models\Shaders\ShaderVC.cs" />
+    <Compile Include="Models\Shaders\ShaderVT.cs" />
     <Compile Include="Models\Shaders\ShaderVTL.cs" />
     <Compile Include="Models\Triangle.cs" />
     <Compile Include="Models\Volume.cs" />
@@ -119,6 +124,9 @@
     <None Include="Shaders\f_c.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Shaders\f_t.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Shaders\f_t_l.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -126,6 +134,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Shaders\fs2.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\v_t.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Shaders\v_t_l.glsl">
@@ -154,6 +165,9 @@
     <Content Include="Textures\1_BMP_DXT3_1.DDS" />
     <Content Include="Textures\2_BMP_DXT3_1.DDS" />
     <Content Include="Textures\3_BMP_DXT3_1.DDS" />
+    <Content Include="Textures\Bruh_PNG_DXT3_1.DDS">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Textures\cube_PNG_DXT3_1.DDS" />
     <Content Include="Textures\Pyro_PNG_DXT3_1.DDS">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

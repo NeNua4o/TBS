@@ -3,9 +3,6 @@ using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace ClientV1.Models.Mission
@@ -37,7 +34,10 @@ namespace ClientV1.Models.Mission
                 for (int j = 0; j < pi.points.Length; j++)
                 {
                     var pt = pi.points[j];
-                    vlist.Add(new Vector3(pt.x * Consts.XZ_SCALE/2, 20 * Consts.Y_SCALE, pt.y * Consts.XZ_SCALE/2));
+                    vlist.Add(new Vector3(
+                        pt.x * Consts.XZ_SCALE/2, 
+                        20 * Consts.Y_SCALE, 
+                        pt.y * Consts.XZ_SCALE/2));
                     clist.Add(col);
                 }
                 var szv = new Volume()
@@ -61,13 +61,14 @@ namespace ClientV1.Models.Mission
                     Single.Parse(a[0].Replace('.', ',')) * Consts.XZ_SCALE / 2,
                     Single.Parse(a[1].Replace('.', ',')) * Consts.Y_SCALE,
                     Single.Parse(a[2].Replace('.', ',')) * Consts.XZ_SCALE / 2);
-                while (st.Y>=1024)
+                while (st.Y >= 1024)
                 {
                     st.Y -= 1024;
                 }
                 vlist.Add(st);
+                
                 clist.Add(col);
-                vlist.Add(new Vector3(st.X, st.Y+1, st.Z));
+                vlist.Add(new Vector3(st.X, st.Y + 1, st.Z));
                 clist.Add(col);
 
                 var szv = new Volume()
@@ -79,6 +80,8 @@ namespace ClientV1.Models.Mission
                 szv.GenVC();
                 Objects.Add(szv);
             }
+
+            
         }
     }
 }
