@@ -55,7 +55,7 @@ namespace ClientV1
 
             _moveSd = Vector3.Cross(a, _target - _camera);
             _moveSd.Normalize();
-            _moveSd = _moveSd / 5f;
+            _moveSd = _moveSd / 4f;
 
             GL.GenVertexArrays(1, out _vertsArrObjHnd);
             GL.BindVertexArray(_vertsArrObjHnd);
@@ -183,6 +183,7 @@ namespace ClientV1
             }
         }
 
+        
         private void MainWindow_RenderFrame(object sender, FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -210,23 +211,29 @@ namespace ClientV1
             }
 
             // Map
+            /**/
             GL.UseProgram(_shaderVT.ProgId);
             GL.BindTexture(TextureTarget.Texture2D, _texHnd);
             GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.CullFace);
-            for (int i = 0; i < _heightMap.Maps.Count; i++)
+
+            //for (int i = 0; i < _heightMap.Maps.Count; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var hm = _heightMap.Maps[i];
                 GL.BindBuffer(BufferTarget.ArrayBuffer, hm.VerticesBufferHnd);
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, hm.UVsBufferHnd);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, hm.VerticesBufferHnd);
                 GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
                 GL.UniformMatrix4(_shaderVT.Mx4MVP, false, ref hm.MVP);
                 GL.DrawArrays(hm.PrimitiveType, 0, hm.Vertices.Length);
+                //GL.DrawArrays(PrimitiveType.Points, 0, hm.Vertices.Length);
             }
+            
+            /**/
             GL.Disable(EnableCap.Texture2D);
             GL.Disable(EnableCap.CullFace);
-
+            
             // Objs
             /*
             for (int i = 0; i < _objectLdr.Dots.Count; i++)

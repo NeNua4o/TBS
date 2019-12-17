@@ -14,7 +14,7 @@ namespace ClientV1.Models.Map
         {
             using (FileStream fs = new FileStream(filename, FileMode.Open))
             {
-                int size = 6;
+                int size = 18;
                 byte[] buff = new byte[size];
                 byte[] tbuff = new byte[2];
                 int totalReaded;
@@ -50,52 +50,62 @@ namespace ClientV1.Models.Map
                 var hmapsize = mapsize / 2f;
                 var hmax = max / 2f;
                 List<Vector3> tvertices = new List<Vector3>();
+                List<Vector3> tcols = new List<Vector3>();
                 List<Vector2> tuvs = new List<Vector2>();
-                int k = 0;
-                for (int y = 0; y < mapsize; y++)
-                    for (int x = 0; x < mapsize; x++)
-                    {
-                        var t = th[k];
-                        tvertices.Add(new Vector3(x * Consts.XZ_SCALE, t * Consts.Y_SCALE, y * Consts.XZ_SCALE));
-                        tuvs.Add(new Vector2(x / (float)mapsize, y / (float)mapsize));
-
-                        /*
-                        var a = t/(float)max;
-                        tuvs.Add(new Vector3(a, a, 0));
-                        */
-
-                        k++;
-                    }
-                List<Vector3> tvertices2 = new List<Vector3>();
-                List<Vector2> tuvs2 = new List<Vector2>();
                 for (int y = 0; y < mapsize - 1; y++)
-                {
                     for (int x = 0; x < mapsize - 1; x++)
                     {
-                        tvertices2.Add(tvertices[x + y * 1536]);
-                        tvertices2.Add(tvertices[x + (y + 1) * 1536]);
-                        tvertices2.Add(tvertices[(x + 1) + (y + 1) * 1536]);
+                        float 
+                            v1 = th[x + y * mapsize],
+                            v2 = th[x + (y + 1) * mapsize],
+                            v3 = th[(x + 1) + (y + 1) * mapsize],
+                            v4 = th[(x + 1) + y * mapsize];
+                        float 
+                            c1 = v1 / max,
+                            c2 = v2 / max,
+                            c3 = v3 / max,
+                            c4 = v4 / max;
+                            
 
-                        
-                        tvertices2.Add(tvertices[x + y * 1536]);
-                        tvertices2.Add(tvertices[(x + 1) + (y + 1) * 1536]);
-                        tvertices2.Add(tvertices[(x + 1) + y * 1536]);
-                        
+                        tvertices.Add(new Vector3(x * Consts.XZ_SCALE, v1 * Consts.Y_SCALE, y * Consts.XZ_SCALE));
+                        tvertices.Add(new Vector3(x * Consts.XZ_SCALE, v2 * Consts.Y_SCALE, (y + 1) * Consts.XZ_SCALE));
+                        tvertices.Add(new Vector3((x + 1) * Consts.XZ_SCALE, v3 * Consts.Y_SCALE, (y + 1) * Consts.XZ_SCALE));
 
-                        tuvs2.Add(tuvs[x + y * 1536]);
-                        tuvs2.Add(tuvs[x + (y + 1) * 1536]);
-                        tuvs2.Add(tuvs[(x + 1) + (y + 1) * 1536]);
-                        
-                        tuvs2.Add(tuvs[x + y * 1536]);
-                        tuvs2.Add(tuvs[(x + 1) + (y + 1) * 1536]);
-                        tuvs2.Add(tuvs[(x + 1) + y * 1536]);
+                        tvertices.Add(new Vector3(x * Consts.XZ_SCALE, v1 * Consts.Y_SCALE, y * Consts.XZ_SCALE));
+                        tvertices.Add(new Vector3((x + 1) * Consts.XZ_SCALE, v3 * Consts.Y_SCALE, (y + 1) * Consts.XZ_SCALE));
+                        tvertices.Add(new Vector3((x + 1) * Consts.XZ_SCALE, v4 * Consts.Y_SCALE, y * Consts.XZ_SCALE));
+
+                        /*
+                        tcols.Add(new Vector3(c1, c1, 0));
+                        tcols.Add(new Vector3(c2, c2, 0));
+                        tcols.Add(new Vector3(c3, c3, 0));
+
+                        tcols.Add(new Vector3(c1, c1, 0));
+                        tcols.Add(new Vector3(c3, c3, 0));
+                        tcols.Add(new Vector3(c4, c4, 0));
+                        */
+
+                        /*
+                        tuvs.Add(new Vector2(x / (float)mapsize, 1-(y / (float)mapsize)));
+                        tuvs.Add(new Vector2(x / (float)mapsize, 1 - ((y + 1) / (float)mapsize)));
+                        tuvs.Add(new Vector2((x + 1) / (float)mapsize, 1-((y + 1) / (float)mapsize)));
+
+                        tuvs.Add(new Vector2(x / (float)mapsize, 1-(y / (float)mapsize)));
+                        tuvs.Add(new Vector2((x + 1) / (float)mapsize, 1-((y + 1) / (float)mapsize)));
+                        tuvs.Add(new Vector2((x + 1) / (float)mapsize, 1-(y / (float)mapsize)));
+                        */
+
+                        tuvs.Add(new Vector2(x / (float)mapsize, (y / (float)mapsize)));
+                        tuvs.Add(new Vector2(x / (float)mapsize, ((y + 1) / (float)mapsize)));
+                        tuvs.Add(new Vector2((x + 1) / (float)mapsize, ((y + 1) / (float)mapsize)));
+
+                        tuvs.Add(new Vector2(x / (float)mapsize, (y / (float)mapsize)));
+                        tuvs.Add(new Vector2((x + 1) / (float)mapsize, ((y + 1) / (float)mapsize)));
+                        tuvs.Add(new Vector2((x + 1) / (float)mapsize, (y / (float)mapsize)));
                     }
-                }
 
-                var part = 307200;
-                var holes = (int)(tvertices2.Count / (float)part);
-                var tv3 = tvertices2.ToArray();
-                var tt3 = tuvs2.ToArray();
+                var part = (mapsize - 1) * 6 * 10;
+                var holes = (int)(tvertices.Count / (float)part);
                 for (int i = 0; i < holes; i++)
                 {
                     var map = new Volume()
@@ -103,21 +113,20 @@ namespace ClientV1.Models.Map
                         PrimitiveType = OpenTK.Graphics.OpenGL.PrimitiveType.Triangles,
                     };
                     map.Vertices = new Vector3[part];
-                    Array.Copy(tv3, i * part, map.Vertices, 0, part);
+                    tvertices.CopyTo(i * part, map.Vertices, 0, part);
+
+                    /*
+                    map.Colors = new Vector3[part];
+                    tcols.CopyTo(i * part, map.Colors, 0, part);
+                    */
+
                     map.UVs = new Vector2[part];
-                    Array.Copy(tt3, i * part, map.UVs, 0, part);
+                    tuvs.CopyTo(i * part, map.UVs, 0, part);
+
+                    //map.GenVC();
                     map.GenVT();
                     Maps.Add(map);
                 }
-                /*
-                Map = new Volume()
-                {
-                    PrimitiveType = OpenTK.Graphics.OpenGL.PrimitiveType.Triangles,
-                    Vertices = tvertices2.ToArray(),
-                    UVs = tuvs2.ToArray()
-                };
-                Map.GenVT();
-                */
             }
         }
     }
