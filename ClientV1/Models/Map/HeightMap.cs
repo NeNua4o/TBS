@@ -75,7 +75,7 @@ namespace ClientV1.Models.Map
                         tvertices.Add(new Vector3((x + 1) * Consts.XZ_SCALE, v3 * Consts.Y_SCALE, (y + 1) * Consts.XZ_SCALE));
                         tvertices.Add(new Vector3((x + 1) * Consts.XZ_SCALE, v4 * Consts.Y_SCALE, y * Consts.XZ_SCALE));
 
-                        /*
+                        /**/
                         tcols.Add(new Vector3(c1, c1, 0));
                         tcols.Add(new Vector3(c2, c2, 0));
                         tcols.Add(new Vector3(c3, c3, 0));
@@ -83,7 +83,7 @@ namespace ClientV1.Models.Map
                         tcols.Add(new Vector3(c1, c1, 0));
                         tcols.Add(new Vector3(c3, c3, 0));
                         tcols.Add(new Vector3(c4, c4, 0));
-                        */
+                        
 
                         /*
                         tuvs.Add(new Vector2(x / (float)mapsize, 1-(y / (float)mapsize)));
@@ -95,6 +95,7 @@ namespace ClientV1.Models.Map
                         tuvs.Add(new Vector2((x + 1) / (float)mapsize, 1-(y / (float)mapsize)));
                         */
 
+                        /*
                         tuvs.Add(new Vector2(x / (float)mapsize, (y / (float)mapsize)));
                         tuvs.Add(new Vector2(x / (float)mapsize, ((y + 1) / (float)mapsize)));
                         tuvs.Add(new Vector2((x + 1) / (float)mapsize, ((y + 1) / (float)mapsize)));
@@ -102,6 +103,7 @@ namespace ClientV1.Models.Map
                         tuvs.Add(new Vector2(x / (float)mapsize, (y / (float)mapsize)));
                         tuvs.Add(new Vector2((x + 1) / (float)mapsize, ((y + 1) / (float)mapsize)));
                         tuvs.Add(new Vector2((x + 1) / (float)mapsize, (y / (float)mapsize)));
+                        */
                     }
 
                 var part = (mapsize - 1) * 6 * 10;
@@ -115,16 +117,18 @@ namespace ClientV1.Models.Map
                     map.Vertices = new Vector3[part];
                     tvertices.CopyTo(i * part, map.Vertices, 0, part);
 
-                    /*
+                    /**/
                     map.Colors = new Vector3[part];
                     tcols.CopyTo(i * part, map.Colors, 0, part);
-                    */
+                    
 
+                    /*
                     map.UVs = new Vector2[part];
                     tuvs.CopyTo(i * part, map.UVs, 0, part);
+                    */
 
-                    //map.GenVC();
-                    map.GenVT();
+                    map.GenVC();
+                    //map.GenVT();
                     Maps.Add(map);
                 }
             }

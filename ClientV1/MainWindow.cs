@@ -211,28 +211,28 @@ namespace ClientV1
             }
 
             // Map
-            /**/
+            /*
             GL.UseProgram(_shaderVT.ProgId);
             GL.BindTexture(TextureTarget.Texture2D, _texHnd);
             GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.CullFace);
+            GL.Enable(EnableCap.CullFace);*/
 
-            //for (int i = 0; i < _heightMap.Maps.Count; i++)
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < _heightMap.Maps.Count; i++)
+            //for (int i = 0; i < 4; i++)
             {
                 var hm = _heightMap.Maps[i];
                 GL.BindBuffer(BufferTarget.ArrayBuffer, hm.VerticesBufferHnd);
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, hm.VerticesBufferHnd);
-                GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, hm.ColorsBufferHnd);
+                GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 0, 0);
                 GL.UniformMatrix4(_shaderVT.Mx4MVP, false, ref hm.MVP);
                 GL.DrawArrays(hm.PrimitiveType, 0, hm.Vertices.Length);
                 //GL.DrawArrays(PrimitiveType.Points, 0, hm.Vertices.Length);
             }
             
-            /**/
+            /*
             GL.Disable(EnableCap.Texture2D);
-            GL.Disable(EnableCap.CullFace);
+            GL.Disable(EnableCap.CullFace);*/
             
             // Objs
             /*
