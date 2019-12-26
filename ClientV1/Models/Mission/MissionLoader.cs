@@ -23,32 +23,7 @@ namespace ClientV1.Models.Mission
                 fs.Close();
             }
 
-            for (int i = 0; i < Mission.CommonShapeList.sub_zones.Count; i++)
-            {
-                var sz = Mission.CommonShapeList.sub_zones[i];
-                var pi = sz.points_info;
-                
-                var vlist = new List<Vector3>();
-                var clist = new List<Vector3>();
-                var col = new Vector3(0.5f, 0.5f, 0);
-                for (int j = 0; j < pi.points.Length; j++)
-                {
-                    var pt = pi.points[j];
-                    vlist.Add(new Vector3(
-                        pt.x * Consts.XZ_SCALE/2, 
-                        20 * Consts.Y_SCALE, 
-                        pt.y * Consts.XZ_SCALE/2));
-                    clist.Add(col);
-                }
-                var szv = new Volume()
-                {
-                    PrimitiveType = PrimitiveType.Points,
-                    Vertices = vlist.ToArray(),
-                    Colors = clist.ToArray()
-                };
-                szv.GenVC();
-                Subzones.Add(szv);
-            }
+            
 
             for (int i = 0; i < Mission.Objects.Length; i++)
             {
@@ -57,14 +32,19 @@ namespace ClientV1.Models.Mission
                 var clist = new List<Vector3>();
                 var col = new Vector3(0.5f, 0, 0.5f);
                 var a = oj.Pos.Split(',');
-                var st = new Vector3(
-                    Single.Parse(a[0].Replace('.', ',')) * Consts.XZ_SCALE / 2,
-                    Single.Parse(a[1].Replace('.', ',')) * Consts.Y_SCALE,
-                    Single.Parse(a[2].Replace('.', ',')) * Consts.XZ_SCALE / 2);
+                float
+                    x = Single.Parse(a[1].Replace('.', ',')),
+                    y = Single.Parse(a[2].Replace('.', ',')),
+                    z = Single.Parse(a[0].Replace('.', ','))
+                    ;
+
+                var st = new Vector3(x * Consts.XZ_SCALE / 2, y * Consts.Y_SCALE, z * Consts.XZ_SCALE / 2);
+                /*
                 while (st.Y >= 1024)
                 {
                     st.Y -= 1024;
                 }
+                */
                 vlist.Add(st);
                 
                 clist.Add(col);
@@ -81,7 +61,7 @@ namespace ClientV1.Models.Mission
                 Objects.Add(szv);
             }
 
-            
+            Mission = null;
         }
     }
 }

@@ -58,8 +58,6 @@
     <Compile Include="Models\Cube.cs" />
     <Compile Include="Models\Hexagon.cs" />
     <Compile Include="Models\DrawingObject.cs" />
-    <Compile Include="Models\LevelData\LevelData.cs" />
-    <Compile Include="Models\LevelData\LevelDataLoader.cs" />
     <Compile Include="Models\Light.cs" />
     <Compile Include="Models\Map\HeightMap.cs" />
     <Compile Include="Models\Map\MapPos.cs" />

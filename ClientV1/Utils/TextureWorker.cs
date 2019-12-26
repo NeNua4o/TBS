@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -52,6 +53,29 @@ namespace ClientV1.Utils
             return res;
         }
 
+        public int LoadJPGTexture(string filename)
+        {
+            int res = -1;
+            Bitmap bmp = (Bitmap)Image.FromFile(filename);
+            var bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            IntPtr ptr = bd.Scan0;
+            int stride = bd.Stride;
+            int numBytes = bmp.Width * bmp.Height * 3;
+            var data = new byte[numBytes];
+            for (int r = 0; r < bmp.Height; ++r)
+            {
+                Marshal.Copy(new IntPtr((int)ptr + stride * r), data, bmp.Width * 3 * r, bmp.Width * 3);
+            }
+            bmp.UnlockBits(bd);
+
+            GL.GenTextures(1, out res);
+            GL.BindTexture(TextureTarget.Texture2D, res);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, bmp.Width, bmp.Height, 0, PixelFormat.Bgr, PixelType.UnsignedByte, data);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+            return res;
+        }
+
 
         const int FOURCC_DXT1 = 0x31545844; //(MAKEFOURCC('D','X','T','1'))
         const int FOURCC_DXT3 = 0x33545844; //(MAKEFOURCC('D','X','T','3'))
@@ -73,6 +97,8 @@ namespace ClientV1.Utils
                     fs.Close();
                     return res;
                 }
+                filecode = null;
+
                 // Header
                 byte[] header = new byte[124];
                 fs.Read(header, 0, 124);

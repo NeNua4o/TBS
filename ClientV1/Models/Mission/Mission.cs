@@ -1,4 +1,7 @@
-﻿namespace ClientV1.Models.Mission
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
+
+namespace ClientV1.Models.Mission
 {
     public class Mission
     {

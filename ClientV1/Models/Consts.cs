@@ -9,6 +9,6 @@ namespace ClientV1.Models
     public static class Consts
     {
         public const float XZ_SCALE = 0.02f;
-        public const float Y_SCALE = 0.05f;
+        public const float Y_SCALE = 0.04f;
     }
 }

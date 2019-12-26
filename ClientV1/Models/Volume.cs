@@ -18,6 +18,8 @@ namespace ClientV1.Models
         public int ColorsBufferHnd;
         public int VertexIndicesBufferHnd;
 
+        public int TextureHnd;
+
         public PrimitiveType PrimitiveType;
 
         public float sx, sy;
@@ -101,7 +103,7 @@ namespace ClientV1.Models
         public virtual void GenVT()
         {
             GL.GenBuffers(1, out VerticesBufferHnd);
-            GL.GenBuffers(1, out ColorsBufferHnd);
+            GL.GenBuffers(1, out UVsBufferHnd);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VerticesBufferHnd);
             GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * Vector3.SizeInBytes, Vertices, BufferUsageHint.StaticDraw);
             GL.BindBuffer(BufferTarget.ArrayBuffer, UVsBufferHnd);

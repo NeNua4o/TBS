@@ -41,5 +41,27 @@ namespace Tests
         {
             timer1.Start();
         }
+
+        private void b_makeGrad_Click(object sender, EventArgs e)
+        {
+            Bitmap bm = new Bitmap(500, 30);
+            Graphics gr = Graphics.FromImage(bm);
+
+            for (int i = 0; i < 256; i++)
+            {
+                int
+                    r = hsR.Value + i,
+                    g = hsG.Value + i,
+                    b = hsB.Value + i
+                    ;
+                while (r > 255) r -= 256;
+                while (g > 255) g -= 256;
+                while (b > 255) b -= 256;
+                var c = Color.FromArgb(255, r, g, b);
+                gr.FillRectangle(new SolidBrush(c), i, 0, 2, 30);
+            }
+
+            pb_grad.Image = bm; gr = null;
+        }
     }
 }
