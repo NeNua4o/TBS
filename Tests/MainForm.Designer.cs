@@ -28,80 +28,96 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.b_test = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.pb_grad = new System.Windows.Forms.PictureBox();
-            this.b_makeGrad = new System.Windows.Forms.Button();
-            this.hsR = new System.Windows.Forms.HScrollBar();
-            this.hsG = new System.Windows.Forms.HScrollBar();
-            this.hsB = new System.Windows.Forms.HScrollBar();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_grad)).BeginInit();
+            this.button1 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.nud_ptCount = new System.Windows.Forms.NumericUpDown();
+            this.nud_width = new System.Windows.Forms.NumericUpDown();
+            this.nud_height = new System.Windows.Forms.NumericUpDown();
+            this.button2 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_ptCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_width)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_height)).BeginInit();
             this.SuspendLayout();
             // 
-            // b_test
+            // button1
             // 
-            this.b_test.Location = new System.Drawing.Point(107, 12);
-            this.b_test.Name = "b_test";
-            this.b_test.Size = new System.Drawing.Size(75, 23);
-            this.b_test.TabIndex = 2;
-            this.b_test.Text = "click";
-            this.b_test.UseVisualStyleBackColor = true;
-            this.b_test.Click += new System.EventHandler(this.b_test_Click);
+            this.button1.Location = new System.Drawing.Point(273, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(120, 20);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label1
+            // pictureBox1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.ForeColor = System.Drawing.Color.DarkRed;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(179, 63);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "label1";
+            this.pictureBox1.Location = new System.Drawing.Point(12, 38);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(600, 300);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
             // 
-            // pb_grad
+            // nud_ptCount
             // 
-            this.pb_grad.Location = new System.Drawing.Point(7, 66);
-            this.pb_grad.Name = "pb_grad";
-            this.pb_grad.Size = new System.Drawing.Size(500, 30);
-            this.pb_grad.TabIndex = 4;
-            this.pb_grad.TabStop = false;
+            this.nud_ptCount.Location = new System.Drawing.Point(186, 12);
+            this.nud_ptCount.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.nud_ptCount.Name = "nud_ptCount";
+            this.nud_ptCount.Size = new System.Drawing.Size(81, 20);
+            this.nud_ptCount.TabIndex = 2;
+            this.nud_ptCount.Value = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
             // 
-            // b_makeGrad
+            // nud_width
             // 
-            this.b_makeGrad.Location = new System.Drawing.Point(7, 153);
-            this.b_makeGrad.Name = "b_makeGrad";
-            this.b_makeGrad.Size = new System.Drawing.Size(75, 23);
-            this.b_makeGrad.TabIndex = 5;
-            this.b_makeGrad.Text = "button1";
-            this.b_makeGrad.UseVisualStyleBackColor = true;
-            this.b_makeGrad.Click += new System.EventHandler(this.b_makeGrad_Click);
+            this.nud_width.Location = new System.Drawing.Point(12, 12);
+            this.nud_width.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nud_width.Name = "nud_width";
+            this.nud_width.Size = new System.Drawing.Size(81, 20);
+            this.nud_width.TabIndex = 3;
+            this.nud_width.Value = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
             // 
-            // hsR
+            // nud_height
             // 
-            this.hsR.Location = new System.Drawing.Point(7, 99);
-            this.hsR.Maximum = 255;
-            this.hsR.Name = "hsR";
-            this.hsR.Size = new System.Drawing.Size(500, 17);
-            this.hsR.TabIndex = 6;
+            this.nud_height.Location = new System.Drawing.Point(99, 12);
+            this.nud_height.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nud_height.Name = "nud_height";
+            this.nud_height.Size = new System.Drawing.Size(81, 20);
+            this.nud_height.TabIndex = 4;
+            this.nud_height.Value = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
             // 
-            // hsG
+            // button2
             // 
-            this.hsG.Location = new System.Drawing.Point(7, 116);
-            this.hsG.Maximum = 255;
-            this.hsG.Name = "hsG";
-            this.hsG.Size = new System.Drawing.Size(500, 17);
-            this.hsG.TabIndex = 7;
-            // 
-            // hsB
-            // 
-            this.hsB.Location = new System.Drawing.Point(7, 133);
-            this.hsB.Maximum = 255;
-            this.hsB.Name = "hsB";
-            this.hsB.Size = new System.Drawing.Size(500, 17);
-            this.hsB.TabIndex = 8;
+            this.button2.Location = new System.Drawing.Point(399, 12);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(120, 20);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // MainForm
             // 
@@ -109,33 +125,33 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(519, 415);
-            this.Controls.Add(this.hsB);
-            this.Controls.Add(this.hsG);
-            this.Controls.Add(this.hsR);
-            this.Controls.Add(this.b_makeGrad);
-            this.Controls.Add(this.pb_grad);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.b_test);
+            this.ClientSize = new System.Drawing.Size(673, 415);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.nud_height);
+            this.Controls.Add(this.nud_width);
+            this.Controls.Add(this.nud_ptCount);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.button1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            ((System.ComponentModel.ISupportInitialize)(this.pb_grad)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_ptCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_width)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_height)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Button b_test;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.PictureBox pb_grad;
-        private System.Windows.Forms.Button b_makeGrad;
-        private System.Windows.Forms.HScrollBar hsR;
-        private System.Windows.Forms.HScrollBar hsG;
-        private System.Windows.Forms.HScrollBar hsB;
+
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.NumericUpDown nud_ptCount;
+        private System.Windows.Forms.NumericUpDown nud_width;
+        private System.Windows.Forms.NumericUpDown nud_height;
+        private System.Windows.Forms.Button button2;
     }
 }
 
