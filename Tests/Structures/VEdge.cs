@@ -1,37 +1,38 @@
-﻿namespace VoronoiLib.Structures
+﻿using System.Diagnostics;
+using System.Drawing;
+
+namespace Tests.Structures
 {
     public class VEdge
     {
-        public VPoint Start { get; internal set; }
-        public VPoint End { get; internal set; }
-        public FortuneSite Left { get; }
-        public FortuneSite Right { get; }
-        internal double SlopeRise { get; }
-        internal double SlopeRun { get; }
-        internal double? Slope { get; }
-        internal double? Intercept { get; }
+        public VPoint S;
+        public VPoint E;
+        public VPoint M;
 
-        public VEdge Neighbor { get; internal set; }
-
-        internal VEdge(VPoint start, FortuneSite left, FortuneSite right)
+        public VEdge(VPoint s, VPoint e)
         {
-            Start = start;
-            Left = left;
-            Right = right;
-            
-            //for bounding box edges
-            if (left == null || right == null)
-                return;
+            S = s;
+            E = e;
+            M = (s + e) / 2;
+        }
 
-            //from negative reciprocal of slope of line from left to right
-            //ala m = (left.y -right.y / left.x - right.x)
-            SlopeRise = left.X - right.X;
-            SlopeRun = -(left.Y - right.Y);
-            Intercept = null;
+        public static bool operator ==(VEdge a, VEdge b)
+        {
+            if (ReferenceEquals(a, null) & (ReferenceEquals(b, null)))
+                return true;
+            if (ReferenceEquals(a, null) || (ReferenceEquals(b, null)))
+                return false;
+            return (a.S == b.S && a.E == b.E) || (a.E == b.S && a.S == b.E);
+        }
 
-            if (SlopeRise.ApproxEqual(0) || SlopeRun.ApproxEqual(0)) return;
-            Slope = SlopeRise/SlopeRun;
-            Intercept = start.Y - Slope*start.X;
+        public static bool operator !=(VEdge a, VEdge b)
+        {
+            return !(a==b);
+        }
+
+        public override string ToString()
+        {
+            return "(" + S.X + ";" + S.Y + ")(" + E.X + ";" + E.Y + ")";
         }
     }
 }

@@ -14,7 +14,8 @@ namespace ClientV2
         [STAThread]
         static void Main()
         {
-            Application.Run(new Form1());
+            var mainWnd = new MainWindow();
+            mainWnd.Run();
         }
     }
 }
