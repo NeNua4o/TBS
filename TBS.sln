@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientV1Converter", "Client
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientV2", "ClientV2\ClientV2.csproj", "{817B8A7D-62ED-412B-906F-C1AD7626340C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voronoy", "Voronoy\Voronoy.csproj", "{9E358858-3120-4B20-A1CF-40FD600865FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{817B8A7D-62ED-412B-906F-C1AD7626340C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{817B8A7D-62ED-412B-906F-C1AD7626340C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{817B8A7D-62ED-412B-906F-C1AD7626340C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E358858-3120-4B20-A1CF-40FD600865FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E358858-3120-4B20-A1CF-40FD600865FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E358858-3120-4B20-A1CF-40FD600865FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E358858-3120-4B20-A1CF-40FD600865FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

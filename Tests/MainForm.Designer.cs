@@ -36,6 +36,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.nud_Lloyd = new System.Windows.Forms.NumericUpDown();
+            this.pb1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_ptCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_width)).BeginInit();
@@ -47,9 +48,9 @@
             // 
             this.button1.Location = new System.Drawing.Point(360, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(55, 20);
+            this.button1.Size = new System.Drawing.Size(67, 20);
             this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
+            this.button1.Text = "grid+poly";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -73,7 +74,7 @@
             this.nud_ptCount.Size = new System.Drawing.Size(81, 20);
             this.nud_ptCount.TabIndex = 2;
             this.nud_ptCount.Value = new decimal(new int[] {
-            1000,
+            10000,
             0,
             0,
             0});
@@ -90,7 +91,7 @@
             this.nud_width.Size = new System.Drawing.Size(81, 20);
             this.nud_width.TabIndex = 3;
             this.nud_width.Value = new decimal(new int[] {
-            800,
+            1400,
             0,
             0,
             0});
@@ -107,29 +108,31 @@
             this.nud_height.Size = new System.Drawing.Size(81, 20);
             this.nud_height.TabIndex = 4;
             this.nud_height.Value = new decimal(new int[] {
-            400,
+            700,
             0,
             0,
             0});
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(421, 12);
+            this.button2.Location = new System.Drawing.Point(433, 12);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(54, 20);
             this.button2.TabIndex = 5;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(481, 12);
+            this.button3.Location = new System.Drawing.Point(567, 12);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(61, 20);
             this.button3.TabIndex = 6;
             this.button3.Text = "button3";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // nud_Lloyd
@@ -144,10 +147,18 @@
             this.nud_Lloyd.Size = new System.Drawing.Size(81, 20);
             this.nud_Lloyd.TabIndex = 7;
             this.nud_Lloyd.Value = new decimal(new int[] {
-            1,
+            15,
             0,
             0,
             0});
+            // 
+            // pb1
+            // 
+            this.pb1.Location = new System.Drawing.Point(634, 12);
+            this.pb1.Maximum = 1;
+            this.pb1.Name = "pb1";
+            this.pb1.Size = new System.Drawing.Size(20, 20);
+            this.pb1.TabIndex = 8;
             // 
             // MainForm
             // 
@@ -156,7 +167,8 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(673, 415);
+            this.ClientSize = new System.Drawing.Size(768, 415);
+            this.Controls.Add(this.pb1);
             this.Controls.Add(this.nud_Lloyd);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -188,6 +200,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.NumericUpDown nud_Lloyd;
+        private System.Windows.Forms.ProgressBar pb1;
     }
 }
 

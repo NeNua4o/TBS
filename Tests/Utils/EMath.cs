@@ -9,7 +9,7 @@ namespace Tests.Utils
 {
     class EMath
     {
-        public static float Len(VPoint a, VPoint b)
+        public static float Len(VtPoint a, VtPoint b)
         {
             var dx = a.X - b.X;
             var dy = a.Y - b.Y;

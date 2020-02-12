@@ -1,41 +1,46 @@
 ﻿using System;
 using System.Diagnostics;
+using Voronoy.Structures;
 
 namespace Tests.Structures
 {
-    public class VPoint
+    public class VtPoint
     {
         public float X;
         public float Y;
 
-        public VPoint(float x, float y)
+        public VtPoint(VPoint s) : this((float)s.X, (float)s.Y)
+        {
+        }
+
+        public VtPoint(float x, float y)
         {
             X = x;
             Y = y;
         }
 
-        public static VPoint operator +(VPoint a, VPoint b)
+        public static VtPoint operator +(VtPoint a, VtPoint b)
         {
-            return new VPoint(a.X + b.X, a.Y + b.Y);
+            return new VtPoint(a.X + b.X, a.Y + b.Y);
         }
 
-        public static VPoint operator -(VPoint a, VPoint b)
+        public static VtPoint operator -(VtPoint a, VtPoint b)
         {
-            return new VPoint(a.X - b.X, a.Y - b.Y);
+            return new VtPoint(a.X - b.X, a.Y - b.Y);
         }
 
-        public static VPoint operator *(VPoint a, float n)
+        public static VtPoint operator *(VtPoint a, float n)
         {
-            return new VPoint(a.X + n, a.Y + n);
+            return new VtPoint(a.X + n, a.Y + n);
         }
 
-        public static VPoint operator /(VPoint a, float n)
+        public static VtPoint operator /(VtPoint a, float n)
         {
-            return new VPoint(a.X / n, a.Y / n);
+            return new VtPoint(a.X / n, a.Y / n);
         }
 
         
-        public static bool operator ==(VPoint a, VPoint b)
+        public static bool operator ==(VtPoint a, VtPoint b)
         {
             if (ReferenceEquals(a, null) & (ReferenceEquals(b, null)))
                 return true;
@@ -47,7 +52,7 @@ namespace Tests.Structures
             return res;
         }
 
-        public static bool operator !=(VPoint a, VPoint b)
+        public static bool operator !=(VtPoint a, VtPoint b)
         {
             return !(a==b);
         }

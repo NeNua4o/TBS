@@ -1,22 +1,30 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
+using Voronoy.Structures;
 
 namespace Tests.Structures
 {
-    public class VEdge
+    public class VtEdge
     {
-        public VPoint S;
-        public VPoint E;
-        public VPoint M;
+        public VtPoint S;
+        public VtPoint E;
+        public VtPoint M;
 
-        public VEdge(VPoint s, VPoint e)
+        public VtEdge(VtPoint s, VtPoint e)
         {
             S = s;
             E = e;
             M = (s + e) / 2;
         }
 
-        public static bool operator ==(VEdge a, VEdge b)
+        public VtEdge(VPoint start, VPoint end)
+        {
+            S = new VtPoint(start);
+            E = new VtPoint(end);
+            M = (S + E) / 2;
+        }
+
+        public static bool operator ==(VtEdge a, VtEdge b)
         {
             if (ReferenceEquals(a, null) & (ReferenceEquals(b, null)))
                 return true;
@@ -25,7 +33,7 @@ namespace Tests.Structures
             return (a.S == b.S && a.E == b.E) || (a.E == b.S && a.S == b.E);
         }
 
-        public static bool operator !=(VEdge a, VEdge b)
+        public static bool operator !=(VtEdge a, VtEdge b)
         {
             return !(a==b);
         }

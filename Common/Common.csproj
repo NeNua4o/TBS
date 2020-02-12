@@ -68,6 +68,7 @@
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\AxialExtensions.cs" />
     <Compile Include="Extensions\CubeExtensions.cs" />
+    <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Extensions\PointFExtensions.cs" />
     <Compile Include="Models\Act.cs" />
     <Compile Include="Models\Axial.cs" />

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tests.Structures
 {
-    class Some
+    public class VtFull
     {
+        public List<VtPoint> Points = new List<VtPoint>();
     }
 }

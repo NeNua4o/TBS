@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace Tests.Structures
+namespace Voronoy.Structures
 {
     public class MinHeap<T> where T : IComparable<T>
     {

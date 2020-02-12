@@ -9,15 +9,16 @@ using OpenTK;
 using Tests.Utils;
 using System.Threading;
 using System.Diagnostics;
+using Voronoy;
+using Voronoy.Structures;
 
 namespace Tests
 {
     public partial class MainForm : Form
     {
-        VPoint[] _pts;
-        List<VTriangle> _delTries = new List<VTriangle>();
-        List<VTriangle> _badTries = new List<VTriangle>();
+        List<VtPoint> _pts = new List<VtPoint>();
         List<VEdge> _edges = new List<VEdge>();
+        List<FortuneSite> _sites = new List<FortuneSite>();
 
         public MainForm()
         {
@@ -25,59 +26,104 @@ namespace Tests
         }
 
         Font _fnt = new Font("Calibri Light", 8, FontStyle.Regular); Brush _brush = Brushes.Black; StringFormat _drawFormat = new StringFormat();
-        Pen _trP = new Pen(Color.Blue, 1);
-        Pen _ptP = new Pen(Color.Fuchsia, 1);
+        Pen _trP = new Pen(Color.White, 1);//new Pen(Color.Blue, 1);
+        Pen _ptP = new Pen(Color.Fuchsia, 1);//new Pen(Color.Fuchsia, 1);
+        Pen _plP = new Pen(Color.Blue, 1);
+        Brush _ptB = new SolidBrush(Color.Red);
+        Brush _ptB2 = new SolidBrush(Color.Yellow);
         private void DrawR(PictureBox pb)
         {
             Bitmap b = new Bitmap(pb.Width, pb.Height); Graphics g = Graphics.FromImage(b);
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
-            for (int i = 0; i < _delTries.Count; i++)
+            g.FillRectangle(Brushes.Black, 0, 0, pb.Width, pb.Height);
+
+            /**/
+            for (int i = 0; i < _edges.Count; i++)
             {
-                var tr = _delTries[i];
-                g.DrawLine(_trP, tr.A.X + __border, tr.A.Y + __border, tr.B.X + __border, tr.B.Y + __border);
-                g.DrawLine(_trP, tr.B.X + __border, tr.B.Y + __border, tr.C.X + __border, tr.C.Y + __border);
-                g.DrawLine(_trP, tr.C.X + __border, tr.C.Y + __border, tr.A.X + __border, tr.A.Y + __border);
-                //g.DrawEllipse(Pens.Red, tr.CirC.X - 3, tr.CirC.Y - 3, 6, 6);
-                //g.DrawEllipse(Pens.Blue, tr.CirC.X - tr.CirR, tr.CirC.Y - tr.CirR, tr.CirR * 2, tr.CirR * 2);
+                var tr = _edges[i];
+                g.DrawLine(
+                    _trP,
+                    (float)tr.Start.X + __xs, (float)tr.Start.Y + __ys,
+                    (float)tr.End.X + __xs, (float)tr.End.Y + __ys
+                    );
             }
 
+
             if (_pts != null)
-                for (int i = 0; i < _pts.Length; i++)
+                for (int i = 0; i < _pts.Count; i++)
                 {
                     var pt = _pts[i];
-                    g.DrawEllipse(_ptP, (int)pt.X - 1 + __border, (int)pt.Y - 1 + __border, 2, 2);
+                    g.FillEllipse(_ptB, (int)pt.X - 2 + __xs, (int)pt.Y - 2 + __ys, 4, 4);
+                }
+
+            if (_sites != null)
+                for (int i = 0; i < _sites.Count; i++)
+                {
+                    var pt = _sites[i];
+                    g.FillEllipse(_ptB2, (int)pt.X - 2 + __xs, (int)pt.Y - 2 + __ys, 4, 4);
                 }
 
             pb.Image = b;g = null; b = null;
         }
 
-        const float __border = 20f;
+        const float __border = 2f;
+        const float __xs = 1f;
+        const float __ys = 1f;
+        int _ll = 0;
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             var ptCount = (double)nud_ptCount.Value;
             var width = (double)nud_width.Value;
             var height = (double)nud_height.Value;
             var lloyd = (double)nud_Lloyd.Value;
-            pictureBox1.Width = (int)(width + __border * 2);
-            pictureBox1.Height = (int)(height + __border * 2);
+            pictureBox1.Width = (int)(width + __border);
+            pictureBox1.Height = (int)(height + __border);
 
             var dots = PointWorker.GetInstance().GetUniqDots(0, 0, (int)width, (int)height, (int)ptCount);
-            _pts = dots.ToArray();
+            //_pts = dots;
 
-            _delTries.Clear();
+            var minX = dots.Min(dot => dot.X);
+            var minY = dots.Min(dot => dot.Y);
+            var maxX = dots.Max(dot => dot.X);
+            var maxY = dots.Max(dot => dot.Y);
+            pb1.Value = 0;
+            var sw = new Stopwatch();
 
-            var triangulation = new Triangulation(dots);
-            List<VTriangle> delTries = triangulation.CalcDelanua(__border);
-            _delTries.AddRange(delTries);
-            
+            var sites = PointWorker.GetInstance().DotsToSites(dots);
+            var voronoyPartEdges = FortunesAlgorithm.Run(sites, minX, minY, maxX, maxY);
+
+            _edges = voronoyPartEdges.ToList();
             DrawR(pictureBox1);
-            pictureBox1.Image.Save("Delone.png");
+            Application.DoEvents();
+
+            for (int i = 0; i < lloyd; i++)
+            {
+                sw.Restart();
+                List<FortuneSite> newC = PointWorker.GetInstance().Relax(voronoyPartEdges, minX, minY, maxX, maxY);
+                //_sites = newC;
+                DrawR(pictureBox1);
+                Application.DoEvents();
+
+                sw.Restart();
+                voronoyPartEdges = FortunesAlgorithm.Run(newC, minX, minY, maxX, maxY);
+                _edges = voronoyPartEdges.ToList();
+                //_pts = PointWorker.GetInstance().SitesToDots(newC);
+                DrawR(pictureBox1);
+                Application.DoEvents();
+            }
+
+            pb1.Value = 1;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            
         }
+
+        
 
         private void button3_Click(object sender, EventArgs e)
         {
